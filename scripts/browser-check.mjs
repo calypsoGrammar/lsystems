@@ -1,8 +1,8 @@
 // Browser regression check for the built app (CAL-1270). Serves dist/ with `vite preview` and asserts:
 // 29 presets, non-blank canvas, rule-editor controls, no page errors, no off-origin requests, key computed styles.
-// Needs a prior `npm run build`. Env: PLAYWRIGHT_BROWSERS_PATH (default /usr/local/share/ms-playwright),
+// Rebuilds dist/ first (about 1 s) so it never serves a stale or missing bundle. Env: PLAYWRIGHT_BROWSERS_PATH (default /usr/local/share/ms-playwright),
 // PLAYWRIGHT_MODULE (default /usr/local/lib/node_modules/playwright/index.mjs).
-import { spawn } from 'node:child_process'
+import { spawn, spawnSync } from 'node:child_process'
 import { readdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
@@ -12,6 +12,9 @@ const root = fileURLToPath(new URL('..', import.meta.url))
 const PORT = 4174, URL_ = `http://127.0.0.1:${PORT}/`
 const failures = []
 const check = (ok, msg) => { if (!ok) failures.push(msg) }
+
+const build = spawnSync('npx', ['vite', 'build'], { cwd: root, stdio: 'inherit' })
+if (build.status !== 0) { console.error('vite build failed'); process.exit(1) }
 
 // Static: every normalize/preflight rule must be inside a cascade layer, or it beats Tailwind utilities.
 const cssFile = readdirSync(root + 'dist/assets').find(f => f.endsWith('.css'))
