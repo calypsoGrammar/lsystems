@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         node: ['22', '26']
@@ -27,14 +28,22 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run audit
+      - name: Install Playwright
+        timeout-minutes: 3
+        # 1.60.0 fixes ZIP extraction hanging on Node 26 (microsoft/playwright#40747).
+        run: npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright@1.60.0
+      - name: Install Chromium
+        timeout-minutes: 15
+        env:
+          DEBUG: pw:install
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/pw-browsers
+        run: '"$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium'
       - name: Browser check
+        timeout-minutes: 5
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/pw-browsers
           PLAYWRIGHT_MODULE: ${{ runner.temp }}/pw/node_modules/playwright/index.mjs
-        run: |
-          npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright@1.55.1
-          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium
-          npm run test:browser
+        run: npm run test:browser
       - name: Upload Pages site
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && matrix.node == '22'
         uses: actions/upload-pages-artifact@v3
@@ -44,6 +53,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write
