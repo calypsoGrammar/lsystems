@@ -52,6 +52,16 @@ try {
   await page.waitForTimeout(300)
   check(await px() > 0, 'canvas blank after Generate')
 
+  // Centring: the first preset drawn statically should sit around the canvas centre, and again after a second Generate
+  // (bounds must not carry over between runs).
+  const bbox = () => page.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1; for (let i = 3; i < d.length; i += 4) if (d[i]) { const p = (i - 3) / 4, x = p % c.width, y = Math.floor(p / c.width); if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y } return { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, w: c.width, h: c.height } })
+  const first = await bbox()
+  check(Math.abs(first.cx - first.w / 2) < 40 && Math.abs(first.cy - first.h / 2) < 40, `drawing not centred: centre ${first.cx},${first.cy} on ${first.w}x${first.h}`)
+  await page.click('#GenerateButton')
+  await page.waitForTimeout(300)
+  const second = await bbox()
+  check(Math.abs(second.cx - first.cx) < 2 && Math.abs(second.cy - first.cy) < 2, `drawing moved on second Generate: ${first.cx},${first.cy} -> ${second.cx},${second.cy}`)
+
   const style = (sel, props) => page.evaluate(([sel, props]) => { const s = getComputedStyle(document.querySelector(sel)); return Object.fromEntries(props.map(p => [p, s[p]])) }, [sel, props])
   const hdr = await style('#GenerateButton', ['marginLeft', 'marginRight'])
   check(hdr.marginLeft === '16px' && hdr.marginRight === '16px', `header button margin ${hdr.marginLeft}/${hdr.marginRight}, expected 16px`)

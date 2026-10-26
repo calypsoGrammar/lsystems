@@ -2,6 +2,7 @@
 
 import { Rule, RuleSet, Successor, Colour, Vector } from "./lsystem/model";
 import { presets } from "./lsystem/presets";
+import { drawOffset, initialBounds } from "./lsystem/layout";
 import { rewrite } from "./lsystem/rewrite";
 import { forestStart, traceLines, type Bounds } from "./lsystem/turtle";
 
@@ -79,8 +80,6 @@ let matrix: never[] = []; // legacy; transform history now lives in traceLines
 
 let pickIndex = 0; // which l system to display
 
-let xStart = 0;
-let yStart = 0;
 let minX = 0;
 let maxX = 0;
 let minY = 0;
@@ -100,7 +99,6 @@ let rgb: Colour = new Colour(0, 0, 0);
 let inheritance = 0;
 let lines: any[] = []; // stores line info
 let lSystems: RuleSet[] = presets;
-const bounds: Bounds = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
 
 let lineCol = "black";
 
@@ -293,12 +291,7 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   // ctx.height = window.innerHeight * 0.85;
 
   matrix.length = 0;
-  xStart = fCanvas.width / 2;
-  yStart = fCanvas.height / 2;
-  minX = xStart;
-  maxX = xStart;
-  minY = yStart;
-  maxY = yStart;
+  ({ minX, maxX, minY, maxY } = initialBounds(fCanvas.width, fCanvas.height));
   theta = ruleset.theta;
 
   interval = parseFloat(fSettingsInterval.value);
@@ -368,6 +361,8 @@ function GetLines(index: number)
     start = forestStart(fCanvas.width, fCanvas.height, parseFloat(fSettingsCount.value), index);
   }
 
+  // Bounds accumulate across the trees of one Initiate, starting from the canvas centre.
+  const bounds: Bounds = { minX, maxX, minY, maxY };
   lines[index] = traceLines(current, len, theta, start, bounds);
   minX = bounds.minX;
   maxX = bounds.maxX;
@@ -379,11 +374,7 @@ function Draw(index: number)
 {
   if(forest === false)
   {
-    offsetX = ((maxX - minX)) / 2;
-    offsetY = ((maxY - minY)) / 2;
-  
-    offsetX -= (maxX - lines[index][0].start.x);
-    offsetY -= (maxY - lines[index][0].start.y);
+    ({ offsetX, offsetY } = drawOffset({ minX, maxX, minY, maxY }, lines[index][0]));
   }
 
   ctx.strokeStyle = RandomColour(inheritance, interval);

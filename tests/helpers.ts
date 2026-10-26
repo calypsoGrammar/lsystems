@@ -1,5 +1,6 @@
 import { RuleSet, Vector } from "../src/javascripts/lsystem/model";
 import { rewrite, type RandomSource } from "../src/javascripts/lsystem/rewrite";
+import { drawOffset, initialBounds } from "../src/javascripts/lsystem/layout";
 import { forestStart, traceLines, type Bounds } from "../src/javascripts/lsystem/turtle";
 
 // mulberry32: small seeded PRNG so stochastic scenarios are reproducible. No end-user seed UI is implied.
@@ -48,21 +49,20 @@ export interface Layout {
 }
 
 // Mirrors the geometry part of main.ts Initiate/GetLines/Draw for one tree on a canvas of the given size
-// (window.innerWidth x window.innerHeight * 0.85). The offset formula is copied from Draw().
+// (window.innerWidth x window.innerHeight * 0.85), using the same layout.ts functions as main.ts.
 export function layout(rs: RuleSet, iterations: number, canvasW: number, canvasH: number,
   opts: { theta?: number; random?: RandomSource; forest?: { count: number; index: number } } = {}): Layout
 {
   const random = opts.random ?? Math.random;
   const { current, len } = expand(rs, iterations, random);
-  const bounds: Bounds = { minX: canvasW / 2, maxX: canvasW / 2, minY: canvasH / 2, maxY: canvasH / 2 };
+  const bounds: Bounds = initialBounds(canvasW, canvasH);
   const start = opts.forest
     ? forestStart(canvasW, canvasH, opts.forest.count, opts.forest.index, random)
     : new Vector(parseFloat((canvasW / 2).toFixed(2)), parseFloat((canvasH / 2).toFixed(2)));
   const lines = traceLines(current, len, opts.theta ?? rs.theta, start, bounds);
   let offsetX = 0, offsetY = 0;
   if (!opts.forest && lines.length > 0) {
-    offsetX = (bounds.maxX - bounds.minX) / 2 - (bounds.maxX - lines[0].start.x);
-    offsetY = (bounds.maxY - bounds.minY) / 2 - (bounds.maxY - lines[0].start.y);
+    ({ offsetX, offsetY } = drawOffset(bounds, lines[0]));
   }
   const drawn = { minX: bounds.minX + offsetX, maxX: bounds.maxX + offsetX, minY: bounds.minY + offsetY, maxY: bounds.maxY + offsetY };
   const fits = drawn.minX >= 0 && drawn.maxX <= canvasW && drawn.minY >= 0 && drawn.maxY <= canvasH;
