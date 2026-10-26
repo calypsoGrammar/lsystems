@@ -1,0 +1,2199 @@
+{
+ "source": "src/javascripts/main.ts",
+ "factor": 4,
+ "notPushed": 1,
+ "presets": [
+  {
+   "name": "Koch Island",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F-F+F+FF-F-F+F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 59,
+     "string": "F-F+F+FF-F-F+F-F-F+F+FF-F-F+F-F-F+F+FF-F-F+F-F-F+F+FF-F-F+F",
+     "lines": 32,
+     "bbox": [
+      -312.5,
+      -312.5,
+      62.5,
+      62.5
+     ]
+    },
+    "2": {
+     "length": 475,
+     "lines": 256,
+     "bbox": [
+      -328.13,
+      -328.13,
+      78.09,
+      78.09
+     ]
+    },
+    "3": {
+     "length": 3803,
+     "lines": 2048,
+     "bbox": [
+      -332.35,
+      -332.35,
+      82.11,
+      82.11
+     ]
+    }
+   }
+  },
+  {
+   "name": "Koch Curve 2",
+   "kind": "deterministic",
+   "axiom": "-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F+F-F-F+F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 2,
+     "string": "-F",
+     "lines": 1,
+     "bbox": [
+      -250,
+      0,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 10,
+     "string": "-F+F-F-F+F",
+     "lines": 5,
+     "bbox": [
+      -187.5,
+      -62.5,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 50,
+     "string": "-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F",
+     "lines": 25,
+     "bbox": [
+      -140.66,
+      -62.52,
+      0,
+      0
+     ]
+    },
+    "3": {
+     "length": 250,
+     "string": "-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F+F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F+F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F",
+     "lines": 125,
+     "bbox": [
+      -105.57,
+      -50.83,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Lakes and Islands",
+   "kind": "deterministic",
+   "axiom": "F+F+F+F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "f",
+     "successors": [
+      {
+       "successor": "ffffff",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F+F+F+F",
+     "lines": 4,
+     "bbox": [
+      0,
+      -250,
+      250,
+      0
+     ]
+    },
+    "1": {
+     "length": 139,
+     "string": "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+     "lines": 72,
+     "bbox": [
+      -125,
+      -500,
+      500,
+      125
+     ]
+    },
+    "2": {
+     "length": 2595,
+     "lines": 1296,
+     "bbox": [
+      -218.72,
+      -781.25,
+      781.25,
+      218.72
+     ]
+    },
+    "3": {
+     "length": 47283,
+     "lines": 23328,
+     "bbox": [
+      -336.26,
+      -1180.82,
+      1180.82,
+      336.26
+     ]
+    }
+   }
+  },
+  {
+   "name": "Ruleset 1",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF-F-F-F-F-F+F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 59,
+     "string": "FF-F-F-F-F-F+F-FF-F-F-F-F-F+F-FF-F-F-F-F-F+F-FF-F-F-F-F-F+F",
+     "lines": 32,
+     "bbox": [
+      -250,
+      -187.5,
+      0,
+      62.5
+     ]
+    },
+    "2": {
+     "length": 475,
+     "lines": 256,
+     "bbox": [
+      -218.78,
+      -125.03,
+      0,
+      93.72
+     ]
+    },
+    "3": {
+     "length": 3803,
+     "lines": 2048,
+     "bbox": [
+      -172.04,
+      -70.38,
+      0,
+      101.66
+     ]
+    }
+   }
+  },
+  {
+   "name": "Ruleset 2",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF-F-F-F-FF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 47,
+     "string": "FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF",
+     "lines": 28,
+     "bbox": [
+      -187.5,
+      -187.5,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 327,
+     "string": "FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF",
+     "lines": 196,
+     "bbox": [
+      -140.66,
+      -140.66,
+      0,
+      0
+     ]
+    },
+    "3": {
+     "length": 2287,
+     "lines": 1372,
+     "bbox": [
+      -105.57,
+      -105.57,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Ruleset 3",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF-F+F-F-FF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 47,
+     "string": "FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FF",
+     "lines": 28,
+     "bbox": [
+      -125,
+      -187.5,
+      62.5,
+      0
+     ]
+    },
+    "2": {
+     "length": 327,
+     "string": "FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF",
+     "lines": 196,
+     "bbox": [
+      -46.89,
+      -46.91,
+      124.97,
+      124.97
+     ]
+    },
+    "3": {
+     "length": 2287,
+     "lines": 1372,
+     "bbox": [
+      -31.28,
+      -11.73,
+      50.83,
+      70.38
+     ]
+    }
+   }
+  },
+  {
+   "name": "Ruleset 4",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF-F--F-F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 39,
+     "string": "FF-F--F-F-FF-F--F-F-FF-F--F-F-FF-F--F-F",
+     "lines": 20,
+     "bbox": [
+      -187.5,
+      -187.5,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 199,
+     "string": "FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F-FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F-FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F-FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F",
+     "lines": 100,
+     "bbox": [
+      -140.66,
+      -140.66,
+      0,
+      0
+     ]
+    },
+    "3": {
+     "length": 999,
+     "lines": 500,
+     "bbox": [
+      -105.57,
+      -105.57,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Ruleset 5",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F-FF--F-F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 39,
+     "string": "F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-F",
+     "lines": 20,
+     "bbox": [
+      -187.5,
+      -125,
+      0,
+      62.5
+     ]
+    },
+    "2": {
+     "length": 199,
+     "string": "F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F",
+     "lines": 100,
+     "bbox": [
+      -109.41,
+      -46.89,
+      0,
+      62.48
+     ]
+    },
+    "3": {
+     "length": 999,
+     "lines": 500,
+     "bbox": [
+      -54.74,
+      -11.73,
+      3.91,
+      46.92
+     ]
+    }
+   }
+  },
+  {
+   "name": "Ruleset 6",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F-F+F-F-F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F-F-F-F",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 39,
+     "string": "F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F",
+     "lines": 20,
+     "bbox": [
+      -125,
+      -187.5,
+      62.5,
+      0
+     ]
+    },
+    "2": {
+     "length": 199,
+     "string": "F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F",
+     "lines": 100,
+     "bbox": [
+      -93.78,
+      -93.78,
+      15.59,
+      15.59
+     ]
+    },
+    "3": {
+     "length": 999,
+     "lines": 500,
+     "bbox": [
+      -43.01,
+      -62.56,
+      23.46,
+      3.91
+     ]
+    }
+   }
+  },
+  {
+   "name": "Dragon Curve",
+   "kind": "deterministic",
+   "axiom": "FX",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "X",
+     "successors": [
+      {
+       "successor": "X+YF+",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "Y",
+     "successors": [
+      {
+       "successor": "-FX-Y",
+       "weight": 1
+      }
+     ],
+     "contextL": "",
+     "contextR": ""
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 2,
+     "string": "FX",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 6,
+     "string": "FX+YF+",
+     "lines": 2,
+     "bbox": [
+      0,
+      -62.5,
+      62.5,
+      0
+     ]
+    },
+    "2": {
+     "length": 10,
+     "string": "FX+YF++YF+",
+     "lines": 3,
+     "bbox": [
+      0,
+      -15.63,
+      15.63,
+      0
+     ]
+    },
+    "3": {
+     "length": 14,
+     "string": "FX+YF++YF++YF+",
+     "lines": 4,
+     "bbox": [
+      0,
+      -3.91,
+      3.91,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Sierpinski Curve",
+   "kind": "deterministic",
+   "axiom": "F--XF--F--XF",
+   "theta": 45,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "X",
+     "successors": [
+      {
+       "successor": "XF+G+XF--F--XF+G+X",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 12,
+     "string": "F--XF--F--XF",
+     "lines": 4,
+     "bbox": [
+      -250,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 46,
+     "string": "F--XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF",
+     "lines": 16,
+     "bbox": [
+      -275.88,
+      -169.19,
+      0,
+      106.69
+     ]
+    },
+    "2": {
+     "length": 182,
+     "string": "F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF",
+     "lines": 64,
+     "bbox": [
+      -175.66,
+      -95.64,
+      0.02,
+      80.06
+     ]
+    },
+    "3": {
+     "length": 726,
+     "lines": 256,
+     "bbox": [
+      -97.29,
+      -50.6,
+      0,
+      46.69
+     ]
+    }
+   }
+  },
+  {
+   "name": "Sierpinkski Triangle",
+   "kind": "deterministic",
+   "axiom": "F-G-G",
+   "theta": 120,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F-G+F+G-F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "G",
+     "successors": [
+      {
+       "successor": "GG",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 5,
+     "string": "F-G-G",
+     "lines": 3,
+     "bbox": [
+      -216.51,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 15,
+     "string": "F-G+F+G-F-GG-GG",
+     "lines": 9,
+     "bbox": [
+      -108.26,
+      -125,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 45,
+     "string": "F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F-GGGG-GGGG",
+     "lines": 27,
+     "bbox": [
+      -54.12,
+      -62.55,
+      0,
+      0
+     ]
+    },
+    "3": {
+     "length": 135,
+     "string": "F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F-GGGG+F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F+GGGG-F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F-GGGGGGGG-GGGGGGGG",
+     "lines": 81,
+     "bbox": [
+      -27.04,
+      -31.47,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Koch Curve 1",
+   "kind": "deterministic",
+   "axiom": "F",
+   "theta": 60,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F+F--F+F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 8,
+     "string": "F+F--F+F",
+     "lines": 4,
+     "bbox": [
+      0,
+      -187.5,
+      54.13,
+      0
+     ]
+    },
+    "2": {
+     "length": 36,
+     "string": "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+     "lines": 16,
+     "bbox": [
+      0,
+      -140.63,
+      40.59,
+      0
+     ]
+    },
+    "3": {
+     "length": 148,
+     "string": "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F+F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F+F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+     "lines": 64,
+     "bbox": [
+      0,
+      -105.48,
+      30.42,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Koch Snowflake",
+   "kind": "deterministic",
+   "axiom": "F--F--F",
+   "theta": 60,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F+F--F+F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 7,
+     "string": "F--F--F",
+     "lines": 3,
+     "bbox": [
+      -216.51,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 28,
+     "string": "F+F--F+F--F+F--F+F--F+F--F+F",
+     "lines": 12,
+     "bbox": [
+      -162.39,
+      -187.5,
+      54.13,
+      0
+     ]
+    },
+    "2": {
+     "length": 112,
+     "string": "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+     "lines": 48,
+     "bbox": [
+      -121.77,
+      -140.63,
+      40.59,
+      0
+     ]
+    },
+    "3": {
+     "length": 448,
+     "lines": 192,
+     "bbox": [
+      -91.26,
+      -105.48,
+      30.42,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Hilbert Curve",
+   "kind": "deterministic",
+   "axiom": "A",
+   "theta": 90,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "A",
+     "successors": [
+      {
+       "successor": "+BF-AFA-FB+",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "B",
+     "successors": [
+      {
+       "successor": "-AF+BFB+FA-",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "A",
+     "lines": 0,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 11,
+     "string": "+BF-AFA-FB+",
+     "lines": 3,
+     "bbox": [
+      0,
+      -62.5,
+      62.5,
+      0
+     ]
+    },
+    "2": {
+     "length": 51,
+     "string": "+-AF+BFB+FA-F-+BF-AFA-FB+F+BF-AFA-FB+-F-AF+BFB+FA-+",
+     "lines": 15,
+     "bbox": [
+      0,
+      -46.89,
+      46.89,
+      0
+     ]
+    },
+    "3": {
+     "length": 211,
+     "string": "+-+BF-AFA-FB+F+-AF+BFB+FA-F-AF+BFB+FA-+F+BF-AFA-FB+-F-+-AF+BFB+FA-F-+BF-AFA-FB+F+BF-AFA-FB+-F-AF+BFB+FA-+F+-AF+BFB+FA-F-+BF-AFA-FB+F+BF-AFA-FB+-F-AF+BFB+FA-+-F-+BF-AFA-FB+F+-AF+BFB+FA-F-AF+BFB+FA-+F+BF-AFA-FB+-+",
+     "lines": 63,
+     "bbox": [
+      0,
+      -27.37,
+      27.37,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Levy C Curve",
+   "kind": "deterministic",
+   "axiom": "F",
+   "theta": 45,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "+F--F+",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 6,
+     "string": "+F--F+",
+     "lines": 2,
+     "bbox": [
+      0,
+      -88.38,
+      44.19,
+      0
+     ]
+    },
+    "2": {
+     "length": 16,
+     "string": "++F--F+--+F--F++",
+     "lines": 4,
+     "bbox": [
+      0,
+      -31.26,
+      15.63,
+      0
+     ]
+    },
+    "3": {
+     "length": 36,
+     "string": "+++F--F+--+F--F++--++F--F+--+F--F+++",
+     "lines": 8,
+     "bbox": [
+      0,
+      -13.8,
+      8.28,
+      2.76
+     ]
+    }
+   }
+  },
+  {
+   "name": "Star",
+   "kind": "deterministic",
+   "axiom": "F",
+   "theta": 77,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F++F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 4,
+     "string": "F++F",
+     "lines": 2,
+     "bbox": [
+      0,
+      -62.5,
+      27.4,
+      0
+     ]
+    },
+    "2": {
+     "length": 10,
+     "string": "F++F++F++F",
+     "lines": 4,
+     "bbox": [
+      -5.46,
+      -15.63,
+      9.82,
+      0
+     ]
+    },
+    "3": {
+     "length": 22,
+     "string": "F++F++F++F++F++F++F++F",
+     "lines": 8,
+     "bbox": [
+      -1.37,
+      -3.91,
+      2.45,
+      0.02
+     ]
+    }
+   }
+  },
+  {
+   "name": "Pentigree Curve",
+   "kind": "deterministic",
+   "axiom": "F-F-F-F-F",
+   "theta": 72,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F-F-F++F+F-F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 9,
+     "string": "F-F-F-F-F",
+     "lines": 5,
+     "bbox": [
+      -384.71,
+      -327.25,
+      0,
+      77.25
+     ]
+    },
+    "1": {
+     "length": 64,
+     "string": "F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F",
+     "lines": 30,
+     "bbox": [
+      -288.54,
+      -194.87,
+      0,
+      89.18
+     ]
+    },
+    "2": {
+     "length": 394,
+     "string": "F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F",
+     "lines": 180,
+     "bbox": [
+      -207.18,
+      -122.77,
+      0,
+      85.39
+     ]
+    },
+    "3": {
+     "length": 2374,
+     "lines": 1080,
+     "bbox": [
+      -148.74,
+      -76.9,
+      0,
+      72.49
+     ]
+    }
+   }
+  },
+  {
+   "name": "Snowflake",
+   "kind": "deterministic",
+   "axiom": "F++F++F++F++F",
+   "theta": 36,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F++F++F+++++F-F++F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 13,
+     "string": "F++F++F++F++F",
+     "lines": 5,
+     "bbox": [
+      0,
+      -327.25,
+      384.71,
+      77.25
+     ]
+    },
+    "1": {
+     "length": 98,
+     "string": "F++F++F+++++F-F++F++F++F++F+++++F-F++F++F++F++F+++++F-F++F++F++F++F+++++F-F++F++F++F++F+++++F-F++F",
+     "lines": 30,
+     "bbox": [
+      0,
+      -214.18,
+      251.8,
+      50.56
+     ]
+    },
+    "2": {
+     "length": 608,
+     "lines": 180,
+     "bbox": [
+      0,
+      -140.21,
+      164.78,
+      33.03
+     ]
+    },
+    "3": {
+     "length": 3668,
+     "lines": 1080,
+     "bbox": [
+      0,
+      -92.06,
+      108.02,
+      21.16
+     ]
+    }
+   }
+  },
+  {
+   "name": "Gosper Curve",
+   "kind": "deterministic",
+   "axiom": "F",
+   "theta": 60,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F-G--G+F++FF+G-",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "G",
+     "successors": [
+      {
+       "successor": "+F-GG--G-F++F+G",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 15,
+     "string": "F-G--G+F++FF+G-",
+     "lines": 7,
+     "bbox": [
+      -108.26,
+      -156.25,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 113,
+     "string": "F-G--G+F++FF+G--+F-GG--G-F++F+G--+F-GG--G-F++F+G+F-G--G+F++FF+G-++F-G--G+F++FF+G-F-G--G+F++FF+G-++F-GG--G-F++F+G-",
+     "lines": 49,
+     "bbox": [
+      -108.24,
+      -85.94,
+      0,
+      31.24
+     ]
+    },
+    "3": {
+     "length": 799,
+     "lines": 343,
+     "bbox": [
+      -81.12,
+      -41.02,
+      0,
+      37.11
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 1",
+   "kind": "bracketed",
+   "axiom": "X",
+   "theta": 25,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "X",
+     "successors": [
+      {
+       "successor": "F+[[X]-X]-F[-FX]+X",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "X",
+     "lines": 0,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 18,
+     "string": "F+[[X]-X]-F[-FX]+X",
+     "lines": 3,
+     "bbox": [
+      -26.41,
+      -181.64,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 89,
+     "string": "FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X",
+     "lines": 18,
+     "bbox": [
+      -38.37,
+      -129.2,
+      13.2,
+      0
+     ]
+    },
+    "3": {
+     "length": 379,
+     "string": "FFFF+[[FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X]-FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X]-FFFF[-FFFFFF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X]+FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X",
+     "lines": 84,
+     "bbox": [
+      -28.93,
+      -70.96,
+      14.23,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 2",
+   "kind": "bracketed",
+   "axiom": "F",
+   "theta": 25.7,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F[+F]F[-F]F",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 11,
+     "string": "F[+F]F[-F]F",
+     "lines": 5,
+     "bbox": [
+      -27.1,
+      -187.5,
+      27.1,
+      0
+     ]
+    },
+    "2": {
+     "length": 61,
+     "string": "F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F",
+     "lines": 25,
+     "bbox": [
+      -25.77,
+      -140.66,
+      20.34,
+      0
+     ]
+    },
+    "3": {
+     "length": 311,
+     "string": "F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F[+F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F]F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F]F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F",
+     "lines": 125,
+     "bbox": [
+      -20.05,
+      -105.57,
+      15.21,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 3",
+   "kind": "bracketed",
+   "axiom": "F",
+   "theta": 22.5,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF-[-F+F+F]+[+F-F-F]",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 20,
+     "string": "FF-[-F+F+F]+[+F-F-F]",
+     "lines": 8,
+     "bbox": [
+      -68.11,
+      -302.98,
+      23.92,
+      0
+     ]
+    },
+    "2": {
+     "length": 172,
+     "string": "FF-[-F+F+F]+[+F-F-F]FF-[-F+F+F]+[+F-F-F]-[-FF-[-F+F+F]+[+F-F-F]+FF-[-F+F+F]+[+F-F-F]+FF-[-F+F+F]+[+F-F-F]]+[+FF-[-F+F+F]+[+F-F-F]-FF-[-F+F+F]+[+F-F-F]-FF-[-F+F+F]+[+F-F-F]]",
+     "lines": 64,
+     "bbox": [
+      -65.53,
+      -192.65,
+      28.99,
+      0
+     ]
+    },
+    "3": {
+     "length": 1388,
+     "lines": 512,
+     "bbox": [
+      -41.88,
+      -104.94,
+      19.34,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 4",
+   "kind": "bracketed",
+   "axiom": "F",
+   "theta": 20,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F[+F]F[-F][F]",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 13,
+     "string": "F[+F]F[-F][F]",
+     "lines": 5,
+     "bbox": [
+      -21.38,
+      -187.5,
+      21.38,
+      0
+     ]
+    },
+    "2": {
+     "length": 73,
+     "string": "F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]",
+     "lines": 25,
+     "bbox": [
+      -20.72,
+      -109.41,
+      16.02,
+      0
+     ]
+    },
+    "3": {
+     "length": 373,
+     "string": "F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]][+F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]]F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]][-F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]][F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]]",
+     "lines": 125,
+     "bbox": [
+      -13.76,
+      -58.65,
+      10.21,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 5",
+   "kind": "bracketed",
+   "axiom": "X",
+   "theta": 20,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "X",
+     "successors": [
+      {
+       "successor": "F[+X]F[-X]+X",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "X",
+     "lines": 0,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 12,
+     "string": "F[+X]F[-X]+X",
+     "lines": 2,
+     "bbox": [
+      0,
+      -125,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 47,
+     "string": "FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X",
+     "lines": 10,
+     "bbox": [
+      -10.68,
+      -91.88,
+      10.68,
+      0
+     ]
+    },
+    "3": {
+     "length": 156,
+     "string": "FFFF[+FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X]FFFF[-FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X]+FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X",
+     "lines": 38,
+     "bbox": [
+      -10.38,
+      -53.78,
+      10.38,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 6",
+   "kind": "bracketed",
+   "axiom": "X",
+   "theta": 25.7,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "X",
+     "successors": [
+      {
+       "successor": "F[+X][-X]FX",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "X",
+     "lines": 0,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 11,
+     "string": "F[+X][-X]FX",
+     "lines": 2,
+     "bbox": [
+      0,
+      -125,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 43,
+     "string": "FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX",
+     "lines": 10,
+     "bbox": [
+      -13.56,
+      -93.78,
+      13.56,
+      0
+     ]
+    },
+    "3": {
+     "length": 143,
+     "string": "FFFF[+FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX][-FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX]FFFFFF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX",
+     "lines": 38,
+     "bbox": [
+      -10.14,
+      -54.74,
+      10.14,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 7",
+   "kind": "bracketed",
+   "axiom": "X",
+   "theta": 22.5,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "X",
+     "successors": [
+      {
+       "successor": "[[X]+X]+F[+FX]-X",
+       "weight": 1
+      }
+     ],
+     "contextL": "",
+     "contextR": ""
+    },
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "FF",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "X",
+     "lines": 0,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 16,
+     "string": "[[X]+X]+F[+FX]-X",
+     "lines": 2,
+     "bbox": [
+      0,
+      -101.93,
+      68.11,
+      0
+     ]
+    },
+    "2": {
+     "length": 18,
+     "string": "[[X]+X]+FF[+FFX]-X",
+     "lines": 4,
+     "bbox": [
+      0,
+      -50.98,
+      34.06,
+      0
+     ]
+    },
+    "3": {
+     "length": 22,
+     "string": "[[X]+X]+FFFF[+FFFFX]-X",
+     "lines": 8,
+     "bbox": [
+      0,
+      -25.48,
+      17,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 8",
+   "kind": "stochastic",
+   "axiom": "F",
+   "theta": 20,
+   "factor": 4,
+   "ignore": [
+    ""
+   ],
+   "rules": [
+    {
+     "predecessor": "F",
+     "successors": [
+      {
+       "successor": "F[+F]F[-F]F",
+       "weight": 0.34
+      },
+      {
+       "successor": "F[+F]F",
+       "weight": 0.33
+      },
+      {
+       "successor": "F[-F]F",
+       "weight": 0.33
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 1,
+     "string": "F",
+     "lines": 1,
+     "bbox": [
+      0,
+      -250,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 6,
+     "string": "F[+F]F",
+     "lines": 3,
+     "bbox": [
+      0,
+      -125,
+      21.38,
+      0
+     ]
+    },
+    "2": {
+     "length": 26,
+     "string": "F[+F]F[-F]F[+F[+F]F]F[-F]F",
+     "lines": 11,
+     "bbox": [
+      -5.34,
+      -78.15,
+      15.38,
+      0
+     ]
+    },
+    "3": {
+     "length": 96,
+     "string": "F[-F]F[+F[+F]F[-F]F]F[+F]F[-F[-F]F]F[+F]F[+F[-F]F[+F[+F]F]F[+F]F]F[+F]F[-F]F[-F[+F]F]F[+F]F[-F]F",
+     "lines": 39,
+     "bbox": [
+      -3.85,
+      -46.92,
+      8.57,
+      0
+     ]
+    }
+   },
+   "seed": 1
+  },
+  {
+   "name": "Fractal Plant 9",
+   "kind": "context-sensitive",
+   "axiom": "F1F1F1",
+   "theta": 22.5,
+   "factor": 4,
+   "ignore": [
+    "+",
+    "-",
+    "F"
+   ],
+   "rules": [
+    {
+     "predecessor": "0",
+     "successors": [
+      {
+       "successor": "0",
+       "weight": 1
+      }
+     ],
+     "contextL": "0",
+     "contextR": "0"
+    },
+    {
+     "predecessor": "0",
+     "successors": [
+      {
+       "successor": "1[+F1F1]",
+       "weight": 1
+      }
+     ],
+     "contextL": "0",
+     "contextR": "1"
+    },
+    {
+     "predecessor": "1",
+     "successors": [
+      {
+       "successor": "1",
+       "weight": 1
+      }
+     ],
+     "contextL": "0",
+     "contextR": "0"
+    },
+    {
+     "predecessor": "1",
+     "successors": [
+      {
+       "successor": "1",
+       "weight": 1
+      }
+     ],
+     "contextL": "0",
+     "contextR": "1"
+    },
+    {
+     "predecessor": "0",
+     "successors": [
+      {
+       "successor": "0",
+       "weight": 1
+      }
+     ],
+     "contextL": "1",
+     "contextR": "0"
+    },
+    {
+     "predecessor": "0",
+     "successors": [
+      {
+       "successor": "1F1",
+       "weight": 1
+      }
+     ],
+     "contextL": "1",
+     "contextR": "1"
+    },
+    {
+     "predecessor": "1",
+     "successors": [
+      {
+       "successor": "0",
+       "weight": 1
+      }
+     ],
+     "contextL": "1",
+     "contextR": "0"
+    },
+    {
+     "predecessor": "1",
+     "successors": [
+      {
+       "successor": "0",
+       "weight": 1
+      }
+     ],
+     "contextL": "1",
+     "contextR": "1"
+    },
+    {
+     "predecessor": "+",
+     "successors": [
+      {
+       "successor": "-",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    },
+    {
+     "predecessor": "-",
+     "successors": [
+      {
+       "successor": "+",
+       "weight": 1
+      }
+     ],
+     "contextL": "*",
+     "contextR": "*"
+    }
+   ],
+   "iterations": {
+    "0": {
+     "length": 6,
+     "string": "F1F1F1",
+     "lines": 3,
+     "bbox": [
+      0,
+      -750,
+      0,
+      0
+     ]
+    },
+    "1": {
+     "length": 15,
+     "string": "F1100F1100F1100",
+     "lines": 3,
+     "bbox": [
+      0,
+      -187.5,
+      0,
+      0
+     ]
+    },
+    "2": {
+     "length": 42,
+     "string": "F100001[+F1F1]F100001[+F1F1]F100001[+F1F1]",
+     "lines": 9,
+     "bbox": [
+      0,
+      -75.77,
+      11.96,
+      0
+     ]
+    },
+    "3": {
+     "length": 77,
+     "string": "F100001[+F1F1]11[-F1100F1]F100001[+F1F1]11[-F1100F1]F100001[+F1F1]1[-F1100F1]",
+     "lines": 15,
+     "bbox": [
+      -2.98,
+      -18.95,
+      2.98,
+      0
+     ]
+    }
+   }
+  }
+ ]
+}
