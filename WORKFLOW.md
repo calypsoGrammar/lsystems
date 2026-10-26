@@ -22,6 +22,7 @@ archon:
       - npm ci --no-audit --no-fund
     commands:
       - npm run build
+      - npm test
       - npm run test:browser
       - npm run audit:baseline:check
       - npm run audit
