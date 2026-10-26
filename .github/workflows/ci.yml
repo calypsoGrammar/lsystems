@@ -23,7 +23,10 @@ jobs:
       - run: npm run build
       - run: npm run audit
       - name: Browser check
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/pw-browsers
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/pw/node_modules/playwright/index.mjs
         run: |
-          npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright
-          npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium
-          PLAYWRIGHT_BROWSERS_PATH=0 PLAYWRIGHT_MODULE="$RUNNER_TEMP/pw/node_modules/playwright/index.mjs" npm run test:browser
+          npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright@1.55.1
+          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium
+          npm run test:browser
