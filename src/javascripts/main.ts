@@ -1,8 +1,10 @@
 "use strict";
 
-import { Rule, RuleSet, Successor, Colour, Vector, Line } from "./lsystem/model";
+import { RuleSet, Colour, Vector, Line } from "./lsystem/model";
+import { buildRuleSet } from "./lsystem/editor";
+import { RuleEditor } from "./editor-ui";
 import { presets } from "./lsystem/presets";
-import { applyTransform, fitTransform, mergeBounds, validateRenderSettings, type ViewTransform } from "./lsystem/fit";
+import { applyTransform, fitTransform, mergeBounds, type ViewTransform } from "./lsystem/fit";
 import { expandGrammar, GrammarError, ExpansionLimitError, MAX_TOTAL_SYMBOLS } from "./lsystem/grammar";
 import { forestStart, interpretTurtle, type Bounds } from "./lsystem/turtle";
 
@@ -15,8 +17,6 @@ function CalculateVh()
 window.addEventListener('DOMContentLoaded', CalculateVh);
 window.addEventListener('resize', CalculateVh);
 window.addEventListener('orientationchange', CalculateVh);
-
-const primaryButton: string = "inline-flex justify-center items-center px-4 py-2 border rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 bg-white rounded-lg w-24 h-12 mx-auto my-4 active:scale-95";
 
 const GenerateButton: HTMLElement = <HTMLElement>document.getElementById("GenerateButton");
 const LSystemsButton: HTMLElement = <HTMLElement>document.getElementById("LSystemsButton");
@@ -43,14 +43,12 @@ const fSettingsLeaves: HTMLInputElement = <HTMLInputElement>document.getElementB
 const fSettingsForest: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsForest");
 const fSettingsCount: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsCount");
 
-const fSettingsAxiom: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsAxiom");
-const fSettingsTheta: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsTheta");
-const fSettingsReplacementDiv: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsReplacementDiv");
+const fSettingsReplacementDiv: HTMLElement = <HTMLInputElement>document.getElementById("fSettingsReplacementDiv");
+const fSettingsReset: HTMLElement = <HTMLElement>document.getElementById("fSettingsReset");
+const fSettingsStatus: HTMLElement = <HTMLElement>document.getElementById("fSettingsStatus");
 const fSettingsReplacementAdd: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsReplacementAdd");
-const fSettingsIterations: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsIterations");
 const fSettingsLength: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsLength");
 const fSettingsCanvas: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsCanvas");
-const fSettingsFactor: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsFactor");
 const fSettingsFit: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsFit");
 const fSettingsFitNow: HTMLElement = <HTMLElement>document.getElementById("fSettingsFitNow");
 const fSettingsResetView: HTMLElement = <HTMLElement>document.getElementById("fSettingsResetView");
@@ -60,15 +58,17 @@ LSystemsButton.onclick = function() { SwitchView(views, 0, viewsB, 0); };
 OutputButton.onclick = function() { SwitchView(views, 1, viewsB, 1); };
 HideButton.onclick = function() { SwitchView(views, 2, viewsB, 2); };
 
-fSettingsReplacementAdd.onclick = function() { AddRule(); };
+fSettingsReplacementAdd.onclick = function() { editor.addRule(); };
+fSettingsReset.onclick = function() { editor.resetToPreset(); GetSystem(); };
 fSettingsFitNow.onclick = function() { fSettingsFit.checked = true; GetSystem(); };
 fSettingsResetView.onclick = function() { ResetView(); GetSystem(); };
 fSettingsFit.onchange = function() { GetSystem(); };
 fSettingsPresets.onchange = function() { 
-  UpdateSelect(parseInt(fSettingsPresets.value)); 
-  //Initiate(lSystems[pickIndex], 2, 1000);
+  UpdateSelect(parseInt(fSettingsPresets.value));
   GetSystem();
 };
+
+const editor = new RuleEditor(presets, fSettingsReplacementDiv, fSettingsStatus);
 
 const views = [fContainer, oView, fSettings];
 const viewsB = [LSystemsButton, OutputButton, HideButton];
@@ -168,7 +168,7 @@ function FillSelect()
       {
         let newOption: HTMLOptionElement = document.createElement("option");
         newOption.value = i.toString();
-        newOption.innerHTML = lSystems[i].name;
+        newOption.textContent = lSystems[i].name;
         selectBox.appendChild(newOption);
       }
     }
@@ -178,11 +178,8 @@ function FillSelect()
 function UpdateSelect(index:number)
 {
   pickIndex = index;
-  fSettingsAxiom.value = lSystems[pickIndex].start;
-  fSettingsTheta.value = lSystems[pickIndex].theta.toString();
-  FillReplacement(lSystems[pickIndex]);
-  fSettingsIterations.value = "2";
-  fSettingsFactor.value = lSystems[pickIndex].factor.toString();
+  editor.selectPreset(index);
+  editor.updateStatusNow();
   ResetView();
 }
 
@@ -191,104 +188,6 @@ function ResetView()
   fSettingsLength.value = "250";
   fSettingsCanvas.value = "1";
   fSettingsFit.checked = true;
-}
-
-function FillReplacement(ruleset: RuleSet)
-{
-  fSettingsReplacementDiv.innerHTML = "";
-
-  for(let i = 0; i < ruleset.rules.length; i++)
-  {
-    fSettingsReplacementDiv.innerHTML += `<div>Rule ` + (i + 1) + `</div>`;
-    let predecessor = ruleset.rules[i].predecessor;
-
-    fSettingsReplacementDiv.innerHTML += `
-    <div class="replacementRules" id="replacementRule` + i + `" data-index="` + i + `" data-successorCount="` + ruleset.rules[i].successors.length + `">`;
-
-    fSettingsReplacementDiv.innerHTML += `<label for="predecessor`+ i + `">Predecessor</label>`;
-    fSettingsReplacementDiv.innerHTML += `<textarea id="predecessor`+ i + `" class="border border-black rounded-lg p-2 m-2">` + predecessor + `</textarea>`;
-
-    for(let s = 0; s < ruleset.rules[i].successors.length; s++)
-    {
-      let successor = ruleset.rules[i].successors[s].successor;
-      let weight = ruleset.rules[i].successors[s].weight;
-  
-      fSettingsReplacementDiv.innerHTML += `
-        <label for="successor`+ i + `` + s + `">Successor</label>
-        <textarea id="successor`+ i + `` + s + `" class="border border-black rounded-lg p-2 m-2">` + successor + `</textarea>
-        <label for="weight`+ i + `` + s + `">Weight</label>
-        <textarea id="weight`+ i + `` + s + `" class="border border-black rounded-lg p-2 m-2">` + weight + `</textarea>
-        <button class="` + primaryButton + ` p-2 border border-black flex justify-center items-center" id="removeSuccessor`+ i + `` + s + `" onclick="RemoveSuccessor(` + i + `,` + s + `)">Remove Successor</button>
-        <br>`;
-
-      fSettingsReplacementDiv.innerHTML += `<div class="fBorder"></div>`;
-    }
-
-    fSettingsReplacementDiv.innerHTML += `
-    <button class="` + primaryButton + ` p-2 border border-black flex justify-center items-center" id="add`+ i + `" onclick="AddSuccessor(`+ i + `)">Add Successor</button>
-    <br>
-    <button class="` + primaryButton + ` p-2 border border-black flex justify-center items-center" id="removeRule`+ i + `" onclick="RemoveRule(`+ i + `)">Remove Rule</button>
-    <br>
-    `;
-
-    let contextLeft = ruleset.rules[i].contextL;
-    let contextRight = ruleset.rules[i].contextR;
-
-    if(contextLeft !== undefined)
-    {
-      fSettingsReplacementDiv.innerHTML += `
-      <label for="contextLeft`+ i + `">Left Context</label>
-      <textarea id="contextLeft`+ i + `" class="border border-black rounded-lg p-2 m-2">` + contextLeft + `</textarea>`;
-    }
-
-    if(contextRight !== undefined)
-    {
-      fSettingsReplacementDiv.innerHTML += `
-      <label for="contextRight`+ i + `">Right Context</label>
-      <textarea id="contextRight`+ i + `" class="border border-black rounded-lg p-2 m-2">` + contextRight + `</textarea>`;
-    }
-
-    fSettingsReplacementDiv.innerHTML += `
-    </div>
-    <br>`;
-
-    fSettingsReplacementDiv.innerHTML += `<div class="fBorder"></div>`;
-  }
-
-  let ignore = ruleset.ignore;
-
-  if(ignore !== undefined)
-  {
-    fSettingsReplacementDiv.innerHTML += `
-    <label for="ignore">Ignore List</label>
-    <textarea id="ignore" class="border border-black rounded-lg p-2 m-2">` + ignore.toString() + `</textarea>`;
-  }
-}
-
-function RemoveSuccessor(rule: number, successor: number)
-{
-  lSystems[pickIndex].rules[rule].successors.splice(successor, 1);
-  FillReplacement(lSystems[pickIndex]);
-}
-
-function AddSuccessor(rule: number)
-{
-  let newSuccessor = new Successor("", 0);
-  lSystems[pickIndex].rules[rule].successors.push(newSuccessor);
-  FillReplacement(lSystems[pickIndex]);
-}
-
-function RemoveRule(rule: number)
-{
-  lSystems[pickIndex].rules.splice(rule, 1);
-  FillReplacement(lSystems[pickIndex]);
-}
-
-function AddRule()
-{
-  let newRule = new Rule("", [], "", "");
-  lSystems[pickIndex].rules.push(newRule);
-  FillReplacement(lSystems[pickIndex]);
 }
 
 function ReSize()
@@ -342,7 +241,7 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
 
   let startCol: Colour = <Colour>HexToRGB(fSettingsCol.value);
 
-  oView.innerHTML = "";
+  oView.replaceChildren();
   lines = [];
 
   let forestIndex = 1;
@@ -358,10 +257,14 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
     current = ruleset.start;
     len = startlength;
 
-    let output = ruleset.start + "<br><br>";
-
-    for(let i = 1; i <= iterations; i++) output += Iterate(ruleset, expansions[s][i]);
-    oView.innerHTML += output; // one parse per tree rather than three per generation
+    // Generations are shown as text nodes, never parsed as HTML, so grammar symbols can't inject markup.
+    const output = document.createElement("div");
+    output.append(ruleset.start, document.createElement("br"), document.createElement("br"));
+    for(let i = 1; i <= iterations; i++)
+    {
+      output.append(Iterate(ruleset, expansions[s][i]), document.createElement("br"), document.createElement("br"));
+    }
+    oView.append(output);
 
     GetLines(s);
   }
@@ -386,7 +289,7 @@ function Iterate(ruleset: RuleSet, generation: string)
 {
   len /= ruleset.factor;
   current = generation;
-  return current + "<br><br>";
+  return current;
 }
 
 function GetLines(index: number)
@@ -547,108 +450,42 @@ function HexToRGB(hex: string)
   }
 }
 
-function GetSystem()
+function GetSystem(validateOnly = false)
 {
-  let axiom = fSettingsAxiom.value.toString();
-  let theta = parseFloat(fSettingsTheta.value);
-  let iterations = parseInt(fSettingsIterations.value);
-  let drawLength = parseFloat(fSettingsLength.value);
-  let factor = parseFloat(fSettingsFactor.value);
+  // The form is the source of truth: validate and generate from exactly what is displayed.
+  const state = editor.readState();
+  const built = buildRuleSet(state);
+  const errors = built.ok ? new Map<string, string>() : new Map(built.errors);
+
   inheritance = parseFloat(fSettingsVariance.value);
-  let scale = parseFloat(fSettingsCanvas.value);
+  let drawLength = parseFloat(fSettingsLength.value);
+  const scale = parseFloat(fSettingsCanvas.value);
 
   // Auto fit ignores length and scale, so only the manual path needs them valid.
-  let problems = validateRenderSettings({ length: drawLength, scale, factor, theta });
-  if(fSettingsFit.checked) problems = problems.filter(p => !p.startsWith("Starting length") && !p.startsWith("Scale"));
-  if(problems.length > 0)
+  if(!fSettingsFit.checked)
   {
-    ShowError(problems.join(" "));
+    if(!(drawLength > 0 && Number.isFinite(drawLength))) errors.set("fSettingsLength", "Starting length must be a positive number.");
+    if(!(scale > 0 && Number.isFinite(scale))) errors.set("fSettingsCanvas", "Scale must be a positive number.");
+  }
+
+  editor.revalidator = () => { GetSystem(true); };
+  if(!built.ok || errors.size > 0)
+  {
+    editor.showErrors(errors);
+    ShowError("Fix the highlighted fields: " + [...errors.values()].join(" "));
     return;
   }
+  editor.clearErrors();
   canvasScale = scale;
   if(!(drawLength > 0)) drawLength = 250; // only reachable with auto fit, where the length does not affect the fit
 
-  let rules: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("replacementRules") as HTMLCollectionOf<HTMLElement>;
-
-  let ignore: string[] = [''];
-
-  if(document.getElementById("ignore") !== null)
-  {
-    let ignoreEl: HTMLInputElement = <HTMLInputElement>document.getElementById("ignore");
-    ignore = ignoreEl.value.split(",");
-  }
-
-  let ruleSet = new RuleSet(
-    "-",
-    axiom,
-    theta,
-    factor,
-    [],
-    ignore
-  );
-
-  let newRules = [];
-
-  for(let i = 0; i < rules.length; i++)
-  {
-    let index = rules[i].dataset.index;
-    let sCount: string = <string>rules[i].dataset.successorcount;
-    let successorCount = parseInt(sCount);
-
-    let pEl: HTMLInputElement = <HTMLInputElement>document.getElementById("predecessor" + index);
-    let predecessor: string = (pEl) ? pEl.value : '';
-
-    let cLeft = '*';
-    let cRight = '*';
-
-    if(document.getElementById("contextLeft" + index) !== null)
-    {
-      let cEl: HTMLInputElement = <HTMLInputElement>document.getElementById("contextLeft" + index);
-      cLeft = (cEl) ? cEl.value : '';
-    }
-    if(document.getElementById("contextRight" + index) !== null)
-    {
-      let cEl: HTMLInputElement = <HTMLInputElement>document.getElementById("contextRight" + index); 
-      cRight = (cEl) ? cEl.value : '';
-    }
-
-    let nR = new Rule(
-      predecessor,
-      [],
-      cLeft,
-      cRight
-    );
-
-    let successors = [];
-
-    for(let s = 0; s < successorCount; s++)
-    {
-      let sEl: HTMLInputElement = <HTMLInputElement>document.getElementById("successor" + index + s);
-      let successor: string = (sEl) ? sEl.value : '';
-      let wEl: HTMLInputElement = <HTMLInputElement>document.getElementById("weight" + index + s);
-      let weight: number = (wEl) ? parseFloat(wEl.value) : 1;
-
-      let newSuccessor = new Successor(
-        successor,
-        weight
-      );
-
-      successors.push(newSuccessor);
-    }
-
-    nR.successors = successors;
-
-    newRules.push(nR);
-  }
-
-  ruleSet.rules = newRules;
-
-  Initiate(ruleSet, iterations, drawLength);
+  if(validateOnly) { fError.style.display = "none"; return; }
+  Initiate(built.ruleSet, parseInt(state.iterations), drawLength);
 }
 
 // main.ts is now a module, so TypeScript flags these legacy unused declarations (the audit lists them
-// as known defects: dead code and inline handlers that never resolve). Referenced here, not removed.
-void [fDiv, timeOut, canvasSize, loop, lineCol, HideSettings, RemoveSuccessor, AddSuccessor, RemoveRule, RandomFlowerColour];
+// as known defects: dead code). Referenced here, not removed.
+void [fDiv, timeOut, canvasSize, loop, lineCol, HideSettings, RandomFlowerColour];
 
 function Main()
 {

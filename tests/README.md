@@ -57,3 +57,10 @@ snapshots here plus the existing Playwright smoke check (`npm run test:browser`,
 - Canvas: backing store is CSS size x `devicePixelRatio`; the context transform is set (never accumulated) after every resize. Theta and length are no longer truncated to integers (`parseFloat`), so presets with fractional angles (e.g. 22.5, 25.7) now draw at their true angle.
 - `traceLines` (2 dp rounding, canvas-centred bounds) and `layout.ts` remain only for the legacy fixtures/parity tests; the app no longer uses them.
 - Limitation: with animation on, a forest still animates only its last tree (existing behaviour, left for follow-up). Leaf size is in screen pixels, so leaves are not scaled with the fit.
+
+## Rule editor (CAL-1274)
+
+`editor.test.ts` covers `src/javascripts/lsystem/editor.ts`, the editable ruleset state (typed strings, add/remove rule and
+successor, validation per field, conversion to an engine `RuleSet`), which is independent of the DOM and of the grammar engine.
+The DOM binding (`src/javascripts/editor-ui.ts`) is exercised in `npm run test:browser`: edits surviving add/remove, markup
+staying inert, inline accessible errors, preset switch/reset semantics and a 320 px layout check.

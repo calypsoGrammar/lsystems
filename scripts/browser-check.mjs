@@ -148,6 +148,96 @@ try {
   check(!(await page.locator('#fError').isVisible()), '#fError still visible after a valid run')
   await page.click('#HideButton') // close the settings panel again
 
+  // Rule editor (CAL-1274): edits survive structural changes, markup is inert, invalid input is shown inline, drafts and reset.
+  {
+    await page.click('#HideButton')
+    await page.waitForSelector('#fSettings', { state: 'visible' })
+    const pick = async name => { await page.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name); await page.waitForTimeout(200) }
+    const val = id => page.inputValue('#' + id)
+    check(await page.locator('[onclick]').count() === 0, 'inline onclick attributes remain in the page')
+    await pick('Dragon Curve')
+    await page.fill('#fSettingsAxiom', 'FX+')
+    await page.fill('#fSettingsTheta', '33')
+    await page.fill('#predecessor0', 'X')
+    await page.fill('#successor00', '<img src=x onerror="window.__x=1">&amp;')
+    await page.fill('#successor10', 'unsaved-in-rule-2')
+    await page.click('#add0')
+    check(await page.locator('#successor01').count() === 1, 'Add Successor did not add a row')
+    check(await val('successor00') === '<img src=x onerror="window.__x=1">&amp;', 'successor text changed when adding a successor')
+    check(await val('successor10') === 'unsaved-in-rule-2' && await val('fSettingsAxiom') === 'FX+' && await val('fSettingsTheta') === '33', 'unrelated edits lost on Add Successor')
+    check(await val('weight01') === '0', `new successor weight ${await val('weight01')}, expected 0`)
+    await page.click('#fSettingsReplacementAdd')
+    check(await page.locator('#predecessor2').count() === 1, 'Add Rule did not add a rule')
+    await page.fill('#predecessor2', 'Q')
+    await page.click('#removeRule1')
+    check(await page.locator('#predecessor2').count() === 0 && await val('predecessor1') === 'Q', 'Remove Rule removed the wrong rule')
+    check(await val('successor00') === '<img src=x onerror="window.__x=1">&amp;' && await val('fSettingsAxiom') === 'FX+', 'edits lost on Remove Rule')
+    await page.click('#removeSuccessor01')
+    check(await page.locator('#successor01').count() === 0 && await val('predecessor0') === 'X', 'Remove Successor failed or lost edits')
+    check(await page.locator('#fSettings img').count() === 0 && await page.evaluate(() => window.__x === undefined), 'editable text was interpreted as HTML')
+    check(/modified|Edited/i.test(await page.textContent('#fSettingsStatus')), 'status does not show unsaved edits')
+
+    // Generate uses exactly the displayed values (rule 2 has predecessor Q and one empty successor: valid).
+    await page.fill('#fSettingsIterations', '0')
+    await page.click('#GenerateButton'); await page.waitForTimeout(200)
+    check(!(await page.locator('#fError').isVisible()), '#fError shown for a valid custom grammar: ' + await page.textContent('#fError'))
+    await page.click('#OutputButton'); await page.waitForTimeout(100)
+    check((await page.textContent('#oView')).startsWith('FX+'), 'output does not start with the displayed axiom')
+    await page.click('#HideButton'); await page.waitForSelector('#fSettings', { state: 'visible' })
+
+    // Invalid input is flagged inline, accessibly, and the typed text is untouched.
+    const shot = await px()
+    await page.fill('#weight00', 'abc')
+    await page.click('#GenerateButton'); await page.waitForTimeout(200)
+    check(await page.getAttribute('#weight00', 'aria-invalid') === 'true', 'invalid weight not aria-invalid')
+    const descId = await page.getAttribute('#weight00', 'aria-describedby')
+    check(!!descId && await page.locator('#' + descId).isVisible(), 'invalid weight has no visible description')
+    check(await val('weight00') === 'abc', 'invalid weight text was changed')
+    check(await page.locator('#fError').isVisible(), 'error banner not shown for invalid weight')
+    check(await px() === shot, 'canvas changed after invalid weight')
+    await page.fill('#predecessor0', '')
+    await page.fill('#weight00', '1')
+    check(await page.getAttribute('#weight00', 'aria-invalid') === null, 'corrected weight still flagged')
+    check(await page.getAttribute('#predecessor0', 'aria-invalid') === 'true', 'empty predecessor not flagged')
+    await page.fill('#predecessor0', 'X')
+    await page.fill('#fSettingsTheta', '999')
+    await page.click('#GenerateButton')
+    check(await page.getAttribute('#fSettingsTheta', 'aria-invalid') === 'true', 'out of range theta not flagged')
+    await page.fill('#fSettingsTheta', '33')
+
+    // Switching presets loads the template; Reset to preset restores the original template.
+    await page.fill('#fSettingsAxiom', 'FX+')
+    await pick('Koch Island')
+    check(/discarded/.test(await page.textContent('#fSettingsStatus')), 'discarding edits on preset switch is not announced')
+    check(await val('fSettingsAxiom') === 'F-F-F-F', 'Koch Island axiom not loaded')
+    check(/original/i.test(await page.textContent('#fSettingsStatus')), 'status should say original preset')
+    await pick('Dragon Curve')
+    check(await val('fSettingsAxiom') === 'FX' && await val('fSettingsTheta') === '90', 'returning to a preset did not load its template')
+    await page.fill('#fSettingsAxiom', 'FXX'); await page.fill('#fSettingsTheta', '12'); await page.click('#fSettingsReplacementAdd')
+    await page.click('#fSettingsReset'); await page.waitForTimeout(200)
+    check(await val('fSettingsAxiom') === 'FX' && await val('fSettingsTheta') === '90' && await page.locator('#predecessor2').count() === 0, 'Reset to preset did not restore the template')
+    check(/Original/.test(await page.textContent('#fSettingsStatus')), 'status not original after reset')
+    await page.click('#HideButton')
+  }
+
+  // Narrow screen: no horizontal overflow in the editor and touch-sized buttons.
+  {
+    const nctx = await browser.newContext({ viewport: { width: 320, height: 640 } })
+    const np = await nctx.newPage()
+    const nErrors = []
+    np.on('pageerror', e => nErrors.push(e.message))
+    await np.goto(URL_)
+    await np.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    await np.click('#HideButton'); await np.waitForSelector('#fSettings', { state: 'visible' })
+    await np.click('#add0'); await np.click('#fSettingsReplacementAdd')
+    const m = await np.evaluate(() => { const f = document.getElementById('fSettings'); const small = [...f.querySelectorAll('button')].filter(b => b.getBoundingClientRect().height < 36).length; const wide = [...f.querySelectorAll('input,textarea,select,button')].filter(e => e.getBoundingClientRect().right > f.clientWidth + 1).length; return { over: f.scrollWidth - f.clientWidth, small, wide, sections: [...f.querySelectorAll('section h2')].map(h => h.textContent) } })
+    check(m.over <= 1 && m.wide === 0, `narrow: editor overflows horizontally (${m.over}px, ${m.wide} controls)`)
+    check(m.small === 0, `narrow: ${m.small} buttons shorter than 36px`)
+    check(m.sections.join() === 'Grammar,Appearance,Rendering', 'editor sections: ' + m.sections.join())
+    check(nErrors.length === 0, 'narrow page errors: ' + nErrors.join('; '))
+    await nctx.close()
+  }
+
   const style = (sel, props) => page.evaluate(([sel, props]) => { const s = getComputedStyle(document.querySelector(sel)); return Object.fromEntries(props.map(p => [p, s[p]])) }, [sel, props])
   const hdr = await style('#GenerateButton', ['marginLeft', 'marginRight'])
   check(hdr.marginLeft === '16px' && hdr.marginRight === '16px', `header button margin ${hdr.marginLeft}/${hdr.marginRight}, expected 16px`)
