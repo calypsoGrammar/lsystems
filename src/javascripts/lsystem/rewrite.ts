@@ -2,9 +2,10 @@ import { RuleSet } from "./model";
 
 export type RandomSource = () => number;
 
-// Hard cap on the length of one generated string (and, in grammar.ts, on all generations of one tree together).
-// Plain, DOM-free so tests and the UI share it. The largest preset output the UI draws today (Lakes and Islands,
-// iteration 3) is ~47 000 symbols; the next iteration is already past this cap and would hang the drawing code.
+// Hard cap on the length of one generated string (and, in grammar.ts, on all generations of one drawing together,
+// forest trees included). Measured against the drawing pipeline: tracing 243 000 symbols / 131 000 segments (Koch Island,
+// iteration 5) takes about 0.6 s and the worst accepted size roughly 1-2 s, since branch-start and leaf lookups are O(n).
+// Lakes and Islands iteration 3 (47 000 symbols) is the largest preset output drawn before; iteration 4 is refused.
 export const MAX_GENERATION_SYMBOLS = 500_000;
 
 export class ExpansionLimitError extends Error

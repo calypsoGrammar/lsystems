@@ -74,22 +74,16 @@ export function traceLines(current: string, len: number, theta: number, start: V
     lines[lines.length - 1].leaf = true;
   }
 
-  for (let i = 0; i < lines.length; i++)
+  // A segment is a branch start when another segment starts at the same point (one pass, O(n)).
+  const startCounts = new Map<string, number>();
+  for (const l of lines)
   {
-    let valid = false;
-    for (let c = 0; c < lines.length; c++)
-    {
-      if(lines[i].start.x === lines[c].start.x &&
-        lines[i].start.y === lines[c].start.y && i !== c)
-      {
-        valid = true;
-        break;
-      }
-    }
-    if(valid)
-    {
-      lines[i].branchStart = true;
-    }
+    const key = l.start.x + "," + l.start.y;
+    startCounts.set(key, (startCounts.get(key) ?? 0) + 1);
+  }
+  for (const l of lines)
+  {
+    if (startCounts.get(l.start.x + "," + l.start.y)! > 1) l.branchStart = true;
   }
   return lines;
 }

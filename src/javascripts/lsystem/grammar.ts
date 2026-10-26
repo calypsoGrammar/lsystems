@@ -66,11 +66,12 @@ export function validateIterations(iterations: number): string[]
 
 // Pure expansion of `iterations` generations. Returns every generation (index 0 is the axiom) and never returns a
 // partial result: it throws GrammarError (invalid input) or ExpansionLimitError (too large) instead.
-export function expandGrammar(rs: RuleSet, iterations: number, random: RandomSource = Math.random): string[]
+export function expandGrammar(rs: RuleSet, iterations: number, random: RandomSource = Math.random,
+  maxTotal: number = MAX_TOTAL_SYMBOLS): string[]
 {
   const problems = [...validateRuleSet(rs), ...validateIterations(iterations)];
   if (problems.length > 0) throw new GrammarError(problems);
-  if (rs.start.length > MAX_GENERATION_SYMBOLS)
+  if (rs.start.length > Math.min(MAX_GENERATION_SYMBOLS, maxTotal))
     throw new ExpansionLimitError(`The axiom exceeds the limit of ${MAX_GENERATION_SYMBOLS} symbols.`);
 
   const generations = [rs.start];
@@ -79,8 +80,8 @@ export function expandGrammar(rs: RuleSet, iterations: number, random: RandomSou
   {
     const next = rewrite(rs, generations[i], random);
     total += next.length;
-    if (total > MAX_TOTAL_SYMBOLS)
-      throw new ExpansionLimitError(`Expansion exceeds the limit of ${MAX_TOTAL_SYMBOLS} symbols over all generations.`);
+    if (total > maxTotal)
+      throw new ExpansionLimitError(`Expansion exceeds the limit of ${maxTotal} symbols over all generations of the drawing.`);
     generations.push(next);
   }
   return generations;
