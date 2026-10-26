@@ -1,4 +1,4 @@
-@import "modern-normalize/modern-normalize.css";
+@import "modern-normalize/modern-normalize.css" layer(base);
 @import "tailwindcss";
 @source "../../index.html";
 @source "../javascripts";

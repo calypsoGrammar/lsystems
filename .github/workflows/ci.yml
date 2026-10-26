@@ -22,3 +22,8 @@ jobs:
       - run: npm run audit:baseline:check
       - run: npm run build
       - run: npm run audit
+      - name: Browser check
+        run: |
+          npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright
+          npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium
+          PLAYWRIGHT_BROWSERS_PATH=0 PLAYWRIGHT_MODULE="$RUNNER_TEMP/pw/node_modules/playwright/index.mjs" npm run test:browser
