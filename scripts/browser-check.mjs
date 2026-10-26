@@ -87,6 +87,11 @@ try {
 
     for (const name of ['Koch Island', 'Hilbert Curve', 'Fractal Plant 2', 'Pentigree Curve', 'Star']) inside(name, await pick(name), dpr)
 
+    // CAL-1277: every preset (incl. stochastic Fractal Plant 8 and context-sensitive Fractal Plant 9) draws a non-blank, fitted, centred scene.
+    const allNames = await mp.evaluate(() => [...document.getElementById('fSettingsPresets').options].map(o => o.text))
+    check(allNames.length === 29, `${label}: expected 29 presets, saw ${allNames.length}`)
+    for (const name of allNames) inside('preset ' + name, await pick(name), dpr)
+
     // Long/thin: a straight horizontal line from a typed axiom.
     await pick('Koch Island')
     await set('fSettingsAxiom', '+' + 'F'.repeat(30)); await set('fSettingsIterations', '0')
