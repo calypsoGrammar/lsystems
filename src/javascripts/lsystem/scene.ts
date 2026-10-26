@@ -5,7 +5,7 @@ import { forestStart, interpretTurtle, type Bounds } from "./turtle";
 
 // Upper bound on drawable segments in one scene (all trees together); beyond it the main thread would stall.
 export const MAX_SEGMENTS = 400_000;
-// Generations longer than this are shown truncated in the output panel (the full string is still drawn).
+// Generations longer than this are shown in sections of this size in the output panel (the full string is kept and drawn).
 export const MAX_DISPLAY_CHARS = 20_000;
 
 export class SegmentLimitError extends Error
@@ -105,4 +105,12 @@ export function displayText(generation: string): string
 {
   if (generation.length <= MAX_DISPLAY_CHARS) return generation;
   return generation.slice(0, MAX_DISPLAY_CHARS) + `… (${(generation.length - MAX_DISPLAY_CHARS).toLocaleString()} more symbols not shown)`;
+}
+
+// Progressive inspection: the next section of a generation, starting at `shown` symbols already displayed.
+// Nothing is discarded; the caller keeps the full string and asks for more until `remaining` is 0.
+export function nextSection(generation: string, shown: number, size: number = MAX_DISPLAY_CHARS): { text: string; shown: number; remaining: number }
+{
+  const end = Math.min(generation.length, shown + size);
+  return { text: generation.slice(shown, end), shown: end, remaining: generation.length - end };
 }

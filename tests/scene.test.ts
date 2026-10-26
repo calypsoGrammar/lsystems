@@ -1,7 +1,7 @@
 // Scene building and playback (CAL-1275). Browser-free.
 import { describe, expect, it } from "vitest";
 import { Colour, Line, Vector } from "../src/javascripts/lsystem/model";
-import { buildScene, displayText, leafMask, MAX_DISPLAY_CHARS, MAX_SEGMENTS, SegmentLimitError, walkColours } from "../src/javascripts/lsystem/scene";
+import { buildScene, displayText, nextSection, leafMask, MAX_DISPLAY_CHARS, MAX_SEGMENTS, SegmentLimitError, walkColours } from "../src/javascripts/lsystem/scene";
 import { Playback, type Scheduler } from "../src/javascripts/lsystem/playback";
 import { fitTransform } from "../src/javascripts/lsystem/fit";
 import { seeded } from "./helpers";
@@ -81,6 +81,24 @@ describe("scene", () =>
   {
     expect(displayText("F")).toBe("F");
     expect(displayText("F".repeat(MAX_DISPLAY_CHARS + 50)).length).toBeLessThan(MAX_DISPLAY_CHARS + 100);
+  });
+});
+
+describe("generated string inspection", () =>
+{
+  it("reveals the whole generation section by section without losing symbols", () =>
+  {
+    const text = "F+-[]".repeat(10);
+    let shown = 0, out = "", sections = 0, remaining = text.length;
+    while (remaining > 0)
+    {
+      const part = nextSection(text, shown, 7);
+      expect(part.text.length).toBeLessThanOrEqual(7);
+      out += part.text; shown = part.shown; remaining = part.remaining; sections++;
+    }
+    expect(out).toBe(text);
+    expect(sections).toBe(Math.ceil(text.length / 7));
+    expect(nextSection("", 0).remaining).toBe(0);
   });
 });
 

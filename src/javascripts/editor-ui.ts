@@ -8,8 +8,8 @@ import {
   type EditorState, type FieldErrors,
 } from "./lsystem/editor";
 
-const INPUT = "border border-black rounded-lg p-2 m-2 w-full";
-const BUTTON = "bg-white rounded-lg min-h-10 px-3 py-1 m-1 active:scale-95 border border-black";
+const INPUT = "border border-black rounded-lg p-2 m-2 w-full min-h-11 text-base";
+const BUTTON = "bg-white rounded-lg min-h-11 px-3 py-1 m-1 active:scale-95 border border-black";
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, text?: string): HTMLElementTagNameMap[K]
 {

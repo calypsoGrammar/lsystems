@@ -312,6 +312,54 @@ try {
     await page.click('#HideButton')
   }
 
+  // Accessibility and small landscape (CAL-1276): named icon buttons, touch-sized toolbar, panels inside the viewport,
+  // reduced motion switches the animation off, and long generations are shown in sections without losing symbols.
+  {
+    const actx = await browser.newContext({ viewport: { width: 667, height: 375 }, reducedMotion: 'reduce' })
+    const ap = await actx.newPage()
+    const aErrors = []
+    ap.on('pageerror', e => aErrors.push(e.message))
+    await ap.goto(URL_)
+    await ap.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    const names = await ap.evaluate(() => [...document.querySelectorAll('#toolbar button')].map(b => ({ n: b.getAttribute('aria-label') || b.textContent.trim(), h: b.getBoundingClientRect().height, w: b.getBoundingClientRect().width })))
+    check(names.length === 5 && names.every(b => b.n && b.h >= 44 && b.w >= 44), 'toolbar buttons need names and 44px targets: ' + JSON.stringify(names))
+    check(await ap.isChecked('#fSettingsAnimate') === false, 'reduced motion should start with Animate off')
+    await ap.click('#HideButton')
+    check(await ap.getAttribute('#HideButton', 'aria-pressed') === 'true', 'selected toolbar button not exposed via aria-pressed')
+    const box = await ap.evaluate(() => { const r = document.getElementById('fSettings').getBoundingClientRect(); return { bottom: r.bottom, vh: innerHeight, top: r.top, tb: document.getElementById('toolbar').getBoundingClientRect().bottom } })
+    check(box.bottom <= box.vh + 1 && box.top >= box.tb - 1, 'landscape: settings panel clipped by the viewport ' + JSON.stringify(box))
+    await ap.keyboard.press('Escape')
+    check(await ap.isVisible('#fCanvas'), 'Escape should return to the drawing')
+    const cv = await ap.evaluate(() => ({ h: parseFloat(document.getElementById('fCanvas').style.height), tb: document.getElementById('toolbar').offsetHeight, vh: innerHeight }))
+    check(Math.abs(cv.h + cv.tb - cv.vh) <= 1, 'canvas should fill the space below the toolbar ' + JSON.stringify(cv))
+    await ap.click('#FitButton')
+    await ap.click('#OutputButton')
+    check((await ap.locator('#oView [role=group]').count()) >= 2, 'output groups missing')
+    check(aErrors.length === 0, 'accessibility page errors: ' + aErrors.join('; '))
+    await actx.close()
+  }
+
+  // Page load animates (startup sizing must not cancel it), and a rejected draw never leaves the busy state stuck.
+  {
+    const lctx = await browser.newContext({ viewport: { width: 1000, height: 700 } })
+    const lp = await lctx.newPage()
+    await lp.goto(URL_)
+    await lp.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    await lp.waitForTimeout(250)
+    const n1 = await lp.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) n++; return n })
+    await lp.waitForTimeout(150)
+    const n2 = await lp.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) n++; return n })
+    check(n2 > n1 || await lp.getAttribute('#GenerateButton', 'aria-busy') === 'true', `page load did not animate (${n1} -> ${n2} px)`)
+    await lp.waitForTimeout(8000)
+    check(await lp.getAttribute('#GenerateButton', 'aria-busy') === 'false', 'busy state stuck after the animation finished')
+    await lp.click('#HideButton')
+    await lp.fill('#fSettingsInterval', '1000'); await lp.click('#GenerateButton')
+    await lp.fill('#fSettingsIterations', '10'); await lp.fill('#fSettingsAxiom', 'FFFFFFF'); await lp.fill('#predecessor0', 'F'); await lp.fill('#successor00', 'FFF')
+    await lp.click('#GenerateButton'); await lp.waitForTimeout(1500)
+    check(await lp.getAttribute('#GenerateButton', 'aria-busy') === 'false', 'busy state stuck after a rejected draw: ' + await lp.textContent('#fError'))
+    await lctx.close()
+  }
+
   // Narrow screen: no horizontal overflow in the editor and touch-sized buttons.
   {
     const nctx = await browser.newContext({ viewport: { width: 320, height: 640 } })
