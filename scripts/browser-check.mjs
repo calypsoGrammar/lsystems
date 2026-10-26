@@ -62,6 +62,76 @@ try {
   const second = await bbox()
   check(Math.abs(second.cx - first.cx) < 2 && Math.abs(second.cy - first.cy) < 2, `drawing moved on second Generate: ${first.cx},${first.cy} -> ${second.cx},${second.cy}`)
 
+  // Auto fit (CAL-1273), driven through the real DOM at mobile (DPR 2) and desktop (DPR 1) sizes.
+  const BBOX = () => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1; for (let i = 3; i < d.length; i += 4) if (d[i]) { const p = (i - 3) / 4, x = p % c.width, y = Math.floor(p / c.width); if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y } return { x0, x1, y0, y1, w: c.width, h: c.height, cssW: parseFloat(c.style.width), cssH: parseFloat(c.style.height) } }
+  const SET = ([id, v]) => { const e = document.getElementById(id); if (e.type === 'checkbox') e.checked = v; else e.value = v; e.dispatchEvent(new Event('change')) }
+  for (const [label, vw, vh, dpr] of [['mobile', 375, 667, 2], ['desktop', 1280, 800, 1]]) {
+    const ctx2 = await browser.newContext({ viewport: { width: vw, height: vh }, deviceScaleFactor: dpr })
+    const mp = await ctx2.newPage()
+    const mErrors = []
+    mp.on('pageerror', e => mErrors.push(e.message))
+    await mp.goto(URL_)
+    await mp.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    await mp.click('#HideButton'); await mp.waitForSelector('#fSettings', { state: 'visible' })
+    const set = (id, v) => mp.evaluate(SET, [id, v])
+    const gen = async () => { await mp.click('#GenerateButton'); await mp.waitForTimeout(250); return mp.evaluate(BBOX) }
+    const pick = async name => { await mp.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name); await mp.waitForTimeout(250); return mp.evaluate(BBOX) }
+    const inside = (tag, r, scale) => {
+      const pad = Math.max(8, Math.min(r.cssW, r.cssH) * 0.05) * scale
+      check(r.x1 >= 0, `${label} ${tag}: blank canvas`)
+      check(r.x0 >= pad - 2 * scale && r.y0 >= pad - 2 * scale && r.x1 <= r.w - pad + 2 * scale && r.y1 <= r.h - pad + 2 * scale, `${label} ${tag}: drawing outside the padding (${r.x0},${r.y0},${r.x1},${r.y1} on ${r.w}x${r.h})`)
+      check(Math.abs((r.x0 + r.x1) / 2 - r.w / 2) < 6 * scale && Math.abs((r.y0 + r.y1) / 2 - r.h / 2) < 6 * scale, `${label} ${tag}: drawing not centred`)
+    }
+    await set('fSettingsAnimate', false)
+    check((await mp.evaluate(BBOX)).w === Math.round(vw * dpr), `${label}: backing store is not CSS width x DPR`)
+
+    for (const name of ['Koch Island', 'Hilbert Curve', 'Fractal Plant 2', 'Pentigree Curve', 'Star']) inside(name, await pick(name), dpr)
+
+    // Long/thin: a straight horizontal line from a typed axiom.
+    await pick('Koch Island')
+    await set('fSettingsAxiom', '+' + 'F'.repeat(30)); await set('fSettingsIterations', '0')
+    inside('long/thin axiom', await gen(), dpr)
+
+    // Forest of five trees fitted as one scene.
+    await pick('Fractal Plant 2')
+    await set('fSettingsForest', true); await set('fSettingsCount', '5')
+    inside('forest', await gen(), dpr)
+    await set('fSettingsForest', false)
+
+    // Manual Scale / Length / factor are honoured with auto fit off; Fit to View and Reset View restore the fit.
+    await pick('Koch Island')
+    await set('fSettingsFit', false); await set('fSettingsLength', '40')
+    await set('fSettingsCanvas', '1'); const s1 = await gen()
+    await set('fSettingsCanvas', '2'); const s2 = await gen()
+    const wd = r => r.x1 - r.x0, ratio = wd(s2) / wd(s1)
+    check(ratio > 1.8 && ratio < 2.2, `${label}: Scale 1 -> 2 changed drawn width by ${ratio.toFixed(2)}, expected about 2`)
+    inside('manual scale 2', s2, dpr)
+    await set('fSettingsCanvas', '1'); await set('fSettingsLength', '80'); const l2 = await gen()
+    check(wd(l2) / wd(s1) > 1.8, `${label}: doubling Starting Length did not enlarge the drawing`)
+    await set('fSettingsLength', '40'); await set('fSettingsFactor', '2'); const f2 = await gen()
+    check(wd(f2) > wd(s1) * 1.5, `${label}: factor 4 -> 2 did not enlarge the drawing`)
+    check(await mp.evaluate(() => document.getElementById('fSettingsFactor').value) === '2', `${label}: factor field changed`)
+    await set('fSettingsFactor', '4')
+    await mp.click('#fSettingsFitNow'); await mp.waitForTimeout(250)
+    check(await mp.evaluate(() => document.getElementById('fSettingsFit').checked), `${label}: Fit to View did not enable auto fit`)
+    inside('Fit to View', await mp.evaluate(BBOX), dpr)
+    await set('fSettingsFit', false); await set('fSettingsCanvas', '3'); await set('fSettingsLength', '33')
+    await mp.click('#fSettingsResetView'); await mp.waitForTimeout(250)
+    const reset = await mp.evaluate(() => ['fSettingsLength', 'fSettingsCanvas'].map(i => document.getElementById(i).value).concat(String(document.getElementById('fSettingsFit').checked)))
+    check(reset.join() === '250,1,true', `${label}: Reset View gave ${reset.join()}, expected 250,1,true`)
+    inside('Reset View', await mp.evaluate(BBOX), dpr)
+
+    // Resize regenerates at the new size: backing store follows CSS size x DPR and the fit is kept.
+    const [nw, nh] = label === 'mobile' ? [667, 375] : [600, 900]
+    await mp.setViewportSize({ width: nw, height: nh }); await mp.waitForTimeout(400)
+    const rs = await mp.evaluate(BBOX)
+    check(rs.w === Math.round(nw * dpr) && rs.cssW === nw, `${label}: after resize backing width ${rs.w}, css ${rs.cssW}`)
+    inside('after resize', rs, dpr)
+
+    check(mErrors.length === 0, `${label} page errors: ` + mErrors.join('; '))
+    await ctx2.close()
+  }
+
   // Rejected grammar: previous drawing stays, the error banner shows, and a valid run hides it again.
   await page.click('#HideButton')
   await page.waitForSelector('#fSettings', { state: 'visible' })

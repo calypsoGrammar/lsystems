@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./assets/favicon-B0opx7u9.ico">
     <title>L-Systems</title>
-    <script type="module" crossorigin src="./assets/index-B9v6y07P.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DqmPhiC4.css">
+    <script type="module" crossorigin src="./assets/index-Cnei1v64.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BLdQ4KTR.css">
   </head>
   <body class='min-h-screen max-h-screen w-full'>
 
@@ -68,13 +68,30 @@
       </div>
   
       <div class="my-4 flex flex-col">
+        <label for="fSettingsFit" class="mx-auto">Auto fit to view:</label>
+        <input type="checkbox" id="fSettingsFit" checked class="mx-auto border border-black rounded-lg p-2 m-2">
+      </div>
+
+      <div class="my-4 flex flex-row justify-center">
+        <button id="fSettingsFitNow" class="bg-white rounded-lg w-24 h-12 my-4 mx-2 active:scale-95 border border-black p-2">Fit to View</button>
+        <button id="fSettingsResetView" class="bg-white rounded-lg w-24 h-12 my-4 mx-2 active:scale-95 border border-black p-2">Reset View</button>
+      </div>
+
+      <div class="my-4 font-bold">Advanced (used when auto fit is off)</div>
+
+      <div class="my-4 flex flex-col">
         <label for="fSettingsLength" class="mx-auto">Starting Length:</label>
-        <input type="number" min="1" step="1" id="fSettingsLength" class="text-center border border-black rounded-lg p-2 m-2">
+        <input type="number" min="0" step="any" id="fSettingsLength" class="text-center border border-black rounded-lg p-2 m-2">
       </div>
   
       <div class="my-4 flex flex-col">
         <label for="fSettingsCanvas" class="mx-auto">Scale:</label>
-        <input type="number" min="1" step="1" id="fSettingsCanvas" class="text-center border border-black rounded-lg p-2 m-2">
+        <input type="number" min="0" step="any" id="fSettingsCanvas" class="text-center border border-black rounded-lg p-2 m-2">
+      </div>
+
+      <div class="my-4 flex flex-col">
+        <label for="fSettingsFactor" class="mx-auto">Length reduction factor:</label>
+        <input type="number" min="0" step="any" id="fSettingsFactor" class="text-center border border-black rounded-lg p-2 m-2">
       </div>
   
       <div class="my-4 font-bold">Ruleset</div>
@@ -86,7 +103,7 @@
   
       <div class="my-4 flex flex-col">
         <label for="fSettingsTheta" class="mx-auto">Theta:</label>
-        <input type="number" min="0" max="360" step="1" id="fSettingsTheta" class="text-center border border-black rounded-lg p-2 m-2">
+        <input type="number" min="0" max="360" step="any" id="fSettingsTheta" class="text-center border border-black rounded-lg p-2 m-2">
       </div>
   
       <div class="my-4 flex flex-col">
