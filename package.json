@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audit:baseline": "node scripts/baseline.mjs",
+    "audit:baseline:check": "node scripts/baseline.mjs --check",
+    "audit:browser": "node scripts/browser-baseline.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
