@@ -19,13 +19,9 @@ const rule = (p: string, s: [string, number][], l = "*", r = "*") =>
   new Rule(p, s.map(([t, w]) => new Successor(t, w)), l, r);
 const preset = (n: string) => presets.find(p => p.name === n)!;
 
-describe("rule with no successors (AUDIT known defect 5)", () => {
-  const empty = set([rule("A", [])]);
-  it("current behaviour: throws TypeError", () => {
-    expect(() => rewrite(empty, "A", seeded(1))).toThrow(TypeError);
-  });
-  it.fails("desired behaviour: leaves the symbol unchanged instead of throwing", () => {
-    expect(rewrite(empty, "A", seeded(1))).toBe("A");
+describe("rule with no successors (AUDIT known defect 5, fixed in CAL-1272)", () => {
+  it("leaves the symbol unchanged instead of throwing", () => {
+    expect(rewrite(set([rule("A", [])]), "A", seeded(1))).toBe("A");
   });
 });
 

@@ -3,7 +3,7 @@
 import { Rule, RuleSet, Successor, Colour, Vector } from "./lsystem/model";
 import { presets } from "./lsystem/presets";
 import { drawOffset, initialBounds } from "./lsystem/layout";
-import { rewrite } from "./lsystem/rewrite";
+import { expandGrammar, GrammarError, ExpansionLimitError } from "./lsystem/grammar";
 import { forestStart, traceLines, type Bounds } from "./lsystem/turtle";
 
 function CalculateVh()
@@ -23,6 +23,7 @@ const LSystemsButton: HTMLElement = <HTMLElement>document.getElementById("LSyste
 const OutputButton: HTMLElement = <HTMLElement>document.getElementById("OutputButton");
 const HideButton: HTMLElement = <HTMLElement>document.getElementById("HideButton");
 
+const fError: HTMLElement = <HTMLElement>document.getElementById("fError");
 const oView: HTMLElement = <HTMLElement>document.getElementById("oView");
 const fDiv: HTMLElement = <HTMLElement>document.getElementById("fDiv");
 
@@ -279,8 +280,30 @@ function ReSize()
   GetSystem();
 }
 
+function ShowError(message: string)
+{
+  fError.textContent = message;
+  fError.style.display = "block";
+}
+
 function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
 {
+  // Expand every tree before touching the canvas or output, so a rejected grammar leaves the previous drawing intact.
+  let treeCount = fSettingsForest.checked ? parseFloat(fSettingsCount.value) : 1;
+  let expansions: string[][] = [];
+  try
+  {
+    for(let s = 0; s < treeCount; s++) expansions.push(expandGrammar(ruleset, iterations));
+  }
+  catch(e)
+  {
+    if(e instanceof GrammarError) ShowError(e.problems.join(" "));
+    else if(e instanceof ExpansionLimitError) ShowError(e.message + " Lower the iterations or simplify the rules.");
+    else throw e;
+    return;
+  }
+  fError.style.display = "none";
+
   ctx.scale(canvasScale, canvasScale);
   ctx.clearRect(0,0, fCanvas.width, fCanvas.height);
 
@@ -328,7 +351,7 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
     oView.innerHTML += "<br>";
     oView.innerHTML += "<br>";
 
-    for(let i = 0; i < iterations; i++) Iterate(ruleset);
+    for(let i = 1; i <= iterations; i++) Iterate(ruleset, expansions[s][i]);
 
     currentIndex = s;
 
@@ -338,10 +361,10 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   }
 }
 
-function Iterate(ruleset: RuleSet)
+function Iterate(ruleset: RuleSet, generation: string)
 {
   len /= ruleset.factor;
-  current = rewrite(ruleset, current);
+  current = generation;
 
   oView.innerHTML += current;
   oView.innerHTML += "<br>";

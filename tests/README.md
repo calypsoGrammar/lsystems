@@ -38,3 +38,11 @@ Recorded in `geometry.test.ts`: drawings do not fit small canvases (no fit-to-ca
 
 No pixel/screenshot comparison: canvas rendering depends on the browser build. Visual coverage is the geometry
 snapshots here plus the existing Playwright smoke check (`npm run test:browser`, `npm run audit:browser`).
+
+## Grammar engine (CAL-1272)
+
+`src/javascripts/lsystem/grammar.ts` (validation, `expandGrammar`, limits) and `rewrite.ts` are DOM-free; `grammar.test.ts` covers them.
+- Limits: 500 000 symbols per generation, 2 000 000 over all generations of one tree, iterations 0–25. Exceeding them throws `ExpansionLimitError` / `GrammarError`; `main.ts` expands before touching the canvas and shows the message in `#fError`, keeping the previous drawing.
+- Context traversal: `[...]` branches are skipped with nesting respected (previously the nearest bracket was used); unbalanced brackets do not match unless ignored.
+- A rule with no successors leaves its symbol unchanged (previously a TypeError). Weights must be finite, >= 0 and total <= 1; a total below 1 leaves the symbol unchanged for the remainder.
+- Unchanged on purpose: every matching rule contributes (Fractal Plant 9 relies on it), the `i > 1` / `''`-context quirks above.
