@@ -1,4 +1,4 @@
-// Diagnostic baseline for the 29 presets in src/javascripts/main.ts (CAL-1269).
+// Diagnostic baseline for the 29 presets in src/javascripts/lsystem/presets.ts (CAL-1269).
 // Read-only: evaluates the preset definitions from the source and re-implements
 // Iterate()/GetLines() (a port, main.ts touches the DOM on import) with a seeded RNG.
 // Usage: node scripts/baseline.mjs [--check]   (writes / verifies docs/baseline.json)
@@ -7,8 +7,9 @@ import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
-const src = readFileSync(root + 'src/javascripts/main.ts', 'utf8')
-const classes = src.slice(src.indexOf('class Successor'), src.indexOf('const primaryButton'))
+const model = readFileSync(root + 'src/javascripts/lsystem/model.ts', 'utf8').replaceAll('export class', 'class')
+const src = readFileSync(root + 'src/javascripts/lsystem/presets.ts', 'utf8').replaceAll('export let', 'let')
+const classes = model.slice(model.indexOf('class Successor'))
 const presets = src.slice(src.indexOf('let kochIsland'))
 const js = ts.transpileModule(classes + 'const lSystems = [];\n' + presets + '\nreturn { lSystems, defined: [' +
   [...presets.matchAll(/^let (\w+) = new RuleSet/gm)].map(m => m[1]).join(',') + '] };',

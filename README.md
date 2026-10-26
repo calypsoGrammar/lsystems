@@ -15,3 +15,7 @@ Stack: Vite 8, TypeScript 6, Tailwind CSS 4 (`@tailwindcss/postcss`, content fro
 modern-normalize is imported into the `base` cascade layer so it cannot override Tailwind utilities. The dynamic `primaryButton` classes in `main.ts` deliberately carry no dark-background/white-text tokens, keeping the previous black-on-white look.
 
 `WORKFLOW.md` verify runs `npm run test:browser` (Playwright from the Archon environment's default paths); this takes effect once the change to `WORKFLOW.md` is merged. CI installs Playwright 1.55.1 with one shared `PLAYWRIGHT_BROWSERS_PATH`.
+
+## Tests
+
+`npm test` runs the unit and geometry tests (see `tests/README.md`).
