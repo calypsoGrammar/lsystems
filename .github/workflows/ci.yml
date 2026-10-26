@@ -3,6 +3,10 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -31,3 +35,22 @@ jobs:
           npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright@1.55.1
           "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium
           npm run test:browser
+      - name: Upload Pages site
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && matrix.node == '22'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
