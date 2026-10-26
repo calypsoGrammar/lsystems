@@ -111,4 +111,4 @@ try {
 out.failures = failures
 writeFileSync(root + 'docs/browser-baseline.json', JSON.stringify(out, null, 1) + '\n')
 console.log(JSON.stringify({ failures, defects: out.defects, external: out.externalRequests, previewServed: out.previewServed }, null, 1))
-if (failures.length) process.exit(1)
+process.exit(failures.length ? 1 : 0) // the preview child's pipes would otherwise keep Node alive
