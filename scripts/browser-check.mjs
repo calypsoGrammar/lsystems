@@ -34,9 +34,15 @@ try {
   const page = await (await browser.newContext({ viewport: { width: 1280, height: 800 } })).newPage()
   const errors = [], external = []
   page.on('pageerror', e => errors.push(e.message))
+  page.on('response', r => { if (r.status() >= 400) errors.push(r.status() + ' ' + r.url()) })
   await page.route(u => !u.href.startsWith(URL_), r => { external.push(r.request().url()); r.abort() })
   await page.goto(URL_)
-  await page.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+  const appLoaded = await page.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0, null, { timeout: 15000 }).then(() => true, () => false)
+  if (!appLoaded) {
+    console.error('app did not populate the preset list; page errors: ' + (errors.join('; ') || 'none') + '; off-origin requests: ' + (external.join(', ') || 'none') + '; page html: ' + (await page.content()).slice(0, 600))
+    process.exitCode = 1
+    throw new Error('app did not load')
+  }
   const presets = await page.evaluate(() => document.querySelectorAll('#fSettingsPresets option').length)
   check(presets === 29, `expected 29 presets, saw ${presets}`)
 

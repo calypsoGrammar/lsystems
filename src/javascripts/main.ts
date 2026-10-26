@@ -604,7 +604,9 @@ function Main()
 }
 
 window.addEventListener('resize', ReSize);
-document.addEventListener("DOMContentLoaded", Main);
+// run straight away when the module is evaluated after DOMContentLoaded has already fired
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", Main);
+else Main();
 
 // main.ts became a module when the pure code moved to lsystem.ts/presets.ts, so
 // noUnusedLocals now applies. These were already unused (see docs/AUDIT.md); they are
