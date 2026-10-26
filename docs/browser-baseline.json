@@ -1,0 +1,723 @@
+{
+ "previewServed": true,
+ "externalRequests": [
+  "https://code.jquery.com/jquery-3.6.4.min.js",
+  "https://cdn.jsdelivr.net/npm/modern-normalize@v1.1.0/modern-normalize.min.css"
+ ],
+ "viewports": {
+  "desktop": {
+   "width": 1280,
+   "height": 800,
+   "canvas": [
+    1280,
+    680
+   ],
+   "pageErrors": []
+  },
+  "small": {
+   "width": 600,
+   "height": 500,
+   "canvas": [
+    600,
+    425
+   ],
+   "pageErrors": []
+  }
+ },
+ "presets": [
+  {
+   "name": "Koch Island",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 7911
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 4632
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 7777
+    },
+    "animated": {
+     "w": 600,
+     "h": 425,
+     "n": 4607
+    }
+   }
+  },
+  {
+   "name": "Koch Curve 2",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 770
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 770
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 744
+    }
+   }
+  },
+  {
+   "name": "Lakes and Islands",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 32453
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 4662
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 16745
+    }
+   }
+  },
+  {
+   "name": "Ruleset 1",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 4072
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 2511
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 4196
+    }
+   }
+  },
+  {
+   "name": "Ruleset 2",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 4256
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 3296
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 4276
+    }
+   }
+  },
+  {
+   "name": "Ruleset 3",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 4224
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 3421
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 4224
+    }
+   }
+  },
+  {
+   "name": "Ruleset 4",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 2096
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 2096
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 2098
+    }
+   }
+  },
+  {
+   "name": "Ruleset 5",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 2032
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 2032
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 2028
+    },
+    "animated": {
+     "w": 600,
+     "h": 425,
+     "n": 2028
+    }
+   }
+  },
+  {
+   "name": "Ruleset 6",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 1916
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 1916
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 1916
+    }
+   }
+  },
+  {
+   "name": "Dragon Curve",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 63
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 63
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 64
+    }
+   }
+  },
+  {
+   "name": "Sierpinski Curve",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 1726
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 1726
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 1798
+    }
+   }
+  },
+  {
+   "name": "Sierpinkski Triangle",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 709
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 709
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 711
+    }
+   }
+  },
+  {
+   "name": "Koch Curve 1",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 455
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 456
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 454
+    }
+   }
+  },
+  {
+   "name": "Koch Snowflake",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 1359
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 1360
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 1355
+    }
+   }
+  },
+  {
+   "name": "Hilbert Curve",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 460
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 460
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 464
+    },
+    "animated": {
+     "w": 600,
+     "h": 425,
+     "n": 464
+    }
+   }
+  },
+  {
+   "name": "Levy C Curve",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 126
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 126
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 126
+    }
+   }
+  },
+  {
+   "name": "Star",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 92
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 92
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 98
+    }
+   }
+  },
+  {
+   "name": "Pentigree Curve",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 4908
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 4102
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 4909
+    }
+   }
+  },
+  {
+   "name": "Snowflake",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 3743
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 3117
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 3747
+    }
+   }
+  },
+  {
+   "name": "Gosper Curve",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 1402
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 1401
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 1399
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 1",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 429
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 429
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 434
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 2",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 696
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 696
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 688
+    },
+    "animated": {
+     "w": 600,
+     "h": 425,
+     "n": 688
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 3",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 1638
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 1638
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 1639
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 4",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 605
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 605
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 610
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 5",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 294
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 294
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 299
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 6",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 293
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 293
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 298
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 7",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 103
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 103
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 104
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 8",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 519
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 527
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 304
+    }
+   }
+  },
+  {
+   "name": "Fractal Plant 9",
+   "desktop": {
+    "static": {
+     "w": 1280,
+     "h": 680,
+     "n": 260
+    },
+    "animated": {
+     "w": 1280,
+     "h": 680,
+     "n": 260
+    }
+   },
+   "small": {
+    "static": {
+     "w": 600,
+     "h": 425,
+     "n": 261
+    },
+    "animated": {
+     "w": 600,
+     "h": 425,
+     "n": 261
+    }
+   }
+  }
+ ],
+ "defects": {
+  "forest": {
+   "desktop": {
+    "static": 1310,
+    "animated": 262,
+    "animatedLessThanStatic": true
+   },
+   "small": {
+    "static": 1054,
+    "animated": 262,
+    "animatedLessThanStatic": true
+   }
+  },
+  "inlineOnclick": {
+   "pageErrors": [
+    "ReferenceError: AddSuccessor is not defined",
+    "ReferenceError: RemoveRule is not defined"
+   ],
+   "ruleBlocksAfterClicks": 1,
+   "referenceErrorConfirmed": true
+  },
+  "scale": {
+   "scale1": 7911,
+   "scale3": 7911,
+   "hasEffect": false
+  },
+  "regenerateOnResize": {
+   "outputChanged": true
+  }
+ },
+ "failures": []
+}
