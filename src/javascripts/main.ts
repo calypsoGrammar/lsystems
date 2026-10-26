@@ -1,12 +1,13 @@
 "use strict";
 
-import { RuleSet, Colour, Vector, Line } from "./lsystem/model";
+import { RuleSet, Colour, Line } from "./lsystem/model";
 import { buildRuleSet, validateRenderFields } from "./lsystem/editor";
 import { RuleEditor } from "./editor-ui";
 import { presets } from "./lsystem/presets";
-import { applyTransform, fitTransform, mergeBounds, type ViewTransform } from "./lsystem/fit";
+import { applyTransform, fitTransform, type ViewTransform } from "./lsystem/fit";
 import { expandGrammar, GrammarError, ExpansionLimitError, MAX_TOTAL_SYMBOLS } from "./lsystem/grammar";
-import { forestStart, interpretTurtle, type Bounds } from "./lsystem/turtle";
+import { buildScene, displayText, SegmentLimitError, type Scene, type TreeScene } from "./lsystem/scene";
+import { Playback } from "./lsystem/playback";
 
 function CalculateVh()
 {
@@ -97,25 +98,19 @@ let canvasSize = 1; // legacy, unused
 let canvasScale = 1; // manual scale, used when auto fit is off
 let view: ViewTransform = { scale: 1, tx: 0, ty: 0 };
 
-let current = "";
-
-let len = 0; // default length
 let theta = 0; // the default angle to be rotated by
-let matrix: never[] = []; // legacy; transform history now lives in traceLines
 
 let pickIndex = 0; // which l system to display
 
-let animateInterval: number = 0;
-let counter = 0;
+const playback = new Playback();
+let scene: Scene | null = null;
 let interval = 10;
 let animate = true;
 let leaves = false;
 let loop = false;
 let forest = false;
 
-let rgb: Colour = new Colour(0, 0, 0);
 let inheritance = 0;
-let lines: any[] = []; // stores line info
 let lSystems: RuleSet[] = presets;
 
 let lineCol = "black";
@@ -196,8 +191,11 @@ function ReSize()
   fContainer.style.height = window.innerHeight * 0.85 + 'px';
   fView.style.width = window.innerWidth + 'px';
   fView.style.height = window.innerHeight * 0.85 + 'px';
-  GetSystem();
+  // Debounced re-fit of the existing scene; never regenerates, so stochastic grammars and forest placement stay put.
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => Render(false), 120);
 }
+let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 
 function ShowError(message: string)
 {
@@ -213,12 +211,12 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   try
   {
     let budget = MAX_TOTAL_SYMBOLS; // shared by all trees, so Forest cannot multiply the cap
-  for(let s = 0; s < treeCount; s++)
-  {
-    let generations = expandGrammar(ruleset, iterations, Math.random, budget);
-    budget -= generations.reduce((n, g) => n + g.length, 0);
-    expansions.push(generations);
-  }
+    for(let s = 0; s < treeCount; s++)
+    {
+      let generations = expandGrammar(ruleset, iterations, Math.random, budget);
+      budget -= generations.reduce((n, g) => n + g.length, 0);
+      expansions.push(generations);
+    }
   }
   catch(e)
   {
@@ -227,13 +225,10 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
     else throw e;
     return;
   }
-  fError.style.display = "none";
 
   SizeCanvas(); // also clears the canvas
 
-  matrix.length = 0;
   theta = ruleset.theta;
-
   interval = parseFloat(fSettingsInterval.value);
   animate = fSettingsAnimate.checked;
   leaves = fSettingsLeaves.checked;
@@ -241,188 +236,87 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
 
   let startCol: Colour = <Colour>HexToRGB(fSettingsCol.value);
 
-  oView.replaceChildren();
-  lines = [];
+  // Every tree ends at the same length: the starting length divided by the factor once per iteration.
+  let finalLength = startlength;
+  for(let i = 1; i <= iterations; i++) finalLength /= ruleset.factor;
+  const finals = expansions.map(g => ({ generation: g[iterations] ?? ruleset.start, length: finalLength }));
 
-  let forestIndex = 1;
-  if(forest) forestIndex = parseFloat(fSettingsCount.value);
-  treeBounds = [];
-
-  for(let s = 0; s < forestIndex; s++)
+  let built: Scene;
+  try
   {
-    rgb.r = startCol.r;
-    rgb.g = startCol.g;
-    rgb.b = startCol.b;
+    built = buildScene(finals, theta, forest, cssWidth, cssHeight, { base: startCol, variance: inheritance });
+  }
+  catch(e)
+  {
+    if(e instanceof SegmentLimitError)
+    {
+      playback.cancel();
+      ShowError(e.message + " Lower the iterations or the number of trees.");
+      return;
+    }
+    throw e;
+  }
+  fError.style.display = "none";
+  scene = built;
 
-    current = ruleset.start;
-    len = startlength;
-
-    // Generations are shown as text nodes, never parsed as HTML, so grammar symbols can't inject markup.
+  // Generations are shown as text nodes, never parsed as HTML, so grammar symbols can't inject markup.
+  // One fragment per generation set, truncated when huge, keeps the DOM small and cheap.
+  const fragment = document.createDocumentFragment();
+  for(let s = 0; s < expansions.length; s++)
+  {
     const output = document.createElement("div");
-    output.append(ruleset.start, document.createElement("br"), document.createElement("br"));
+    output.append(displayText(ruleset.start), document.createElement("br"), document.createElement("br"));
     for(let i = 1; i <= iterations; i++)
     {
-      output.append(Iterate(ruleset, expansions[s][i]), document.createElement("br"), document.createElement("br"));
+      output.append(displayText(expansions[s][i]), document.createElement("br"), document.createElement("br"));
     }
-    oView.append(output);
-
-    GetLines(s);
+    fragment.append(output);
   }
+  oView.replaceChildren(fragment);
 
-  // Fit over every tree's drawable segments, then draw with one shared transform.
-  let allBounds = mergeBounds(treeBounds);
-  let fit = fitTransform(allBounds, cssWidth, cssHeight, fSettingsFit.checked ? undefined : canvasScale);
+  Render(animate);
+}
+
+// Fits the current scene to the current canvas and plays it. Never regenerates: the scene (grammar expansion,
+// stochastic choices, forest placement, colours, leaf jitter) is fixed, so this is also what resize uses.
+function Render(animated: boolean)
+{
+  playback.cancel();
+  SizeCanvas();
+  if(scene === null) return;
+  const fit = fitTransform(scene.bounds, cssWidth, cssHeight, fSettingsFit.checked ? undefined : canvasScale);
   if(fit === null) return; // nothing drawable (empty or degenerate result)
   view = fit;
 
-  for(let s = 0; s < forestIndex; s++)
-  {
-    if(lines[s].length === 0) continue;
-    currentIndex = s;
-    Draw(s);
-  }
+  const current = scene;
+  playback.start({
+    counts: current.trees.map(t => t.lines.length),
+    intervalMs: animated ? interval : 0,
+    draw: (tree, segment) => DrawSegment(current.trees[tree], segment),
+  });
 }
 
-let treeBounds: (Bounds | null)[] = [];
-
-function Iterate(ruleset: RuleSet, generation: string)
+function DrawSegment(tree: TreeScene, i: number)
 {
-  len /= ruleset.factor;
-  current = generation;
-  return current;
-}
-
-function GetLines(index: number)
-{
-  matrix.length = 0;
-
-  // Logical coordinates: a single tree starts at the origin; forest trees are spread along the canvas width.
-  let start = new Vector(0, 0);
-
-  if(forest)
-  {
-    start = forestStart(cssWidth, cssHeight, parseFloat(fSettingsCount.value), index);
-  }
-
-  const traced = interpretTurtle(current, len, theta, start);
-  lines[index] = traced.lines;
-  treeBounds[index] = traced.bounds;
-}
-
-function Draw(index: number)
-{
-  ctx.strokeStyle = RandomColour(inheritance, interval);
-
-  if(animate)
-  {
-    counter = 0;
-    clearInterval(animateInterval);
-
-    animateInterval = setInterval(DrawLine, interval);
-  }
-  else
-  {
-    for(let i = 0; i < lines[index].length; i++)
-    {
-      counter = i;
-      DrawLine();
-    }
-  }
-}
-
-let currentIndex = 0;
-const startKeys = new WeakMap<object, Set<string>>(); // segment start points per tree, for the O(1) leaf check
-
-function DrawLine()
-{
-  ctx.strokeStyle = RandomColour(inheritance, 1);
-
-  const seg: Line = lines[currentIndex][counter];
+  const seg: Line = tree.lines[i];
   const [sx, sy] = applyTransform(view, seg.start.x, seg.start.y);
   const [ex, ey] = applyTransform(view, seg.end.x, seg.end.y);
 
+  ctx.strokeStyle = tree.colours[i];
   ctx.beginPath();
   ctx.moveTo(sx, sy);
   ctx.lineTo(ex, ey);
   ctx.stroke();
 
-  if(leaves)
+  if(leaves && tree.leafAt[i])
   {
-    if(lines[currentIndex][counter].leaf)
-    {
-      ctx.fillStyle = ctx.strokeStyle;
-  
-      let starts = startKeys.get(lines[currentIndex]);
-      if(starts === undefined)
-      {
-        starts = new Set(lines[currentIndex].map((l: Line) => l.start.x + "," + l.start.y));
-        startKeys.set(lines[currentIndex], starts);
-      }
-      let valid = !starts.has(lines[currentIndex][counter].end.x + "," + lines[currentIndex][counter].end.y);
-      if(valid)
-      {
-        let percent = (100 / fView.scrollHeight) * ey;
-        let radius = Math.abs((100 - percent) / 10);
-        let radiusX = radius + Math.random();
-        let radiusY = radius + Math.random();
-        ctx.beginPath();
-        ctx.ellipse(
-        ex, 
-        ey, 
-        radiusX, 
-        radiusY, 
-        Math.PI / 4,
-        0, 
-        2 * Math.PI);
-        // (lines[counter].rot * Math.PI/180)
-        // (Math.PI + (Math.PI * 1) / 2)
-        // (Math.PI + (Math.PI * 0) / 2)
-        ctx.fill();
-      }
-    }
+    ctx.fillStyle = tree.colours[i];
+    let percent = (100 / fView.scrollHeight) * ey;
+    let radius = Math.abs((100 - percent) / 10);
+    ctx.beginPath();
+    ctx.ellipse(ex, ey, radius + tree.leafJitter[2 * i], radius + tree.leafJitter[2 * i + 1], Math.PI / 4, 0, 2 * Math.PI);
+    ctx.fill();
   }
-
-  if(animate)
-  {
-    counter++;
-    if(counter >= lines[currentIndex].length) clearInterval(animateInterval);
-  }
-}
-
-function RandomColour(inheritFactor: number, alpha: number)
-{
-  let lastR = rgb.r;
-  let lastG = rgb.g;
-  let lastB = rgb.b;
-
-  let varR = Math.floor(Math.random() * inheritFactor);
-  let varG = Math.floor(Math.random() * inheritFactor);
-  let varB = Math.floor(Math.random() * inheritFactor);
-
-  let plusMinus = Math.random();
-
-  let newR = lastR - varR;
-  let newG = lastG - varG;
-  let newB = lastB - varB;
-
-  if(plusMinus > 0.5)
-  {
-    newR = lastR + varR;
-    newG = lastG + varG;
-    newB = lastB + varB;
-  }
-
-  if(newR < 0) newR = 0;
-  if(newR > 255) newR = 255;
-
-  if(newG < 0) newG = 0;
-  if(newG > 255) newG = 255;
-
-  if(newB < 0) newB = 0;
-  if(newB > 255) newB = 255;
-
-  rgb = new Colour(newR, newG, newB);
-  return "rgba(" + newR + "," + newG + "," + newB + "," + alpha + ")";
 }
 
 function RandomFlowerColour()

@@ -121,7 +121,7 @@ try {
     check(reset.join() === '250,1,true', `${label}: Reset View gave ${reset.join()}, expected 250,1,true`)
     inside('Reset View', await mp.evaluate(BBOX), dpr)
 
-    // Resize regenerates at the new size: backing store follows CSS size x DPR and the fit is kept.
+    // Resize re-fits the same scene at the new size (see the CAL-1275 section below): backing store follows CSS size x DPR and the fit is kept.
     const [nw, nh] = label === 'mobile' ? [667, 375] : [600, 900]
     await mp.setViewportSize({ width: nw, height: nh }); await mp.waitForTimeout(400)
     const rs = await mp.evaluate(BBOX)
@@ -130,6 +130,67 @@ try {
 
     check(mErrors.length === 0, `${label} page errors: ` + mErrors.join('; '))
     await ctx2.close()
+  }
+
+  // CAL-1275: resize re-fits the existing scene, forest animation draws every tree, repeated Generate leaves no stale drawing.
+  {
+    const ctx3 = await browser.newContext({ viewport: { width: 1000, height: 700 } })
+    const p3 = await ctx3.newPage()
+    const e3 = []
+    p3.on('pageerror', e => e3.push(e.message))
+    await p3.goto(URL_)
+    await p3.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    await p3.click('#HideButton'); await p3.waitForSelector('#fSettings', { state: 'visible' })
+    const set = (id, v) => p3.evaluate(SET, [id, v])
+    const pick = name => p3.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name)
+    const HASH = () => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let h = 0, n = 0; for (let i = 0; i < d.length; i += 4) if (d[i + 3]) { n++; h = (h * 31 + d[i] * 7 + d[i + 1] * 13 + d[i + 2] * 17 + d[i + 3] + i) | 0 } return { h, n } }
+    const text = () => p3.evaluate(() => document.getElementById('oView').textContent)
+    const hash = () => p3.evaluate(HASH)
+    // Resize away and back (each waits past the 120 ms debounce): the redraw is of the same scene at the same size.
+    const bounce = async () => { await p3.setViewportSize({ width: 600, height: 900 }); await p3.waitForTimeout(400); const mid = await p3.evaluate(BBOX); await p3.setViewportSize({ width: 1000, height: 700 }); await p3.waitForTimeout(400); return mid }
+    const settle = async tag => { // wait until the pixel count stops changing for 1.5 s
+      let last = -1, stable = 0
+      for (let i = 0; i < 120 && stable < 6; i++) { await p3.waitForTimeout(250); const { n } = await hash(); stable = n === last ? stable + 1 : 0; last = n }
+      check(stable >= 6, tag + ': animation did not finish')
+    }
+
+    // Stochastic grammar, static: resize must not change the output text or the picture.
+    await set('fSettingsAnimate', false)
+    await pick('Fractal Plant 8'); await set('fSettingsIterations', '4')
+    for (const forest of [false, true]) {
+      await set('fSettingsForest', forest); await set('fSettingsCount', '5')
+      await p3.click('#GenerateButton'); await p3.waitForTimeout(500)
+      const t0 = await text(), h0 = await hash(), b0 = await p3.evaluate(BBOX)
+      const mid = await bounce()
+      check(await text() === t0, `resize changed the output text (forest ${forest})`)
+      const h1 = await hash()
+      check(h1.h === h0.h && h1.n === h0.n, `redraw at the original size differs from the first draw (forest ${forest})`)
+      const aspect = r => (r.x1 - r.x0) / (r.y1 - r.y0)
+      if (!forest) check(Math.abs(aspect(mid) - aspect(b0)) / aspect(b0) < 0.03, `aspect ratio changed on resize: ${aspect(b0)} -> ${aspect(mid)}`)
+      else check(mid.x0 >= 0 && mid.x1 < mid.w && mid.y1 < mid.h, 'forest clipped after resize')
+    }
+
+    // Animated forest: every tree gets drawn; the finished picture equals the static redraw.
+    await set('fSettingsAnimate', true); await set('fSettingsInterval', '10')
+    await pick('Fractal Plant 2'); await set('fSettingsIterations', '2'); await set('fSettingsForest', true); await set('fSettingsCount', '3')
+    await p3.click('#GenerateButton')
+    await settle('animated forest')
+    const ha = await hash(), ba = await p3.evaluate(BBOX)
+    await bounce()
+    const hs = await hash(), bs = await p3.evaluate(BBOX)
+    check(ha.h === hs.h && ha.n === hs.n && ba.x0 === bs.x0 && ba.x1 === bs.x1, `animated forest differs from its static redraw (${ha.n} vs ${hs.n} px): trees missing or stale`)
+
+    // Repeated Generate while animating, then a resize mid-animation: the end state is one complete scene.
+    for (let i = 0; i < 4; i++) { await p3.click('#GenerateButton'); await p3.waitForTimeout(80) }
+    await p3.setViewportSize({ width: 800, height: 700 }); await p3.waitForTimeout(300)
+    await p3.setViewportSize({ width: 1000, height: 700 }); await p3.waitForTimeout(300)
+    await settle('rapid Generate')
+    const hr = await hash()
+    await bounce()
+    const hr2 = await hash()
+    check(hr.h === hr2.h && hr.n === hr2.n, `drawing after repeated Generate/resize is not one clean scene (${hr.n} vs ${hr2.n} px)`)
+    check(e3.length === 0, 'CAL-1275 page errors: ' + e3.join('; '))
+    await ctx3.close()
   }
 
   // Rejected grammar: previous drawing stays, the error banner shows, and a valid run hides it again.
