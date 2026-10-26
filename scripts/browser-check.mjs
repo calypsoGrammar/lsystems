@@ -3,13 +3,16 @@
 // Rebuilds dist/ first (about 1 s) so it never serves a stale or missing bundle. Env: PLAYWRIGHT_BROWSERS_PATH (default /usr/local/share/ms-playwright),
 // PLAYWRIGHT_MODULE (default /usr/local/lib/node_modules/playwright/index.mjs).
 import { spawn, spawnSync } from 'node:child_process'
+import { createServer } from 'node:net'
 import { readdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= '/usr/local/share/ms-playwright'
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? '/usr/local/lib/node_modules/playwright/index.mjs')
 const root = fileURLToPath(new URL('..', import.meta.url))
-const PORT = 4174, URL_ = `http://127.0.0.1:${PORT}/`
+// A free port per run, so an orphaned server from an earlier run (it would serve a stale file listing) is never reused.
+const PORT = await new Promise(res => { const s = createServer().listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)) }) })
+const URL_ = `http://127.0.0.1:${PORT}/`
 const failures = []
 const check = (ok, msg) => { if (!ok) failures.push(msg) }
 
@@ -29,7 +32,7 @@ for (let depth = 0, start = 0, i = 0; i < css.length; i++) {
 const unlayered = topLevel.filter(h => !/^@(layer|supports|media|property|keyframes|font-face)/.test(h))
 check(unlayered.length === 0, 'unlayered style rules in built CSS: ' + unlayered.slice(0, 3).join(' | '))
 
-const preview = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'ignore' })
+const preview = spawn(process.execPath, [root + 'node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], { cwd: root, stdio: 'ignore' })
 let browser
 try {
   for (let i = 0; i < 50; i++) { try { if ((await fetch(URL_)).ok) break } catch {} await new Promise(r => setTimeout(r, 200)) }
