@@ -13,9 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/pw-browsers
-      PLAYWRIGHT_MODULE: ${{ runner.temp }}/pw/node_modules/playwright/index.mjs
     strategy:
       matrix:
         node: ['22', '26']
@@ -39,9 +36,13 @@ jobs:
         timeout-minutes: 15
         env:
           DEBUG: pw:install
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/pw-browsers
         run: '"$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium'
       - name: Browser check
         timeout-minutes: 5
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/pw-browsers
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/pw/node_modules/playwright/index.mjs
         run: npm run test:browser
       - name: Upload Pages site
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && matrix.node == '22'
