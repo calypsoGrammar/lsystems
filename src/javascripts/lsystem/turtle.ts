@@ -26,8 +26,9 @@ export function forestStart(canvasWidth: number, canvasHeight: number, count: nu
 
 // Interprets F/G (draw), f (move), +/- (rotate), [ ] (push/pop) from `start` heading 270 degrees
 // (moved unchanged from main.ts GetLines/GetLine/MoveLine/RotateTransform). `bounds` is extended in place.
-export function traceLines(current: string, len: number, theta: number, start: Vector, bounds: Bounds): Line[]
+export function traceLines(current: string, len: number, theta: number, start: Vector, bounds: Bounds, round: boolean = true): Line[]
 {
+  const snap = round ? (v: number) => parseFloat(v.toFixed(2)) : (v: number) => v;
   const lines: Line[] = [];
   const matrix: Transform[] = [];
   let cT = new Transform(new Vector(start.x, start.y), 270); // reset
@@ -37,13 +38,13 @@ export function traceLines(current: string, len: number, theta: number, start: V
     let c = current.charAt(i);
     if (c == "F" || c == "G")
     {
-      let newLine = GetLine(cT, len, bounds);
+      let newLine = GetLine(cT, len, bounds, snap);
       lines.push(newLine);
-      MoveLine(cT, len);
+      MoveLine(cT, len, snap);
     }
     else if (c == "f")
     {
-      MoveLine(cT, len);
+      MoveLine(cT, len, snap);
     }
     else if (c == "+")
     {
@@ -88,7 +89,7 @@ export function traceLines(current: string, len: number, theta: number, start: V
   return lines;
 }
 
-function GetLine(transform: Transform, length: number, bounds: Bounds)
+function GetLine(transform: Transform, length: number, bounds: Bounds, snap: (v: number) => number)
 {
   let startVector = new Vector(transform.pos.x, transform.pos.y);
   
@@ -96,8 +97,8 @@ function GetLine(transform: Transform, length: number, bounds: Bounds)
   let endX = transform.pos.x + length * Math.cos(ang);
   let endY = transform.pos.y + length * Math.sin(ang);
 
-  endX = parseFloat( endX.toFixed(2) ) ;
-  endY = parseFloat( endY.toFixed(2) ) ;
+  endX = snap(endX);
+  endY = snap(endY);
 
   let endVector = new Vector(endX, endY);
 
@@ -122,13 +123,13 @@ function GetLine(transform: Transform, length: number, bounds: Bounds)
   return resultLine;
 }
 
-function MoveLine(transform: Transform, length: number)
+function MoveLine(transform: Transform, length: number, snap: (v: number) => number)
 {
   let ang = transform.rot * (Math.PI/180);
   let endX = transform.pos.x + length * Math.cos(ang);
   let endY = transform.pos.y + length * Math.sin(ang);
-  transform.pos.x = parseFloat( endX.toFixed(2) ) ;
-  transform.pos.y = parseFloat( endY.toFixed(2) ) ;
+  transform.pos.x = snap(endX);
+  transform.pos.y = snap(endY);
 }
 
 export function RotateTransform(transform: Transform, ang: number)
@@ -144,4 +145,14 @@ export function RotateTransform(transform: Transform, ang: number)
     newA = 360 + newA;
   }
   transform.rot = newA;
+}
+
+// Pure, canvas-free interpretation in logical coordinates at full precision (no 2 dp rounding).
+// Returns the segments (with leaf/branchStart/rot metadata) and the bounds of the drawable segments only,
+// or `bounds: null` when nothing is drawn. Heading 270 degrees is up, y grows downwards, as in traceLines.
+export function interpretTurtle(current: string, len: number, theta: number, start: Vector = new Vector(0, 0))
+{
+  const bounds: Bounds = { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity };
+  const lines = traceLines(current, len, theta, start, bounds, false);
+  return { lines, bounds: lines.length > 0 ? bounds : null };
 }

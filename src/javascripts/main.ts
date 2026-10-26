@@ -2,9 +2,9 @@
 
 import { Rule, RuleSet, Successor, Colour, Vector, Line } from "./lsystem/model";
 import { presets } from "./lsystem/presets";
-import { drawOffset, initialBounds } from "./lsystem/layout";
+import { applyTransform, fitTransform, mergeBounds, validateRenderSettings, type ViewTransform } from "./lsystem/fit";
 import { expandGrammar, GrammarError, ExpansionLimitError, MAX_TOTAL_SYMBOLS } from "./lsystem/grammar";
-import { forestStart, traceLines, type Bounds } from "./lsystem/turtle";
+import { forestStart, interpretTurtle, type Bounds } from "./lsystem/turtle";
 
 function CalculateVh()
 {
@@ -50,6 +50,10 @@ const fSettingsReplacementAdd: HTMLInputElement = <HTMLInputElement>document.get
 const fSettingsIterations: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsIterations");
 const fSettingsLength: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsLength");
 const fSettingsCanvas: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsCanvas");
+const fSettingsFactor: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsFactor");
+const fSettingsFit: HTMLInputElement = <HTMLInputElement>document.getElementById("fSettingsFit");
+const fSettingsFitNow: HTMLElement = <HTMLElement>document.getElementById("fSettingsFitNow");
+const fSettingsResetView: HTMLElement = <HTMLElement>document.getElementById("fSettingsResetView");
 
 GenerateButton.onclick = function() { GetSystem(); };
 LSystemsButton.onclick = function() { SwitchView(views, 0, viewsB, 0); };
@@ -57,6 +61,9 @@ OutputButton.onclick = function() { SwitchView(views, 1, viewsB, 1); };
 HideButton.onclick = function() { SwitchView(views, 2, viewsB, 2); };
 
 fSettingsReplacementAdd.onclick = function() { AddRule(); };
+fSettingsFitNow.onclick = function() { fSettingsFit.checked = true; GetSystem(); };
+fSettingsResetView.onclick = function() { ResetView(); GetSystem(); };
+fSettingsFit.onchange = function() { GetSystem(); };
 fSettingsPresets.onchange = function() { 
   UpdateSelect(parseInt(fSettingsPresets.value)); 
   //Initiate(lSystems[pickIndex], 2, 1000);
@@ -68,10 +75,27 @@ const viewsB = [LSystemsButton, OutputButton, HideButton];
 
 let timeOut = undefined;
 
-ctx.lineWidth = 1;
+// Canvas size in CSS pixels; the backing store is cssWidth * devicePixelRatio. Drawing coordinates are CSS pixels
+// (the context transform is only ever set, never accumulated); the logical-to-canvas fit is applied per point.
+let cssWidth = 1;
+let cssHeight = 1;
 
-let canvasSize = 1; // increases the canvas size to make bigger lsystems
-let canvasScale = 1; // increases the canvas size to make bigger lsystems
+function SizeCanvas()
+{
+  const dpr = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
+  cssWidth = window.innerWidth;
+  cssHeight = window.innerHeight * 0.85;
+  fCanvas.width = Math.max(1, Math.round(cssWidth * dpr));
+  fCanvas.height = Math.max(1, Math.round(cssHeight * dpr));
+  fCanvas.style.width = cssWidth + 'px';
+  fCanvas.style.height = cssHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // resizing resets context state, so set it afresh every time
+  ctx.lineWidth = 1;
+}
+
+let canvasSize = 1; // legacy, unused
+let canvasScale = 1; // manual scale, used when auto fit is off
+let view: ViewTransform = { scale: 1, tx: 0, ty: 0 };
 
 let current = "";
 
@@ -81,15 +105,8 @@ let matrix: never[] = []; // legacy; transform history now lives in traceLines
 
 let pickIndex = 0; // which l system to display
 
-let minX = 0;
-let maxX = 0;
-let minY = 0;
-let maxY = 0;
-
 let animateInterval: number = 0;
 let counter = 0;
-let offsetX = 0;
-let offsetY = 0;
 let interval = 10;
 let animate = true;
 let leaves = false;
@@ -165,8 +182,15 @@ function UpdateSelect(index:number)
   fSettingsTheta.value = lSystems[pickIndex].theta.toString();
   FillReplacement(lSystems[pickIndex]);
   fSettingsIterations.value = "2";
+  fSettingsFactor.value = lSystems[pickIndex].factor.toString();
+  ResetView();
+}
+
+function ResetView()
+{
   fSettingsLength.value = "250";
   fSettingsCanvas.value = "1";
+  fSettingsFit.checked = true;
 }
 
 function FillReplacement(ruleset: RuleSet)
@@ -273,10 +297,6 @@ function ReSize()
   fContainer.style.height = window.innerHeight * 0.85 + 'px';
   fView.style.width = window.innerWidth + 'px';
   fView.style.height = window.innerHeight * 0.85 + 'px';
-  fCanvas.width = window.innerWidth;
-  fCanvas.height = window.innerHeight * 0.85;
-  // ctx.width = window.innerWidth;
-  // ctx.height = window.innerHeight * 0.85;
   GetSystem();
 }
 
@@ -310,31 +330,15 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   }
   fError.style.display = "none";
 
-  ctx.scale(canvasScale, canvasScale);
-  ctx.clearRect(0,0, fCanvas.width, fCanvas.height);
-
-  fCanvas.width = window.innerWidth;
-  fCanvas.height = window.innerHeight * 0.85;
-  
-  // ctx.width = window.innerWidth;
-  // ctx.height = window.innerHeight * 0.85;
+  SizeCanvas(); // also clears the canvas
 
   matrix.length = 0;
-  ({ minX, maxX, minY, maxY } = initialBounds(fCanvas.width, fCanvas.height));
   theta = ruleset.theta;
 
   interval = parseFloat(fSettingsInterval.value);
   animate = fSettingsAnimate.checked;
   leaves = fSettingsLeaves.checked;
   forest = fSettingsForest.checked;
-
-  offsetX = 0;
-  offsetY = 0;
-
-  if(forest)
-  {
-    
-  }
 
   let startCol: Colour = <Colour>HexToRGB(fSettingsCol.value);
 
@@ -343,6 +347,7 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
 
   let forestIndex = 1;
   if(forest) forestIndex = parseFloat(fSettingsCount.value);
+  treeBounds = [];
 
   for(let s = 0; s < forestIndex; s++)
   {
@@ -358,13 +363,24 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
     for(let i = 1; i <= iterations; i++) output += Iterate(ruleset, expansions[s][i]);
     oView.innerHTML += output; // one parse per tree rather than three per generation
 
-    currentIndex = s;
-
     GetLines(s);
-  
+  }
+
+  // Fit over every tree's drawable segments, then draw with one shared transform.
+  let allBounds = mergeBounds(treeBounds);
+  let fit = fitTransform(allBounds, cssWidth, cssHeight, fSettingsFit.checked ? undefined : canvasScale);
+  if(fit === null) return; // nothing drawable (empty or degenerate result)
+  view = fit;
+
+  for(let s = 0; s < forestIndex; s++)
+  {
+    if(lines[s].length === 0) continue;
+    currentIndex = s;
     Draw(s);
   }
 }
+
+let treeBounds: (Bounds | null)[] = [];
 
 function Iterate(ruleset: RuleSet, generation: string)
 {
@@ -377,31 +393,21 @@ function GetLines(index: number)
 {
   matrix.length = 0;
 
-  let start = new Vector(
-    parseFloat( (fCanvas.width/2).toFixed(2) ),
-    parseFloat( (fCanvas.height/2).toFixed(2) ));
+  // Logical coordinates: a single tree starts at the origin; forest trees are spread along the canvas width.
+  let start = new Vector(0, 0);
 
   if(forest)
   {
-    start = forestStart(fCanvas.width, fCanvas.height, parseFloat(fSettingsCount.value), index);
+    start = forestStart(cssWidth, cssHeight, parseFloat(fSettingsCount.value), index);
   }
 
-  // Bounds accumulate across the trees of one Initiate, starting from the canvas centre.
-  const bounds: Bounds = { minX, maxX, minY, maxY };
-  lines[index] = traceLines(current, len, theta, start, bounds);
-  minX = bounds.minX;
-  maxX = bounds.maxX;
-  minY = bounds.minY;
-  maxY = bounds.maxY;
+  const traced = interpretTurtle(current, len, theta, start);
+  lines[index] = traced.lines;
+  treeBounds[index] = traced.bounds;
 }
 
 function Draw(index: number)
 {
-  if(forest === false)
-  {
-    ({ offsetX, offsetY } = drawOffset({ minX, maxX, minY, maxY }, lines[index][0]));
-  }
-
   ctx.strokeStyle = RandomColour(inheritance, interval);
 
   if(animate)
@@ -428,9 +434,13 @@ function DrawLine()
 {
   ctx.strokeStyle = RandomColour(inheritance, 1);
 
+  const seg: Line = lines[currentIndex][counter];
+  const [sx, sy] = applyTransform(view, seg.start.x, seg.start.y);
+  const [ex, ey] = applyTransform(view, seg.end.x, seg.end.y);
+
   ctx.beginPath();
-  ctx.moveTo(lines[currentIndex][counter].start.x + offsetX, lines[currentIndex][counter].start.y + offsetY);
-  ctx.lineTo(lines[currentIndex][counter].end.x + offsetX, lines[currentIndex][counter].end.y + offsetY);
+  ctx.moveTo(sx, sy);
+  ctx.lineTo(ex, ey);
   ctx.stroke();
 
   if(leaves)
@@ -448,14 +458,14 @@ function DrawLine()
       let valid = !starts.has(lines[currentIndex][counter].end.x + "," + lines[currentIndex][counter].end.y);
       if(valid)
       {
-        let percent = (100 / fView.scrollHeight) * (lines[currentIndex][counter].end.y + offsetY);
+        let percent = (100 / fView.scrollHeight) * ey;
         let radius = Math.abs((100 - percent) / 10);
         let radiusX = radius + Math.random();
         let radiusY = radius + Math.random();
         ctx.beginPath();
         ctx.ellipse(
-        lines[currentIndex][counter].end.x + offsetX, 
-        lines[currentIndex][counter].end.y + offsetY, 
+        ex, 
+        ey, 
         radiusX, 
         radiusY, 
         Math.PI / 4,
@@ -540,11 +550,23 @@ function HexToRGB(hex: string)
 function GetSystem()
 {
   let axiom = fSettingsAxiom.value.toString();
-  let theta = parseInt(fSettingsTheta.value);
+  let theta = parseFloat(fSettingsTheta.value);
   let iterations = parseInt(fSettingsIterations.value);
-  let drawLength = parseInt(fSettingsLength.value);
+  let drawLength = parseFloat(fSettingsLength.value);
+  let factor = parseFloat(fSettingsFactor.value);
   inheritance = parseFloat(fSettingsVariance.value);
-  canvasScale = parseInt(fSettingsCanvas.value);
+  let scale = parseFloat(fSettingsCanvas.value);
+
+  // Auto fit ignores length and scale, so only the manual path needs them valid.
+  let problems = validateRenderSettings({ length: drawLength, scale, factor, theta });
+  if(fSettingsFit.checked) problems = problems.filter(p => !p.startsWith("Starting length") && !p.startsWith("Scale"));
+  if(problems.length > 0)
+  {
+    ShowError(problems.join(" "));
+    return;
+  }
+  canvasScale = scale;
+  if(!(drawLength > 0)) drawLength = 250; // only reachable with auto fit, where the length does not affect the fit
 
   let rules: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("replacementRules") as HTMLCollectionOf<HTMLElement>;
 
@@ -560,7 +582,7 @@ function GetSystem()
     "-",
     axiom,
     theta,
-    4,
+    factor,
     [],
     ignore
   );

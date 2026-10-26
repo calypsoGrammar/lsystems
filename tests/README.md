@@ -48,3 +48,12 @@ snapshots here plus the existing Playwright smoke check (`npm run test:browser`,
 - Parity: `parity.test.ts` compares every preset with `docs/baseline.json` (iterations 0-3) and with a frozen copy of the old rewrite (`legacyRewrite.ts`). Only Fractal Plant 9 differs, first at iteration 5 (251 vs 252 symbols), because nested branches are now skipped as a whole; all other presets are identical to iteration 4.
 - Performance: line tracing and the leaf check are now O(n) (Map/Set on segment start points), the output panel is built once per tree, and the forest shares one total budget across trees.
 - Unchanged on purpose: every matching rule contributes (Fractal Plant 9 relies on it), the `i > 1` / `''`-context quirks above.
+
+## Turtle geometry and auto fit (CAL-1273)
+
+`fit.test.ts` covers `interpretTurtle` (turtle.ts, full-precision, canvas-free; bounds over drawn segments only, `null` when nothing is drawn) and `fit.ts` (`fitTransform`, `mergeBounds`, `validateRenderSettings`). Cases: branching, curve, polar/rotated, fractional angle, long/thin, forest, all presets, at mobile (portrait/landscape), tablet, desktop and wide canvases.
+- Fit: uniform scale, drawing centred on the canvas, padding = 5% of the shorter side (minimum 8 px, at most a quarter of the side). Tests assert the drawn bounds lie inside the padding, are centred to 1e-6 px and that the limiting side fills the padded area.
+- `main.ts`: the Auto fit checkbox (default on) fits all trees as one scene; **Fit to View** turns it back on, **Reset View** restores length 250, scale 1 and auto fit. With auto fit off, Starting Length and Scale are honoured (scale is a uniform multiplier, drawing centred). The reduction factor is a visible field filled from the selected preset (all presets are 4, so appearances are unchanged); the hardcoded 4 is gone.
+- Canvas: backing store is CSS size x `devicePixelRatio`; the context transform is set (never accumulated) after every resize. Theta and length are no longer truncated to integers (`parseFloat`), so presets with fractional angles (e.g. 22.5, 25.7) now draw at their true angle.
+- `traceLines` (2 dp rounding, canvas-centred bounds) and `layout.ts` remain only for the legacy fixtures/parity tests; the app no longer uses them.
+- Limitation: with animation on, a forest still animates only its last tree (existing behaviour, left for follow-up). Leaf size is in screen pixels, so leaves are not scaled with the fit.

@@ -62,6 +62,28 @@ try {
   const second = await bbox()
   check(Math.abs(second.cx - first.cx) < 2 && Math.abs(second.cy - first.cy) < 2, `drawing moved on second Generate: ${first.cx},${first.cy} -> ${second.cx},${second.cy}`)
 
+  // Auto fit (CAL-1273): a mobile viewport at devicePixelRatio 2 gets a hi-dpi backing store, and the drawing sits inside
+  // the canvas, centred, with padding, for the first three presets (including the default).
+  {
+    const ctx2 = await browser.newContext({ viewport: { width: 375, height: 667 }, deviceScaleFactor: 2 })
+    const mp = await ctx2.newPage()
+    const mErrors = []
+    mp.on('pageerror', e => mErrors.push(e.message))
+    await mp.goto(URL_)
+    await mp.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    await mp.evaluate(() => { const e = document.getElementById('fSettingsAnimate'); e.checked = false })
+    for (const idx of [0, 1, 2, 28]) {
+      await mp.evaluate(i => { const e = document.getElementById('fSettingsPresets'); e.value = String(i); e.dispatchEvent(new Event('change')) }, idx)
+      await mp.waitForTimeout(300)
+      const r = await mp.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1; for (let i = 3; i < d.length; i += 4) if (d[i]) { const p = (i - 3) / 4, x = p % c.width, y = Math.floor(p / c.width); if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y } return { x0, x1, y0, y1, w: c.width, h: c.height, cssW: parseFloat(c.style.width) } })
+      check(r.w === Math.round(r.cssW * 2), `preset ${idx}: canvas backing width ${r.w} is not 2x CSS width ${r.cssW}`)
+      check(r.x1 >= 0 && r.x0 > 2 && r.x1 < r.w - 2 && r.y0 > 2 && r.y1 < r.h - 2, `preset ${idx}: drawing touches or leaves the canvas edge`)
+      check(Math.abs((r.x0 + r.x1) / 2 - r.w / 2) < 6 && Math.abs((r.y0 + r.y1) / 2 - r.h / 2) < 6, `preset ${idx}: drawing not centred on mobile`)
+    }
+    check(mErrors.length === 0, 'mobile page errors: ' + mErrors.join('; '))
+    await ctx2.close()
+  }
+
   // Rejected grammar: previous drawing stays, the error banner shows, and a valid run hides it again.
   await page.click('#HideButton')
   await page.waitForSelector('#fSettings', { state: 'visible' })
