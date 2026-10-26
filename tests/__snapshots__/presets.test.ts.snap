@@ -1,0 +1,1185 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`preset catalogue > matches the committed preset definitions 1`] = `
+[
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Koch Island",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F-F+F+FF-F-F+F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Koch Curve 2",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F+F-F-F+F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Lakes and Islands",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "f",
+        "successors": [
+          Successor {
+            "successor": "ffffff",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F+F+F+F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Ruleset 1",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF-F-F-F-F-F+F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Ruleset 2",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF-F-F-F-FF",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Ruleset 3",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF-F+F-F-FF",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Ruleset 4",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF-F--F-F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Ruleset 5",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F-FF--F-F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Ruleset 6",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F-F+F-F-F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Dragon Curve",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "X",
+        "successors": [
+          Successor {
+            "successor": "X+YF+",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "",
+        "contextR": "",
+        "predecessor": "Y",
+        "successors": [
+          Successor {
+            "successor": "-FX-Y",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "FX",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Sierpinski Curve",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "X",
+        "successors": [
+          Successor {
+            "successor": "XF+G+XF--F--XF+G+X",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F--XF--F--XF",
+    "theta": 45,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Sierpinkski Triangle",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F-G+F+G-F",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "G",
+        "successors": [
+          Successor {
+            "successor": "GG",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-G-G",
+    "theta": 120,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Koch Curve 1",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F+F--F+F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 60,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Koch Snowflake",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F+F--F+F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F--F--F",
+    "theta": 60,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Hilbert Curve",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "A",
+        "successors": [
+          Successor {
+            "successor": "+BF-AFA-FB+",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "B",
+        "successors": [
+          Successor {
+            "successor": "-AF+BFB+FA-",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "A",
+    "theta": 90,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Levy C Curve",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "+F--F+",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 45,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Star",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F++F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 77,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Pentigree Curve",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F-F-F++F+F-F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F-F-F-F-F",
+    "theta": 72,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Snowflake",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F++F++F+++++F-F++F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F++F++F++F++F",
+    "theta": 36,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Gosper Curve",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F-G--G+F++FF+G-",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "G",
+        "successors": [
+          Successor {
+            "successor": "+F-GG--G-F++F+G",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 60,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 1",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "X",
+        "successors": [
+          Successor {
+            "successor": "F+[[X]-X]-F[-FX]+X",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "X",
+    "theta": 25,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 2",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F[+F]F[-F]F",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 25.7,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 3",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF-[-F+F+F]+[+F-F-F]",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 22.5,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 4",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F[+F]F[-F][F]",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 20,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 5",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "X",
+        "successors": [
+          Successor {
+            "successor": "F[+X]F[-X]+X",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "X",
+    "theta": 20,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 6",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "X",
+        "successors": [
+          Successor {
+            "successor": "F[+X][-X]FX",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "X",
+    "theta": 25.7,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 7",
+    "rules": [
+      Rule {
+        "contextL": "",
+        "contextR": "",
+        "predecessor": "X",
+        "successors": [
+          Successor {
+            "successor": "[[X]+X]+F[+FX]-X",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "FF",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "X",
+    "theta": 22.5,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "",
+    ],
+    "name": "Fractal Plant 8",
+    "rules": [
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "F",
+        "successors": [
+          Successor {
+            "successor": "F[+F]F[-F]F",
+            "weight": 0.34,
+          },
+          Successor {
+            "successor": "F[+F]F",
+            "weight": 0.33,
+          },
+          Successor {
+            "successor": "F[-F]F",
+            "weight": 0.33,
+          },
+        ],
+      },
+    ],
+    "start": "F",
+    "theta": 20,
+  },
+  RuleSet {
+    "factor": 4,
+    "ignore": [
+      "+",
+      "-",
+      "F",
+    ],
+    "name": "Fractal Plant 9",
+    "rules": [
+      Rule {
+        "contextL": "0",
+        "contextR": "0",
+        "predecessor": "0",
+        "successors": [
+          Successor {
+            "successor": "0",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "0",
+        "contextR": "1",
+        "predecessor": "0",
+        "successors": [
+          Successor {
+            "successor": "1[+F1F1]",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "0",
+        "contextR": "0",
+        "predecessor": "1",
+        "successors": [
+          Successor {
+            "successor": "1",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "0",
+        "contextR": "1",
+        "predecessor": "1",
+        "successors": [
+          Successor {
+            "successor": "1",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "1",
+        "contextR": "0",
+        "predecessor": "0",
+        "successors": [
+          Successor {
+            "successor": "0",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "1",
+        "contextR": "1",
+        "predecessor": "0",
+        "successors": [
+          Successor {
+            "successor": "1F1",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "1",
+        "contextR": "0",
+        "predecessor": "1",
+        "successors": [
+          Successor {
+            "successor": "0",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "1",
+        "contextR": "1",
+        "predecessor": "1",
+        "successors": [
+          Successor {
+            "successor": "0",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "+",
+        "successors": [
+          Successor {
+            "successor": "-",
+            "weight": 1,
+          },
+        ],
+      },
+      Rule {
+        "contextL": "*",
+        "contextR": "*",
+        "predecessor": "-",
+        "successors": [
+          Successor {
+            "successor": "+",
+            "weight": 1,
+          },
+        ],
+      },
+    ],
+    "start": "F1F1F1",
+    "theta": 22.5,
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Dragon Curve expands deterministically 1`] = `
+[
+  "FX",
+  "FX+YF+",
+  "FX+YF++YF+",
+  "FX+YF++YF++YF+",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 1 expands deterministically 1`] = `
+[
+  "X",
+  "F+[[X]-X]-F[-FX]+X",
+  "FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X",
+  "FFFF+[[FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X]-FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X]-FFFF[-FFFFFF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X]+FF+[[F+[[X]-X]-F[-FX]+X]-F+[[X]-X]-F[-FX]+X]-FF[-FFF+[[X]-X]-F[-FX]+X]+F+[[X]-X]-F[-FX]+X",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 2 expands deterministically 1`] = `
+[
+  "F",
+  "F[+F]F[-F]F",
+  "F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F",
+  "F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F[+F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F]F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F]F[+F]F[-F]F[+F[+F]F[-F]F]F[+F]F[-F]F[-F[+F]F[-F]F]F[+F]F[-F]F",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 3 expands deterministically 1`] = `
+[
+  "F",
+  "FF-[-F+F+F]+[+F-F-F]",
+  "FF-[-F+F+F]+[+F-F-F]FF-[-F+F+F]+[+F-F-F]-[-FF-[-F+F+F]+[+F-F-F]+FF-[-F+F+F]+[+F-F-F]+FF-[-F+F+F]+[+F-F-F]]+[+FF-[-F+F+F]+[+F-F-F]-FF-[-F+F+F]+[+F-F-F]-FF-[-F+F+F]+[+F-F-F]]",
+  {
+    "head": "FF-[-F+F+F]+[+F-F-F]FF-[-F+F+F]+[+F-F-F]",
+    "length": 1388,
+    "tail": "[-F+F+F]+[+F-F-F]-FF-[-F+F+F]+[+F-F-F]]]",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 4 expands deterministically 1`] = `
+[
+  "F",
+  "F[+F]F[-F][F]",
+  "F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]",
+  "F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]][+F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]]F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]][-F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]][F[+F]F[-F][F][+F[+F]F[-F][F]]F[+F]F[-F][F][-F[+F]F[-F][F]][F[+F]F[-F][F]]]",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 5 expands deterministically 1`] = `
+[
+  "X",
+  "F[+X]F[-X]+X",
+  "FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X",
+  "FFFF[+FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X]FFFF[-FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X]+FF[+F[+X]F[-X]+X]FF[-F[+X]F[-X]+X]+F[+X]F[-X]+X",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 6 expands deterministically 1`] = `
+[
+  "X",
+  "F[+X][-X]FX",
+  "FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX",
+  "FFFF[+FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX][-FF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX]FFFFFF[+F[+X][-X]FX][-F[+X][-X]FX]FFF[+X][-X]FX",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 7 expands deterministically 1`] = `
+[
+  "X",
+  "[[X]+X]+F[+FX]-X",
+  "[[X]+X]+FF[+FFX]-X",
+  "[[X]+X]+FFFF[+FFFFX]-X",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 8 expands deterministically 1`] = `
+[
+  "F",
+  "F[+F]F",
+  "F[+F]F[-F]F[+F[+F]F]F[-F]F",
+  "F[-F]F[+F[+F]F[-F]F]F[+F]F[-F[-F]F]F[+F]F[+F[-F]F[+F[+F]F]F[+F]F]F[+F]F[-F]F[-F[+F]F]F[+F]F[-F]F",
+]
+`;
+
+exports[`preset expansion at safe depths > Fractal Plant 9 expands deterministically 1`] = `
+[
+  "F1F1F1",
+  "F1100F1100F1100",
+  "F100001[+F1F1]F100001[+F1F1]F100001[+F1F1]",
+  "F100001[+F1F1]11[-F1100F1]F100001[+F1F1]11[-F1100F1]F100001[+F1F1]1[-F1100F1]",
+]
+`;
+
+exports[`preset expansion at safe depths > Gosper Curve expands deterministically 1`] = `
+[
+  "F",
+  "F-G--G+F++FF+G-",
+  "F-G--G+F++FF+G--+F-GG--G-F++F+G--+F-GG--G-F++F+G+F-G--G+F++FF+G-++F-G--G+F++FF+G-F-G--G+F++FF+G-++F-GG--G-F++F+G-",
+  {
+    "head": "F-G--G+F++FF+G--+F-GG--G-F++F+G--+F-GG--",
+    "length": 799,
+    "tail": "+FF+G-++F-G--G+F++FF+G-++F-GG--G-F++F+G-",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Hilbert Curve expands deterministically 1`] = `
+[
+  "A",
+  "+BF-AFA-FB+",
+  "+-AF+BFB+FA-F-+BF-AFA-FB+F+BF-AFA-FB+-F-AF+BFB+FA-+",
+  "+-+BF-AFA-FB+F+-AF+BFB+FA-F-AF+BFB+FA-+F+BF-AFA-FB+-F-+-AF+BFB+FA-F-+BF-AFA-FB+F+BF-AFA-FB+-F-AF+BFB+FA-+F+-AF+BFB+FA-F-+BF-AFA-FB+F+BF-AFA-FB+-F-AF+BFB+FA-+-F-+BF-AFA-FB+F+-AF+BFB+FA-F-AF+BFB+FA-+F+BF-AFA-FB+-+",
+]
+`;
+
+exports[`preset expansion at safe depths > Koch Curve 1 expands deterministically 1`] = `
+[
+  "F",
+  "F+F--F+F",
+  "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+  "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F+F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F+F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+]
+`;
+
+exports[`preset expansion at safe depths > Koch Curve 2 expands deterministically 1`] = `
+[
+  "-F",
+  "-F+F-F-F+F",
+  "-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F",
+  "-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F+F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F+F+F-F-F+F+F+F-F-F+F-F+F-F-F+F-F+F-F-F+F+F+F-F-F+F",
+]
+`;
+
+exports[`preset expansion at safe depths > Koch Island expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "F-F+F+FF-F-F+F-F-F+F+FF-F-F+F-F-F+F+FF-F-F+F-F-F+F+FF-F-F+F",
+  {
+    "head": "F-F+F+FF-F-F+F-F-F+F+FF-F-F+F+F-F+F+FF-F",
+    "length": 475,
+    "tail": "F+FF-F-F+F-F-F+F+FF-F-F+F+F-F+F+FF-F-F+F",
+  },
+  {
+    "head": "F-F+F+FF-F-F+F-F-F+F+FF-F-F+F+F-F+F+FF-F",
+    "length": 3803,
+    "tail": "F+FF-F-F+F-F-F+F+FF-F-F+F+F-F+F+FF-F-F+F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Koch Snowflake expands deterministically 1`] = `
+[
+  "F--F--F",
+  "F+F--F+F--F+F--F+F--F+F--F+F",
+  "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+  {
+    "head": "F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F+F+F",
+    "length": 448,
+    "tail": "F+F+F+F--F+F+F+F--F+F--F+F--F+F+F+F--F+F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Lakes and Islands expands deterministically 1`] = `
+[
+  "F+F+F+F",
+  "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+  {
+    "head": "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+fffff",
+    "length": 2595,
+    "tail": "Ff-FFFF+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+  },
+  {
+    "head": "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF+fffff",
+    "length": 47283,
+    "tail": "Ff-FFFF+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Levy C Curve expands deterministically 1`] = `
+[
+  "F",
+  "+F--F+",
+  "++F--F+--+F--F++",
+  "+++F--F+--+F--F++--++F--F+--+F--F+++",
+]
+`;
+
+exports[`preset expansion at safe depths > Pentigree Curve expands deterministically 1`] = `
+[
+  "F-F-F-F-F",
+  "F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F",
+  "F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F",
+  {
+    "head": "F-F-F++F+F-F-F-F-F++F+F-F-F-F-F++F+F-F++",
+    "length": 2374,
+    "tail": "++F-F-F++F+F-F+F-F-F++F+F-F-F-F-F++F+F-F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Ruleset 1 expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "FF-F-F-F-F-F+F-FF-F-F-F-F-F+F-FF-F-F-F-F-F+F-FF-F-F-F-F-F+F",
+  {
+    "head": "FF-F-F-F-F-F+FFF-F-F-F-F-F+F-FF-F-F-F-F-",
+    "length": 475,
+    "tail": "-F-F-F-F+F-FF-F-F-F-F-F+F+FF-F-F-F-F-F+F",
+  },
+  {
+    "head": "FF-F-F-F-F-F+FFF-F-F-F-F-F+F-FF-F-F-F-F-",
+    "length": 3803,
+    "tail": "-F-F-F-F+F-FF-F-F-F-F-F+F+FF-F-F-F-F-F+F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Ruleset 2 expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF",
+  "FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF",
+  {
+    "head": "FF-F-F-F-FFFF-F-F-F-FF-FF-F-F-F-FF-FF-F-",
+    "length": 2287,
+    "tail": "-F-FF-FF-F-F-F-FF-FF-F-F-F-FFFF-F-F-F-FF",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Ruleset 3 expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FF",
+  "FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+F-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF",
+  {
+    "head": "FF-F+F-F-FFFF-F+F-F-FF-FF-F+F-F-FF+FF-F+",
+    "length": 2287,
+    "tail": "-F-FF-FF-F+F-F-FF-FF-F+F-F-FFFF-F+F-F-FF",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Ruleset 4 expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "FF-F--F-F-FF-F--F-F-FF-F--F-F-FF-F--F-F",
+  "FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F-FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F-FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F-FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F",
+  {
+    "head": "FF-F--F-FFF-F--F-F-FF-F--F-F--FF-F--F-F-",
+    "length": 999,
+    "tail": "FF-F--F-F-FF-F--F-F--FF-F--F-F-FF-F--F-F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Ruleset 5 expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-F",
+  "F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F-F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F",
+  {
+    "head": "F-FF--F-F-F-FF--F-FF-FF--F-F--F-FF--F-F-",
+    "length": 999,
+    "tail": "-F-FF--F-FF-FF--F-F--F-FF--F-F-F-FF--F-F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Ruleset 6 expands deterministically 1`] = `
+[
+  "F-F-F-F",
+  "F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F",
+  "F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F",
+  {
+    "head": "F-F+F-F-F-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-",
+    "length": 999,
+    "tail": "-F-F+F-F-F+F-F+F-F-F-F-F+F-F-F-F-F+F-F-F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Sierpinkski Triangle expands deterministically 1`] = `
+[
+  "F-G-G",
+  "F-G+F+G-F-GG-GG",
+  "F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F-GGGG-GGGG",
+  "F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F-GGGG+F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F+GGGG-F-G+F+G-F-GG+F-G+F+G-F+GG-F-G+F+G-F-GGGGGGGG-GGGGGGGG",
+]
+`;
+
+exports[`preset expansion at safe depths > Sierpinski Curve expands deterministically 1`] = `
+[
+  "F--XF--F--XF",
+  "F--XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF",
+  "F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF--F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF",
+  {
+    "head": "F--XF+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+",
+    "length": 726,
+    "tail": "F+G+XF--F--XF+G+XF+G+XF+G+XF--F--XF+G+XF",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Snowflake expands deterministically 1`] = `
+[
+  "F++F++F++F++F",
+  "F++F++F+++++F-F++F++F++F++F+++++F-F++F++F++F++F+++++F-F++F++F++F++F+++++F-F++F++F++F++F+++++F-F++F",
+  {
+    "head": "F++F++F+++++F-F++F++F++F++F+++++F-F++F++",
+    "length": 608,
+    "tail": "F-F++F++F+++++F-F++F++F++F++F+++++F-F++F",
+  },
+  {
+    "head": "F++F++F+++++F-F++F++F++F++F+++++F-F++F++",
+    "length": 3668,
+    "tail": "F-F++F++F+++++F-F++F++F++F++F+++++F-F++F",
+  },
+]
+`;
+
+exports[`preset expansion at safe depths > Star expands deterministically 1`] = `
+[
+  "F",
+  "F++F",
+  "F++F++F++F",
+  "F++F++F++F++F++F++F++F",
+]
+`;

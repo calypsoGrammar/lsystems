@@ -1,4 +1,4 @@
-// Diagnostic baseline for the 29 presets in src/javascripts/main.ts (CAL-1269).
+// Diagnostic baseline for the 29 presets in src/javascripts/presets.ts (CAL-1269).
 // Read-only: evaluates the preset definitions from the source and re-implements
 // Iterate()/GetLines() (a port, main.ts touches the DOM on import) with a seeded RNG.
 // Usage: node scripts/baseline.mjs [--check]   (writes / verifies docs/baseline.json)
@@ -7,9 +7,10 @@ import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
-const src = readFileSync(root + 'src/javascripts/main.ts', 'utf8')
-const classes = src.slice(src.indexOf('class Successor'), src.indexOf('const primaryButton'))
-const presets = src.slice(src.indexOf('let kochIsland'))
+const model = readFileSync(root + 'src/javascripts/lsystem.ts', 'utf8')
+const classes = model.slice(model.indexOf('export class Successor'), model.indexOf('// A source of numbers')).replaceAll('export ', '')
+const presets = readFileSync(root + 'src/javascripts/presets.ts', 'utf8')
+  .replace(/^(import|export const).*\n/gm, '').replace(/^unregisteredPresets\.push.*\n/m, '')
 const js = ts.transpileModule(classes + 'const lSystems = [];\n' + presets + '\nreturn { lSystems, defined: [' +
   [...presets.matchAll(/^let (\w+) = new RuleSet/gm)].map(m => m[1]).join(',') + '] };',
   { compilerOptions: { target: 'ES2020' } }).outputText

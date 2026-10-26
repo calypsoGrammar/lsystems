@@ -9,8 +9,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "audit": "npm audit --audit-level=high",
+    "test": "vitest run",
     "test:browser": "node scripts/browser-check.mjs",
-    "check": "npm run typecheck && npm run audit:baseline:check && npm run build && npm run test:browser && npm run audit",
+    "check": "npm run typecheck && npm run audit:baseline:check && npm test && npm run build && npm run test:browser && npm run audit",
     "audit:baseline": "node scripts/baseline.mjs",
     "audit:baseline:check": "node scripts/baseline.mjs --check",
     "audit:browser": "node scripts/browser-baseline.mjs"
@@ -21,7 +22,8 @@
     "postcss": "^8.5.31",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   },
   "dependencies": {
     "modern-normalize": "^3.0.1"

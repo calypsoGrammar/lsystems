@@ -1,0 +1,2327 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`edge-case dimensions > places a seeded forest at reproducible spots in every viewport 1`] = `
+{
+  "desktop 1280x800": [
+    [
+      640,
+      680,
+    ],
+    [
+      466,
+      680,
+    ],
+    [
+      570,
+      680,
+    ],
+    [
+      475,
+      680,
+    ],
+    [
+      1348,
+      680,
+    ],
+  ],
+  "portrait phone 390x844": [
+    [
+      195,
+      717,
+    ],
+    [
+      142,
+      717,
+    ],
+    [
+      175,
+      717,
+    ],
+    [
+      144,
+      717,
+    ],
+    [
+      411,
+      717,
+    ],
+  ],
+  "small 600x500": [
+    [
+      300,
+      425,
+    ],
+    [
+      219,
+      425,
+    ],
+    [
+      268,
+      425,
+    ],
+    [
+      222,
+      425,
+    ],
+    [
+      632,
+      425,
+    ],
+  ],
+  "ultrawide 2560x600": [
+    [
+      1280,
+      510,
+    ],
+    [
+      931,
+      510,
+    ],
+    [
+      1138,
+      510,
+    ],
+    [
+      947,
+      510,
+    ],
+    [
+      2696,
+      510,
+    ],
+  ],
+}
+`;
+
+exports[`geometry snapshots > Dragon Curve at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      324,
+      656,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 3,
+    "offset": [
+      -8,
+      8,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      343,
+      211,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 3,
+    "offset": [
+      -8,
+      8,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      197,
+      316,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 3,
+    "offset": [
+      -8,
+      8,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      239,
+      1296,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 3,
+    "offset": [
+      -8,
+      8,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 1 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      602,
+      211,
+      653,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 18,
+    "offset": [
+      13,
+      65,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      157,
+      230,
+      208,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 18,
+    "offset": [
+      13,
+      65,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      262,
+      83,
+      313,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 18,
+    "offset": [
+      13,
+      65,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1242,
+      126,
+      1293,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 18,
+    "offset": [
+      13,
+      65,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 2 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      615,
+      199,
+      660,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      3,
+      70,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      170,
+      218,
+      215,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      3,
+      70,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      275,
+      72,
+      320,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      3,
+      70,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1255,
+      114,
+      1300,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      3,
+      70,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 3 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      576,
+      147,
+      668,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      18,
+      97,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      131,
+      166,
+      223,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      18,
+      97,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      236,
+      19,
+      328,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      18,
+      97,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1216,
+      62,
+      1308,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      18,
+      97,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 4 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      619,
+      231,
+      656,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      2,
+      55,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      174,
+      249,
+      211,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      2,
+      55,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      279,
+      103,
+      316,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      2,
+      55,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1259,
+      146,
+      1296,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      2,
+      55,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 5 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      629,
+      248,
+      651,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      46,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      184,
+      267,
+      206,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      46,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      289,
+      121,
+      311,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      46,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1269,
+      163,
+      1291,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      46,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 6 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      627,
+      246,
+      653,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      47,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      182,
+      265,
+      208,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      47,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      287,
+      119,
+      313,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      47,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1267,
+      161,
+      1293,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 10,
+    "offset": [
+      0,
+      47,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 7 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      289,
+      673,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -17,
+      26,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      307,
+      228,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -17,
+      26,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      161,
+      333,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -17,
+      26,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      204,
+      1313,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -17,
+      26,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 8 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      635,
+      262,
+      655,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 11,
+    "offset": [
+      -5,
+      39,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      190,
+      281,
+      210,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 11,
+    "offset": [
+      -5,
+      39,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      295,
+      134,
+      315,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 11,
+    "offset": [
+      -5,
+      39,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1275,
+      177,
+      1295,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 11,
+    "offset": [
+      -5,
+      39,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Fractal Plant 9 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      264,
+      652,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 9,
+    "offset": [
+      -6,
+      38,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      283,
+      207,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 9,
+    "offset": [
+      -6,
+      38,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      137,
+      312,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 9,
+    "offset": [
+      -6,
+      38,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      179,
+      1292,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 9,
+    "offset": [
+      -6,
+      38,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Gosper Curve at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      532,
+      254,
+      640,
+      371,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 49,
+    "offset": [
+      54,
+      27,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      87,
+      273,
+      195,
+      390,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 49,
+    "offset": [
+      54,
+      27,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      192,
+      127,
+      300,
+      244,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 49,
+    "offset": [
+      54,
+      27,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1172,
+      169,
+      1280,
+      286,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 49,
+    "offset": [
+      54,
+      27,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Hilbert Curve at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      293,
+      687,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 15,
+    "offset": [
+      -23,
+      23,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      312,
+      242,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 15,
+    "offset": [
+      -23,
+      23,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      166,
+      347,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 15,
+    "offset": [
+      -23,
+      23,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      208,
+      1327,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 15,
+    "offset": [
+      -23,
+      23,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Koch Curve 1 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      199,
+      681,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 16,
+    "offset": [
+      -20,
+      70,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      218,
+      236,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 16,
+    "offset": [
+      -20,
+      70,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      72,
+      341,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 16,
+    "offset": [
+      -20,
+      70,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      114,
+      1321,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 16,
+    "offset": [
+      -20,
+      70,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Koch Curve 2 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      499,
+      278,
+      640,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      70,
+      31,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      54,
+      296,
+      195,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      70,
+      31,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      159,
+      150,
+      300,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      70,
+      31,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1139,
+      193,
+      1280,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 25,
+    "offset": [
+      70,
+      31,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Koch Island at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      312,
+      12,
+      718,
+      418,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      125,
+      125,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      -133,
+      31,
+      273,
+      437,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": false,
+    "lines": 256,
+    "offset": [
+      125,
+      125,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      -28,
+      -116,
+      378,
+      291,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      125,
+      125,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      952,
+      -73,
+      1358,
+      333,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      125,
+      125,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Koch Snowflake at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      518,
+      199,
+      681,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 48,
+    "offset": [
+      41,
+      70,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      73,
+      218,
+      236,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 48,
+    "offset": [
+      41,
+      70,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      178,
+      72,
+      341,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 48,
+    "offset": [
+      41,
+      70,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1158,
+      114,
+      1321,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 48,
+    "offset": [
+      41,
+      70,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Lakes and Islands at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      421,
+      -441,
+      1421,
+      559,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": false,
+    "lines": 1296,
+    "offset": [
+      -281,
+      281,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      -24,
+      -423,
+      976,
+      577,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": false,
+    "lines": 1296,
+    "offset": [
+      -281,
+      281,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      81,
+      -569,
+      1081,
+      431,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": false,
+    "lines": 1296,
+    "offset": [
+      -281,
+      281,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1061,
+      -526,
+      2061,
+      474,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": false,
+    "lines": 1296,
+    "offset": [
+      -281,
+      281,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Levy C Curve at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      309,
+      656,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -8,
+      16,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      327,
+      211,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -8,
+      16,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      181,
+      316,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -8,
+      16,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      224,
+      1296,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -8,
+      16,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Pentigree Curve at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      433,
+      217,
+      640,
+      425,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      104,
+      19,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      -12,
+      236,
+      195,
+      444,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      104,
+      19,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      93,
+      90,
+      300,
+      298,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      104,
+      19,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1073,
+      132,
+      1280,
+      340,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      104,
+      19,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Ruleset 1 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      421,
+      215,
+      640,
+      434,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      109,
+      16,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      -24,
+      234,
+      195,
+      452,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      109,
+      16,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      81,
+      88,
+      300,
+      306,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      109,
+      16,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1061,
+      130,
+      1280,
+      349,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 256,
+    "offset": [
+      109,
+      16,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Ruleset 2 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      499,
+      199,
+      640,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      54,
+      218,
+      195,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      159,
+      72,
+      300,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1139,
+      114,
+      1280,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Ruleset 3 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      593,
+      293,
+      765,
+      465,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      -39,
+      -39,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      148,
+      312,
+      320,
+      484,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      -39,
+      -39,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      253,
+      166,
+      425,
+      338,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      -39,
+      -39,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1233,
+      208,
+      1405,
+      380,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 196,
+    "offset": [
+      -39,
+      -39,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Ruleset 4 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      499,
+      199,
+      640,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      54,
+      218,
+      195,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      159,
+      72,
+      300,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1139,
+      114,
+      1280,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      70,
+      70,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Ruleset 5 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      531,
+      293,
+      640,
+      403,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      55,
+      -8,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      86,
+      312,
+      195,
+      421,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      55,
+      -8,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      191,
+      166,
+      300,
+      275,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      55,
+      -8,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1171,
+      208,
+      1280,
+      318,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      55,
+      -8,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Ruleset 6 at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      546,
+      246,
+      656,
+      356,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      39,
+      39,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      101,
+      265,
+      211,
+      374,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      39,
+      39,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      206,
+      119,
+      316,
+      228,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      39,
+      39,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1186,
+      161,
+      1296,
+      271,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 100,
+    "offset": [
+      39,
+      39,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Sierpinkski Triangle at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      586,
+      278,
+      640,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 27,
+    "offset": [
+      27,
+      31,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      141,
+      296,
+      195,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 27,
+    "offset": [
+      27,
+      31,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      246,
+      150,
+      300,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 27,
+    "offset": [
+      27,
+      31,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1226,
+      193,
+      1280,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 27,
+    "offset": [
+      27,
+      31,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Sierpinski Curve at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      464,
+      244,
+      640,
+      420,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      88,
+      8,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      19,
+      263,
+      195,
+      439,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      88,
+      8,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      124,
+      117,
+      300,
+      293,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      88,
+      8,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1104,
+      159,
+      1280,
+      335,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 64,
+    "offset": [
+      88,
+      8,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Snowflake at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      640,
+      200,
+      805,
+      373,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      -82,
+      54,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      195,
+      219,
+      360,
+      392,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      -82,
+      54,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      300,
+      72,
+      465,
+      246,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      -82,
+      54,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1280,
+      115,
+      1445,
+      288,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 180,
+    "offset": [
+      -82,
+      54,
+    ],
+  },
+}
+`;
+
+exports[`geometry snapshots > Star at 2 iterations in every viewport 1`] = `
+{
+  "desktop 1280x800": {
+    "bounds": [
+      635,
+      324,
+      650,
+      340,
+    ],
+    "canvas": [
+      1280,
+      680,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -2,
+      8,
+    ],
+  },
+  "portrait phone 390x844": {
+    "bounds": [
+      190,
+      343,
+      205,
+      359,
+    ],
+    "canvas": [
+      390,
+      717,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -2,
+      8,
+    ],
+  },
+  "small 600x500": {
+    "bounds": [
+      295,
+      197,
+      310,
+      213,
+    ],
+    "canvas": [
+      600,
+      425,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -2,
+      8,
+    ],
+  },
+  "ultrawide 2560x600": {
+    "bounds": [
+      1275,
+      239,
+      1290,
+      255,
+    ],
+    "canvas": [
+      2560,
+      510,
+    ],
+    "fits": true,
+    "lines": 4,
+    "offset": [
+      -2,
+      8,
+    ],
+  },
+}
+`;
