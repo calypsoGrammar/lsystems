@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./assets/favicon-B0opx7u9.ico">
     <title>L-Systems</title>
-    <script type="module" crossorigin src="./assets/index-Cnei1v64.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BLdQ4KTR.css">
+    <script type="module" crossorigin src="./assets/index-CHKr4-ew.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BuV5-I5Z.css">
   </head>
   <body class='min-h-screen max-h-screen w-full'>
 
@@ -21,106 +21,109 @@
 
     </div>
 
-    <div id="fSettings" class="fixed z-10 bg-white flex flex-col justify-start content-start items-center w-full overflow-y-auto p-8" style="display:none;max-height:calc(var(--vh) * 92.5)">
+    <div id="fSettings" class="fixed z-10 bg-white w-full overflow-y-auto p-4 sm:p-8" style="display:none;max-height:calc(var(--vh) * 92.5)">
+     <div class="mx-auto w-full max-w-3xl flex flex-col gap-4">
 
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsPresets" class="mx-auto">Load Preset:</label>
-        <select id="fSettingsPresets" class="border border-black rounded-lg p-2 m-2"></select>
-      </div>
-  
-      <div class="my-4 font-bold">Rendering</div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsCol" class="mx-auto">Colour:</label>
-        <input type="color" id="fSettingsCol" class="m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsVariance" class="mx-auto">Colour Variance:</label>
-        <input type="number" value="5" min="0" max="255" step="0.1" id="fSettingsVariance" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsAnimate" class="mx-auto">Animate:</label>
-        <input type="checkbox" id="fSettingsAnimate" checked class="mx-auto">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsInterval" class="mx-auto">Animation Interval:</label>
-        <input type="number" min="10" max="1000" step="1" id="fSettingsInterval" value="10" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsLeaves" class="mx-auto">Leaves:</label>
-        <input type="checkbox" id="fSettingsLeaves" class="mx-auto border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsForest" class="mx-auto">Forest:</label>
-        <input type="checkbox" id="fSettingsForest" class="mx-auto border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 font-bold">Dimensions</div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsCount" class="mx-auto">Count:</label>
-        <input type="number" min="1" max="25" step="1" id="fSettingsCount" value="5" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsFit" class="mx-auto">Auto fit to view:</label>
-        <input type="checkbox" id="fSettingsFit" checked class="mx-auto border border-black rounded-lg p-2 m-2">
-      </div>
+      <section aria-labelledby="secGrammar" class="flex flex-col gap-2">
+        <h2 id="secGrammar" class="font-bold">Grammar</h2>
 
-      <div class="my-4 flex flex-row justify-center">
-        <button id="fSettingsFitNow" class="bg-white rounded-lg w-24 h-12 my-4 mx-2 active:scale-95 border border-black p-2">Fit to View</button>
-        <button id="fSettingsResetView" class="bg-white rounded-lg w-24 h-12 my-4 mx-2 active:scale-95 border border-black p-2">Reset View</button>
-      </div>
+        <div class="flex flex-col">
+          <label for="fSettingsPresets">Load Preset:</label>
+          <select id="fSettingsPresets" class="border border-black rounded-lg p-2 m-2"></select>
+        </div>
 
-      <div class="my-4 font-bold">Advanced (used when auto fit is off)</div>
+        <div class="flex flex-row flex-wrap items-center gap-2">
+          <button id="fSettingsReset" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Reset to preset</button>
+          <span id="fSettingsStatus" role="status" aria-live="polite" class="text-sm"></span>
+        </div>
 
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsLength" class="mx-auto">Starting Length:</label>
-        <input type="number" min="0" step="any" id="fSettingsLength" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsCanvas" class="mx-auto">Scale:</label>
-        <input type="number" min="0" step="any" id="fSettingsCanvas" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
+        <div class="flex flex-col">
+          <label for="fSettingsAxiom">Axiom:</label>
+          <textarea id="fSettingsAxiom" rows="2" class="border border-black rounded-lg p-2 m-2 w-full"></textarea>
+        </div>
 
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsFactor" class="mx-auto">Length reduction factor:</label>
-        <input type="number" min="0" step="any" id="fSettingsFactor" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 font-bold">Ruleset</div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsAxiom" class="mx-auto">Axiom:</label>
-        <textarea id="fSettingsAxiom" class="border border-black rounded-lg p-2 m-2"></textarea>
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsTheta" class="mx-auto">Theta:</label>
-        <input type="number" min="0" max="360" step="any" id="fSettingsTheta" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <div class="my-4 flex flex-col">
-        <label for="fSettingsIterations" class="mx-auto">Iterations:</label>
-        <input type="number" min="0" step="1" id="fSettingsIterations" class="text-center border border-black rounded-lg p-2 m-2">
-      </div>
-  
-      <label for="fSettingsReplacementDiv" class="my-4 font-bold">Replacement Rules</label>
-  
-      <div id="fSettingsReplacementDiv" class="flex flex-col justify-start items-center border border-black rounded-lg p-2 m-2">
-  
-      </div>
-  
-      <button id="fSettingsReplacementAdd" class="bg-white rounded-lg w-24 h-12 mx-auto my-4 active:scale-95 border border-black rounded-lg p-2 m-2">Add Rule</button>
-  
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-2">
+        <div class="flex flex-col">
+          <label for="fSettingsTheta">Theta:</label>
+          <input type="number" min="0" max="360" step="any" id="fSettingsTheta" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        <div class="flex flex-col">
+          <label for="fSettingsIterations">Iterations:</label>
+          <input type="number" min="0" step="1" id="fSettingsIterations" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        <div class="flex flex-col">
+          <label for="fSettingsFactor">Length reduction factor:</label>
+          <input type="number" min="0" step="any" id="fSettingsFactor" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        </div>
+
+        <h3 id="fSettingsRulesHeading" class="font-bold">Replacement Rules</h3>
+        <div id="fSettingsReplacementDiv" role="group" aria-labelledby="fSettingsRulesHeading" class="flex flex-col items-stretch"></div>
+        <div><button id="fSettingsReplacementAdd" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Add Rule</button></div>
+      </section>
+
+      <section aria-labelledby="secAppearance" class="flex flex-col gap-2 border-t border-black pt-2">
+        <h2 id="secAppearance" class="font-bold">Appearance</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+        <div class="flex flex-col">
+          <label for="fSettingsCol">Colour:</label>
+          <input type="color" id="fSettingsCol" class="m-1">
+        </div>
+        <div class="flex flex-col">
+          <label for="fSettingsVariance">Colour Variance:</label>
+          <input type="number" value="5" min="0" max="255" step="0.1" id="fSettingsVariance" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        <div class="flex flex-row items-center gap-2 min-h-10">
+          <input type="checkbox" id="fSettingsLeaves" >
+          <label for="fSettingsLeaves">Leaves</label>
+        </div>
+        <div class="flex flex-row items-center gap-2 min-h-10">
+          <input type="checkbox" id="fSettingsForest" >
+          <label for="fSettingsForest">Forest</label>
+        </div>
+        <div class="flex flex-col">
+          <label for="fSettingsCount">Count:</label>
+          <input type="number" min="1" max="25" step="1" value="5" id="fSettingsCount" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="secRendering" class="flex flex-col gap-2 border-t border-black pt-2">
+        <h2 id="secRendering" class="font-bold">Rendering</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+        <div class="flex flex-row items-center gap-2 min-h-10">
+          <input type="checkbox" id="fSettingsAnimate" checked>
+          <label for="fSettingsAnimate">Animate</label>
+        </div>
+        <div class="flex flex-col">
+          <label for="fSettingsInterval">Animation Interval:</label>
+          <input type="number" min="10" max="1000" step="1" value="10" id="fSettingsInterval" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        <div class="flex flex-row items-center gap-2 min-h-10">
+          <input type="checkbox" id="fSettingsFit" checked>
+          <label for="fSettingsFit">Auto fit to view</label>
+        </div>
+        </div>
+        <div class="flex flex-row flex-wrap gap-2">
+          <button id="fSettingsFitNow" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Fit to View</button>
+          <button id="fSettingsResetView" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Reset View</button>
+        </div>
+        <div class="text-sm">Used when auto fit is off:</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+        <div class="flex flex-col">
+          <label for="fSettingsLength">Starting Length:</label>
+          <input type="number" min="0" step="any" id="fSettingsLength" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        <div class="flex flex-col">
+          <label for="fSettingsCanvas">Scale:</label>
+          <input type="number" min="0" step="any" id="fSettingsCanvas" class="border border-black rounded-lg p-2 m-2 w-full">
+        </div>
+        </div>
+      </section>
+
+     </div>
     </div>
-  
+
     <div id="fError" role="alert" class="fixed z-20 bottom-0 w-full bg-red-100 text-red-800 border border-red-800 p-2 text-center" style="display:none"></div>
 
     <div id="fContainer" class="fixed w-full" style="min-height:calc(var(--vh) * 92.5)">
