@@ -62,6 +62,22 @@ try {
   const second = await bbox()
   check(Math.abs(second.cx - first.cx) < 2 && Math.abs(second.cy - first.cy) < 2, `drawing moved on second Generate: ${first.cx},${first.cy} -> ${second.cx},${second.cy}`)
 
+  // Rejected grammar: previous drawing stays, the error banner shows, and a valid run hides it again.
+  await page.click('#HideButton')
+  await page.waitForSelector('#fSettings', { state: 'visible' })
+  const before = await px()
+  await page.fill('#fSettingsIterations', '26')
+  await page.click('#GenerateButton')
+  await page.waitForTimeout(300)
+  check(await page.locator('#fError').isVisible(), '#fError not shown for 26 iterations')
+  check((await page.locator('#fError').textContent()).length > 0, '#fError is empty')
+  check(await px() === before, 'canvas changed after a rejected grammar')
+  await page.fill('#fSettingsIterations', '2')
+  await page.click('#GenerateButton')
+  await page.waitForTimeout(300)
+  check(!(await page.locator('#fError').isVisible()), '#fError still visible after a valid run')
+  await page.click('#HideButton') // close the settings panel again
+
   const style = (sel, props) => page.evaluate(([sel, props]) => { const s = getComputedStyle(document.querySelector(sel)); return Object.fromEntries(props.map(p => [p, s[p]])) }, [sel, props])
   const hdr = await style('#GenerateButton', ['marginLeft', 'marginRight'])
   check(hdr.marginLeft === '16px' && hdr.marginRight === '16px', `header button margin ${hdr.marginLeft}/${hdr.marginRight}, expected 16px`)

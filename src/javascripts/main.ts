@@ -1,9 +1,9 @@
 "use strict";
 
-import { Rule, RuleSet, Successor, Colour, Vector } from "./lsystem/model";
+import { Rule, RuleSet, Successor, Colour, Vector, Line } from "./lsystem/model";
 import { presets } from "./lsystem/presets";
 import { drawOffset, initialBounds } from "./lsystem/layout";
-import { rewrite } from "./lsystem/rewrite";
+import { expandGrammar, GrammarError, ExpansionLimitError, MAX_TOTAL_SYMBOLS } from "./lsystem/grammar";
 import { forestStart, traceLines, type Bounds } from "./lsystem/turtle";
 
 function CalculateVh()
@@ -23,6 +23,7 @@ const LSystemsButton: HTMLElement = <HTMLElement>document.getElementById("LSyste
 const OutputButton: HTMLElement = <HTMLElement>document.getElementById("OutputButton");
 const HideButton: HTMLElement = <HTMLElement>document.getElementById("HideButton");
 
+const fError: HTMLElement = <HTMLElement>document.getElementById("fError");
 const oView: HTMLElement = <HTMLElement>document.getElementById("oView");
 const fDiv: HTMLElement = <HTMLElement>document.getElementById("fDiv");
 
@@ -279,8 +280,36 @@ function ReSize()
   GetSystem();
 }
 
+function ShowError(message: string)
+{
+  fError.textContent = message;
+  fError.style.display = "block";
+}
+
 function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
 {
+  // Expand every tree before touching the canvas or output, so a rejected grammar leaves the previous drawing intact.
+  let treeCount = fSettingsForest.checked ? parseFloat(fSettingsCount.value) : 1;
+  let expansions: string[][] = [];
+  try
+  {
+    let budget = MAX_TOTAL_SYMBOLS; // shared by all trees, so Forest cannot multiply the cap
+  for(let s = 0; s < treeCount; s++)
+  {
+    let generations = expandGrammar(ruleset, iterations, Math.random, budget);
+    budget -= generations.reduce((n, g) => n + g.length, 0);
+    expansions.push(generations);
+  }
+  }
+  catch(e)
+  {
+    if(e instanceof GrammarError) ShowError(e.problems.join(" "));
+    else if(e instanceof ExpansionLimitError) ShowError(e.message + " Lower the iterations or simplify the rules.");
+    else throw e;
+    return;
+  }
+  fError.style.display = "none";
+
   ctx.scale(canvasScale, canvasScale);
   ctx.clearRect(0,0, fCanvas.width, fCanvas.height);
 
@@ -324,11 +353,10 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
     current = ruleset.start;
     len = startlength;
 
-    oView.innerHTML += ruleset.start;
-    oView.innerHTML += "<br>";
-    oView.innerHTML += "<br>";
+    let output = ruleset.start + "<br><br>";
 
-    for(let i = 0; i < iterations; i++) Iterate(ruleset);
+    for(let i = 1; i <= iterations; i++) output += Iterate(ruleset, expansions[s][i]);
+    oView.innerHTML += output; // one parse per tree rather than three per generation
 
     currentIndex = s;
 
@@ -338,14 +366,11 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   }
 }
 
-function Iterate(ruleset: RuleSet)
+function Iterate(ruleset: RuleSet, generation: string)
 {
   len /= ruleset.factor;
-  current = rewrite(ruleset, current);
-
-  oView.innerHTML += current;
-  oView.innerHTML += "<br>";
-  oView.innerHTML += "<br>";
+  current = generation;
+  return current + "<br><br>";
 }
 
 function GetLines(index: number)
@@ -397,6 +422,7 @@ function Draw(index: number)
 }
 
 let currentIndex = 0;
+const startKeys = new WeakMap<object, Set<string>>(); // segment start points per tree, for the O(1) leaf check
 
 function DrawLine()
 {
@@ -413,16 +439,13 @@ function DrawLine()
     {
       ctx.fillStyle = ctx.strokeStyle;
   
-      let valid = true;
-      for(let i = 0; i < lines[currentIndex].length; i++)
+      let starts = startKeys.get(lines[currentIndex]);
+      if(starts === undefined)
       {
-        if(lines[currentIndex][counter].end.x === lines[currentIndex][i].start.x &&
-          lines[currentIndex][counter].end.y === lines[currentIndex][i].start.y)
-        {
-          valid = false;
-          break;
-        }
+        starts = new Set(lines[currentIndex].map((l: Line) => l.start.x + "," + l.start.y));
+        startKeys.set(lines[currentIndex], starts);
       }
+      let valid = !starts.has(lines[currentIndex][counter].end.x + "," + lines[currentIndex][counter].end.y);
       if(valid)
       {
         let percent = (100 / fView.scrollHeight) * (lines[currentIndex][counter].end.y + offsetY);

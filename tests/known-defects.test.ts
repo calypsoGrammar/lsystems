@@ -13,19 +13,16 @@ import { presets } from "../src/javascripts/lsystem/presets";
 import { rewrite } from "../src/javascripts/lsystem/rewrite";
 import { RotateTransform, traceLines } from "../src/javascripts/lsystem/turtle";
 import { expand, seeded } from "./helpers";
+import { ExpansionLimitError, expandGrammar } from "../src/javascripts/lsystem/grammar";
 
 const set = (rules: Rule[], ignore: string[] = [""]) => new RuleSet("t", "", 90, 4, rules, ignore);
 const rule = (p: string, s: [string, number][], l = "*", r = "*") =>
   new Rule(p, s.map(([t, w]) => new Successor(t, w)), l, r);
 const preset = (n: string) => presets.find(p => p.name === n)!;
 
-describe("rule with no successors (AUDIT known defect 5)", () => {
-  const empty = set([rule("A", [])]);
-  it("current behaviour: throws TypeError", () => {
-    expect(() => rewrite(empty, "A", seeded(1))).toThrow(TypeError);
-  });
-  it.fails("desired behaviour: leaves the symbol unchanged instead of throwing", () => {
-    expect(rewrite(empty, "A", seeded(1))).toBe("A");
+describe("rule with no successors (AUDIT known defect 5, fixed in CAL-1272)", () => {
+  it("leaves the symbol unchanged instead of throwing", () => {
+    expect(rewrite(set([rule("A", [])]), "A", seeded(1))).toBe("A");
   });
 });
 
@@ -94,13 +91,10 @@ describe("heading is not wrapped at 360 (RotateTransform)", () => {
   });
 });
 
-describe("no limit on exponential expansion (AUDIT known defect 6)", () => {
+describe("limit on exponential expansion (AUDIT known defect 6, fixed in CAL-1272)", () => {
   const boom = new RuleSet("boom", "F", 90, 4, [rule("F", [["F".repeat(20), 1]])], [""]);
-  it("current behaviour: expands without bound (20^4 = 160 000 characters)", () => {
-    expect(expand(boom, 4).current).toHaveLength(160000);
-  });
-  it.fails("desired behaviour: an expansion past a safety cap (here 100 000 characters) is refused", () => {
-    expect(() => expand(boom, 4)).toThrow();
+  it("expandGrammar refuses an expansion past the cap with ExpansionLimitError", () => {
+    expect(() => expandGrammar(boom, 5)).toThrow(ExpansionLimitError);
   });
 });
 
