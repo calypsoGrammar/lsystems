@@ -339,6 +339,27 @@ try {
     await actx.close()
   }
 
+  // Page load animates (startup sizing must not cancel it), and a rejected draw never leaves the busy state stuck.
+  {
+    const lctx = await browser.newContext({ viewport: { width: 1000, height: 700 } })
+    const lp = await lctx.newPage()
+    await lp.goto(URL_)
+    await lp.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    await lp.waitForTimeout(250)
+    const n1 = await lp.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) n++; return n })
+    await lp.waitForTimeout(150)
+    const n2 = await lp.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) n++; return n })
+    check(n2 > n1 || await lp.getAttribute('#GenerateButton', 'aria-busy') === 'true', `page load did not animate (${n1} -> ${n2} px)`)
+    await lp.waitForTimeout(8000)
+    check(await lp.getAttribute('#GenerateButton', 'aria-busy') === 'false', 'busy state stuck after the animation finished')
+    await lp.click('#HideButton')
+    await lp.fill('#fSettingsInterval', '1000'); await lp.click('#GenerateButton')
+    await lp.fill('#fSettingsIterations', '10'); await lp.fill('#fSettingsAxiom', 'FFFFFFF'); await lp.fill('#predecessor0', 'F'); await lp.fill('#successor00', 'FFF')
+    await lp.click('#GenerateButton'); await lp.waitForTimeout(1500)
+    check(await lp.getAttribute('#GenerateButton', 'aria-busy') === 'false', 'busy state stuck after a rejected draw: ' + await lp.textContent('#fError'))
+    await lctx.close()
+  }
+
   // Narrow screen: no horizontal overflow in the editor and touch-sized buttons.
   {
     const nctx = await browser.newContext({ viewport: { width: 320, height: 640 } })

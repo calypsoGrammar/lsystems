@@ -197,12 +197,17 @@ function ResetView()
   fSettingsFit.checked = true;
 }
 
-function ReSize()
+function SizeContainers()
 {
   fContainer.style.width = window.innerWidth + 'px';
   fContainer.style.height = CanvasHeight() + 'px';
   fView.style.width = window.innerWidth + 'px';
   fView.style.height = CanvasHeight() + 'px';
+}
+
+function ReSize()
+{
+  SizeContainers();
   // Debounced re-fit of the existing scene; never regenerates, so stochastic grammars and forest placement stay put.
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => Render(false), 120);
@@ -262,7 +267,7 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   {
     if(e instanceof SegmentLimitError)
     {
-      playback.cancel();
+      StopPlayback();
       ShowError(e.message + " Lower the iterations or the number of trees.");
       return;
     }
@@ -318,7 +323,7 @@ function GenerationView(generation: string, label: string): HTMLElement
 // stochastic choices, forest placement, colours, leaf jitter) is fixed, so this is also what resize uses.
 function Render(animated: boolean)
 {
-  playback.cancel();
+  StopPlayback();
   SizeCanvas();
   if(scene === null) return;
   const fit = fitTransform(scene.bounds, cssWidth, cssHeight, fSettingsFit.checked ? undefined : canvasScale);
@@ -326,7 +331,6 @@ function Render(animated: boolean)
   view = fit;
 
   const current = scene;
-  SetBusy(false);
   playback.start({
     onDone: () => SetBusy(false),
     counts: current.trees.map(t => t.lines.length),
@@ -334,6 +338,13 @@ function Render(animated: boolean)
     draw: (tree, segment) => DrawSegment(current.trees[tree], segment),
   });
   if(playback.running) SetBusy(true);
+}
+
+// Cancelling never calls onDone, so every cancel without a restart must clear the busy state itself.
+function StopPlayback()
+{
+  playback.cancel();
+  SetBusy(false);
 }
 
 // Visible and announced loading state while an animation is drawing.
@@ -437,7 +448,7 @@ function Main()
     fSettingsAnimate.checked = false;
     fSettingsMotionNote.hidden = false;
   }
-  ReSize();
+  SizeContainers();
   FillSelect();
   UpdateSelect(pickIndex);
   //Initiate(lSystems[pickIndex], 2, 1000);
