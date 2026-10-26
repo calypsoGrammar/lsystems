@@ -6,7 +6,7 @@ import { RuleEditor } from "./editor-ui";
 import { presets } from "./lsystem/presets";
 import { applyTransform, fitTransform, type ViewTransform } from "./lsystem/fit";
 import { expandGrammar, GrammarError, ExpansionLimitError, MAX_TOTAL_SYMBOLS } from "./lsystem/grammar";
-import { buildScene, displayText, SegmentLimitError, type Scene, type TreeScene } from "./lsystem/scene";
+import { buildScene, nextSection, MAX_DISPLAY_CHARS, SegmentLimitError, type Scene, type TreeScene } from "./lsystem/scene";
 import { Playback } from "./lsystem/playback";
 
 function CalculateVh()
@@ -19,6 +19,10 @@ window.addEventListener('DOMContentLoaded', CalculateVh);
 window.addEventListener('resize', CalculateVh);
 window.addEventListener('orientationchange', CalculateVh);
 
+const toolbar: HTMLElement = <HTMLElement>document.getElementById("toolbar");
+const cStatus: HTMLElement = <HTMLElement>document.getElementById("cStatus");
+const FitButton: HTMLElement = <HTMLElement>document.getElementById("FitButton");
+const fSettingsMotionNote: HTMLElement = <HTMLElement>document.getElementById("fSettingsMotionNote");
 const GenerateButton: HTMLElement = <HTMLElement>document.getElementById("GenerateButton");
 const LSystemsButton: HTMLElement = <HTMLElement>document.getElementById("LSystemsButton");
 const OutputButton: HTMLElement = <HTMLElement>document.getElementById("OutputButton");
@@ -58,7 +62,10 @@ GenerateButton.onclick = function() { GetSystem(); };
 LSystemsButton.onclick = function() { SwitchView(views, 0, viewsB, 0); };
 OutputButton.onclick = function() { SwitchView(views, 1, viewsB, 1); };
 HideButton.onclick = function() { SwitchView(views, 2, viewsB, 2); };
+// Escape returns from the strings or settings panel to the drawing.
+document.addEventListener("keydown", ev => { if(ev.key === "Escape" && fContainer.style.display === "none") { SwitchView(views, 0, viewsB, 0); (<HTMLElement>viewsB.find(b => b.contains(document.activeElement)) ?? LSystemsButton).focus(); } });
 
+FitButton.onclick = function() { fSettingsFit.checked = true; GetSystem(); };
 fSettingsReplacementAdd.onclick = function() { editor.addRule(); };
 fSettingsReset.onclick = function() { editor.resetToPreset(); GetSystem(); };
 fSettingsFitNow.onclick = function() { fSettingsFit.checked = true; GetSystem(); };
@@ -81,11 +88,17 @@ let timeOut = undefined;
 let cssWidth = 1;
 let cssHeight = 1;
 
+// The canvas fills the viewport below the toolbar, whatever height the toolbar has on this screen.
+function CanvasHeight()
+{
+  return Math.max(1, window.innerHeight - toolbar.offsetHeight);
+}
+
 function SizeCanvas()
 {
   const dpr = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
   cssWidth = window.innerWidth;
-  cssHeight = window.innerHeight * 0.85;
+  cssHeight = CanvasHeight();
   fCanvas.width = Math.max(1, Math.round(cssWidth * dpr));
   fCanvas.height = Math.max(1, Math.round(cssHeight * dpr));
   fCanvas.style.width = cssWidth + 'px';
@@ -145,8 +158,7 @@ function SwitchView(array:any[], aIndex:number, buttons:any[], bIndex:number)
   {
     for(let i = 0; i < bLen; i++)
     {
-      if(i === bIndex) buttons[i].dataset.state = "selected";
-      else buttons[i].dataset.state = "";
+      { buttons[i].dataset.state = i === bIndex ? "selected" : ""; buttons[i].setAttribute("aria-pressed", String(i === bIndex)); }
     }
   }
 }
@@ -188,9 +200,9 @@ function ResetView()
 function ReSize()
 {
   fContainer.style.width = window.innerWidth + 'px';
-  fContainer.style.height = window.innerHeight * 0.85 + 'px';
+  fContainer.style.height = CanvasHeight() + 'px';
   fView.style.width = window.innerWidth + 'px';
-  fView.style.height = window.innerHeight * 0.85 + 'px';
+  fView.style.height = CanvasHeight() + 'px';
   // Debounced re-fit of the existing scene; never regenerates, so stochastic grammars and forest placement stay put.
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => Render(false), 120);
@@ -260,21 +272,46 @@ function Initiate(ruleset: RuleSet, iterations: number, startlength: number)
   scene = built;
 
   // Generations are shown as text nodes, never parsed as HTML, so grammar symbols can't inject markup.
-  // One fragment per generation set, truncated when huge, keeps the DOM small and cheap.
+  // Each generation appears in bounded sections; "Show more" appends the next one from the full string, so nothing is lost.
   const fragment = document.createDocumentFragment();
   for(let s = 0; s < expansions.length; s++)
   {
-    const output = document.createElement("div");
-    output.append(displayText(ruleset.start), document.createElement("br"), document.createElement("br"));
-    for(let i = 1; i <= iterations; i++)
-    {
-      output.append(displayText(expansions[s][i]), document.createElement("br"), document.createElement("br"));
-    }
-    fragment.append(output);
+    const trees = expansions.length > 1 ? `Tree ${s + 1}, ` : "";
+    fragment.append(GenerationView(ruleset.start, `${trees}axiom`));
+    for(let i = 1; i <= iterations; i++) fragment.append(GenerationView(expansions[s][i], `${trees}iteration ${i}`));
   }
   oView.replaceChildren(fragment);
 
   Render(animate);
+}
+
+function GenerationView(generation: string, label: string): HTMLElement
+{
+  const box = document.createElement("div");
+  box.setAttribute("role", "group");
+  box.setAttribute("aria-label", `${label}, ${generation.length.toLocaleString()} symbols`);
+  const text = document.createElement("div");
+  text.className = "whitespace-pre-wrap break-all font-mono text-sm max-h-64 overflow-y-auto border border-gray-400 rounded-lg p-2";
+  text.tabIndex = 0; // a scrollable region must be reachable by keyboard
+  text.setAttribute("role", "region");
+  text.setAttribute("aria-label", `${label} text`);
+  box.append(text);
+  let shown = 0;
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "bg-white rounded-lg min-h-11 px-3 py-1 mt-2 border border-black";
+  const showNext = () =>
+  {
+    const part = nextSection(generation, shown, MAX_DISPLAY_CHARS);
+    text.append(part.text);
+    shown = part.shown;
+    if(part.remaining > 0) more.textContent = `Show next ${Math.min(part.remaining, MAX_DISPLAY_CHARS).toLocaleString()} of ${part.remaining.toLocaleString()} remaining symbols`;
+    else more.remove();
+  };
+  more.onclick = () => { showNext(); more.focus(); };
+  showNext();
+  if(shown < generation.length) box.append(more);
+  return box;
 }
 
 // Fits the current scene to the current canvas and plays it. Never regenerates: the scene (grammar expansion,
@@ -289,11 +326,22 @@ function Render(animated: boolean)
   view = fit;
 
   const current = scene;
+  SetBusy(false);
   playback.start({
+    onDone: () => SetBusy(false),
     counts: current.trees.map(t => t.lines.length),
     intervalMs: animated ? interval : 0,
     draw: (tree, segment) => DrawSegment(current.trees[tree], segment),
   });
+  if(playback.running) SetBusy(true);
+}
+
+// Visible and announced loading state while an animation is drawing.
+function SetBusy(busy: boolean)
+{
+  GenerateButton.setAttribute("aria-busy", String(busy));
+  fCanvas.setAttribute("aria-busy", String(busy));
+  cStatus.textContent = busy ? "Drawing…" : "Drawing complete.";
 }
 
 function DrawSegment(tree: TreeScene, i: number)
@@ -383,6 +431,13 @@ void [fDiv, timeOut, canvasSize, loop, lineCol, HideSettings, RandomFlowerColour
 
 function Main()
 {
+  // Honour the reduced-motion preference: start with the drawing animation off (the user can still switch it on).
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+  {
+    fSettingsAnimate.checked = false;
+    fSettingsMotionNote.hidden = false;
+  }
+  ReSize();
   FillSelect();
   UpdateSelect(pickIndex);
   //Initiate(lSystems[pickIndex], 2, 1000);

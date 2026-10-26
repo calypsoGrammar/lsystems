@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./assets/favicon-B0opx7u9.ico">
     <title>L-Systems</title>
-    <script type="module" crossorigin src="./assets/index-DYEnZQ_S.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BuV5-I5Z.css">
+    <script type="module" crossorigin src="./assets/index-5t8g7OC3.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DUvfYkEH.css">
   </head>
   <body class='min-h-screen max-h-screen w-full'>
+    <a href="#fCanvas" class="skip-link">Skip to drawing</a>
 
-    <div class="flex flex-row justify-center items-center border-b border-black w-full" style="height:calc(var(--vh) * 7.5)">
+    <div id="toolbar" role="toolbar" aria-label="L-Systems toolbar" class="flex flex-row justify-center items-center border-b border-black w-full" style="height:var(--header)">
 
-      <div class="flex w-full max-w-7xl h-full flex-row justify-center items-center mx-auto" style="height:calc(var(--vh) * 7.5)">
-        <button id="GenerateButton" class="flex justify-center items-center mx-4 active:scale-95"><img class="w-3/4 h-3/4" id="playPauseButton" src="./undo.svg"></button>
-        <button id="LSystemsButton" class="flex justify-center items-center mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./grid.svg"></button>
-        <button id="OutputButton" class="flex justify-center items-center mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./list.svg"></button>
-        <button id="HideButton" class="flex justify-center items-center mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./options.svg"></button>
+      <div class="flex w-full max-w-7xl h-full flex-row justify-center items-center mx-auto">
+        <button id="GenerateButton" type="button" aria-label="Generate" title="Generate: draw the current grammar again" class="tool-btn flex justify-center items-center mx-1.5 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" id="playPauseButton" src="./undo.svg" alt="" aria-hidden="true"></button>
+        <button id="LSystemsButton" type="button" aria-label="Drawing" aria-controls="fContainer" aria-pressed="true" data-state="selected" title="Show the drawing" class="tool-btn flex justify-center items-center mx-1.5 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./grid.svg" alt="" aria-hidden="true"></button>
+        <button id="OutputButton" type="button" aria-label="Generated strings" aria-controls="oView" aria-pressed="false" title="Inspect the generated strings" class="tool-btn flex justify-center items-center mx-1.5 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./list.svg" alt="" aria-hidden="true"></button>
+        <button id="HideButton" type="button" aria-label="Settings" aria-controls="fSettings" aria-pressed="false" title="Show the grammar, appearance and rendering settings" class="tool-btn flex justify-center items-center mx-1.5 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./options.svg" alt="" aria-hidden="true"></button>
+        <button id="FitButton" type="button" title="Fit to View: scale and centre the drawing in the canvas" class="tool-btn tool-text flex justify-center items-center mx-1.5 sm:mx-4 px-2 border border-black rounded-lg text-sm active:scale-95">Fit<span class="sr-only"> to view</span></button>
       </div>
 
     </div>
+    <p id="cStatus" role="status" aria-live="polite" class="sr-only"></p>
 
-    <div id="fSettings" class="fixed z-10 bg-white w-full overflow-y-auto p-4 sm:p-8" style="display:none;max-height:calc(var(--vh) * 92.5)">
+    <div id="fSettings" role="region" aria-label="Settings" class="fixed z-10 bg-white w-full overflow-y-auto p-4 sm:p-8" style="display:none;max-height:var(--panel-h)">
      <div class="mx-auto w-full max-w-3xl flex flex-col gap-4">
 
       <section aria-labelledby="secGrammar" class="flex flex-col gap-2">
@@ -29,37 +32,37 @@
 
         <div class="flex flex-col">
           <label for="fSettingsPresets">Load Preset:</label>
-          <select id="fSettingsPresets" class="border border-black rounded-lg p-2 m-2"></select>
+          <select id="fSettingsPresets" title="Choose one of the 29 presets; unsaved edits to the current preset are discarded" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base"></select>
         </div>
 
         <div class="flex flex-row flex-wrap items-center gap-2">
-          <button id="fSettingsReset" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Reset to preset</button>
-          <span id="fSettingsStatus" role="status" aria-live="polite" class="text-sm"></span>
+          <button id="fSettingsReset" type="button" class="bg-white rounded-lg min-h-11 px-3 py-1 active:scale-95 border border-black">Reset to preset</button>
+          <span id="fSettingsStatus" role="status" aria-live="polite" class="text-sm text-gray-700"></span>
         </div>
 
         <div class="flex flex-col">
           <label for="fSettingsAxiom">Axiom:</label>
-          <textarea id="fSettingsAxiom" rows="2" class="border border-black rounded-lg p-2 m-2 w-full"></textarea>
+          <textarea id="fSettingsAxiom" rows="2" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full"></textarea>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-2">
         <div class="flex flex-col">
           <label for="fSettingsTheta">Theta:</label>
-          <input type="number" min="0" max="360" step="any" id="fSettingsTheta" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="0" max="360" step="any" id="fSettingsTheta" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
         <div class="flex flex-col">
           <label for="fSettingsIterations">Iterations:</label>
-          <input type="number" min="0" step="1" id="fSettingsIterations" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="0" step="1" id="fSettingsIterations" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
         <div class="flex flex-col">
           <label for="fSettingsFactor">Length reduction factor:</label>
-          <input type="number" min="0" step="any" id="fSettingsFactor" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="0" step="any" id="fSettingsFactor" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
         </div>
 
         <h3 id="fSettingsRulesHeading" class="font-bold">Replacement Rules</h3>
         <div id="fSettingsReplacementDiv" role="group" aria-labelledby="fSettingsRulesHeading" class="flex flex-col items-stretch"></div>
-        <div><button id="fSettingsReplacementAdd" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Add Rule</button></div>
+        <div><button id="fSettingsReplacementAdd" type="button" class="bg-white rounded-lg min-h-11 px-3 py-1 active:scale-95 border border-black">Add Rule</button></div>
       </section>
 
       <section aria-labelledby="secAppearance" class="flex flex-col gap-2 border-t border-black pt-2">
@@ -67,23 +70,23 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
         <div class="flex flex-col">
           <label for="fSettingsCol">Colour:</label>
-          <input type="color" id="fSettingsCol" class="m-1">
+          <input type="color" id="fSettingsCol" class="m-1 w-16 h-11">
         </div>
         <div class="flex flex-col">
           <label for="fSettingsVariance">Colour Variance:</label>
-          <input type="number" value="5" min="0" max="255" step="0.1" id="fSettingsVariance" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" value="5" min="0" max="255" step="0.1" id="fSettingsVariance" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
-        <div class="flex flex-row items-center gap-2 min-h-10">
-          <input type="checkbox" id="fSettingsLeaves" >
+        <div class="flex flex-row items-center gap-3 min-h-11">
+          <input type="checkbox" class="w-5 h-5" id="fSettingsLeaves" >
           <label for="fSettingsLeaves">Leaves</label>
         </div>
-        <div class="flex flex-row items-center gap-2 min-h-10">
-          <input type="checkbox" id="fSettingsForest" >
+        <div class="flex flex-row items-center gap-3 min-h-11">
+          <input type="checkbox" class="w-5 h-5" id="fSettingsForest" >
           <label for="fSettingsForest">Forest</label>
         </div>
         <div class="flex flex-col">
           <label for="fSettingsCount">Count:</label>
-          <input type="number" min="1" max="25" step="1" value="5" id="fSettingsCount" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="1" max="25" step="1" value="5" id="fSettingsCount" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
         </div>
       </section>
@@ -91,32 +94,33 @@
       <section aria-labelledby="secRendering" class="flex flex-col gap-2 border-t border-black pt-2">
         <h2 id="secRendering" class="font-bold">Rendering</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-        <div class="flex flex-row items-center gap-2 min-h-10">
-          <input type="checkbox" id="fSettingsAnimate" checked>
+        <div class="flex flex-row items-center gap-3 min-h-11">
+          <input type="checkbox" class="w-5 h-5" id="fSettingsAnimate" checked>
           <label for="fSettingsAnimate">Animate</label>
+          <span id="fSettingsMotionNote" class="text-sm text-gray-700" hidden>Off by default: your system asks for reduced motion.</span>
         </div>
         <div class="flex flex-col">
           <label for="fSettingsInterval">Animation Interval:</label>
-          <input type="number" min="10" max="1000" step="1" value="10" id="fSettingsInterval" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="10" max="1000" step="1" value="10" id="fSettingsInterval" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
-        <div class="flex flex-row items-center gap-2 min-h-10">
-          <input type="checkbox" id="fSettingsFit" checked>
+        <div class="flex flex-row items-center gap-3 min-h-11">
+          <input type="checkbox" class="w-5 h-5" id="fSettingsFit" checked>
           <label for="fSettingsFit">Auto fit to view</label>
         </div>
         </div>
         <div class="flex flex-row flex-wrap gap-2">
-          <button id="fSettingsFitNow" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Fit to View</button>
-          <button id="fSettingsResetView" type="button" class="bg-white rounded-lg min-h-10 px-3 py-1 active:scale-95 border border-black">Reset View</button>
+          <button id="fSettingsFitNow" type="button" title="Turn on auto fit and fit the drawing to the canvas" class="bg-white rounded-lg min-h-11 px-3 py-1 active:scale-95 border border-black">Fit to View</button>
+          <button id="fSettingsResetView" type="button" title="Restore the default length, scale and auto fit" class="bg-white rounded-lg min-h-11 px-3 py-1 active:scale-95 border border-black">Reset View</button>
         </div>
-        <div class="text-sm">Used when auto fit is off:</div>
+        <div class="text-sm text-gray-700">Used when auto fit is off:</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
         <div class="flex flex-col">
           <label for="fSettingsLength">Starting Length:</label>
-          <input type="number" min="0" step="any" id="fSettingsLength" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="0" step="any" id="fSettingsLength" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
         <div class="flex flex-col">
           <label for="fSettingsCanvas">Scale:</label>
-          <input type="number" min="0" step="any" id="fSettingsCanvas" class="border border-black rounded-lg p-2 m-2 w-full">
+          <input type="number" min="0" step="any" id="fSettingsCanvas" class="border border-black rounded-lg p-2 m-2 min-h-11 text-base w-full">
         </div>
         </div>
       </section>
@@ -126,13 +130,13 @@
 
     <div id="fError" role="alert" class="fixed z-20 bottom-0 w-full bg-red-100 text-red-800 border border-red-800 p-2 text-center" style="display:none"></div>
 
-    <div id="fContainer" class="fixed w-full" style="min-height:calc(var(--vh) * 92.5)">
-      <div id="fView" class="fixed w-full" style="min-height:calc(var(--vh) * 92.5)">
-        <canvas id="fCanvas"></canvas>
+    <div id="fContainer" class="fixed w-full" style="min-height:var(--panel-h)">
+      <div id="fView" class="fixed w-full" style="min-height:var(--panel-h)">
+        <canvas id="fCanvas" role="img" aria-label="Generated L-system drawing" aria-describedby="cStatus"></canvas>
       </div>
     </div>
   
-    <div id="oView" class="z-10 bg-white flex flex-col justify-start content-start items-center w-full overflow-y-auto p-8" style="display:none;max-height:calc(var(--vh) * 92.5)">
+    <div id="oView" role="region" aria-label="Generated strings" class="z-10 bg-white flex flex-col justify-start items-stretch gap-4 w-full max-w-full overflow-y-auto p-4 sm:p-8" style="display:none;max-height:var(--panel-h)">
   
     </div>
 
