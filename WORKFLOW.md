@@ -22,6 +22,9 @@ archon:
       - npm ci --no-audit --no-fund
     commands:
       - npm run build
+      - npm run test:browser
+      - npm run audit:baseline:check
+      - npm run audit
   claude:
     # The npm registry, so Claude implementers can upgrade dependencies.
     # Codex turns never have network access.

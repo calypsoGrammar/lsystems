@@ -108,7 +108,7 @@ class RuleSet
   }
 }
 
-const primaryButton: string = "inline-flex justify-center items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 bg-white rounded-lg w-24 h-12 mx-auto my-4 active:scale-95";
+const primaryButton: string = "inline-flex justify-center items-center px-4 py-2 border rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 bg-white rounded-lg w-24 h-12 mx-auto my-4 active:scale-95";
 
 const GenerateButton: HTMLElement = <HTMLElement>document.getElementById("GenerateButton");
 const LSystemsButton: HTMLElement = <HTMLElement>document.getElementById("LSystemsButton");

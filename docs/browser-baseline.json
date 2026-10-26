@@ -1,9 +1,6 @@
 {
  "previewServed": true,
- "externalRequests": [
-  "https://code.jquery.com/jquery-3.6.4.min.js",
-  "https://cdn.jsdelivr.net/npm/modern-normalize@v1.1.0/modern-normalize.min.css"
- ],
+ "externalRequests": [],
  "viewports": {
   "desktop": {
    "width": 1280,
@@ -85,7 +82,7 @@
     "animated": {
      "w": 1280,
      "h": 680,
-     "n": 4634
+     "n": 4662
     }
    },
    "small": {
@@ -310,14 +307,14 @@
     "animated": {
      "w": 1280,
      "h": 680,
-     "n": 457
+     "n": 458
     }
    },
    "small": {
     "static": {
      "w": 600,
      "h": 425,
-     "n": 455
+     "n": 454
     }
    }
   },
@@ -332,7 +329,7 @@
     "animated": {
      "w": 1280,
      "h": 680,
-     "n": 1359
+     "n": 1360
     }
    },
    "small": {
@@ -442,7 +439,7 @@
     "static": {
      "w": 1280,
      "h": 680,
-     "n": 3743
+     "n": 3744
     },
     "animated": {
      "w": 1280,
@@ -454,7 +451,7 @@
     "static": {
      "w": 600,
      "h": 425,
-     "n": 3747
+     "n": 3748
     }
    }
   },
@@ -491,7 +488,7 @@
     "animated": {
      "w": 1280,
      "h": 680,
-     "n": 431
+     "n": 429
     }
    },
    "small": {
@@ -508,7 +505,7 @@
     "static": {
      "w": 1280,
      "h": 680,
-     "n": 696
+     "n": 697
     },
     "animated": {
      "w": 1280,
@@ -525,7 +522,7 @@
     "animated": {
      "w": 600,
      "h": 425,
-     "n": 688
+     "n": 689
     }
    }
   },
@@ -635,7 +632,7 @@
     "static": {
      "w": 600,
      "h": 425,
-     "n": 105
+     "n": 104
     }
    }
   },
@@ -645,19 +642,19 @@
     "static": {
      "w": 1280,
      "h": 680,
-     "n": 412
+     "n": 418
     },
     "animated": {
      "w": 1280,
      "h": 680,
-     "n": 468
+     "n": 310
     }
    },
    "small": {
     "static": {
      "w": 600,
      "h": 425,
-     "n": 252
+     "n": 310
     }
    }
   },
@@ -692,13 +689,13 @@
  "defects": {
   "forest": {
    "desktop": {
-    "static": 1048,
-    "animated": 262,
+    "static": 1049,
+    "animated": 0,
     "animatedLessThanStatic": true
    },
    "small": {
     "static": 1048,
-    "animated": 262,
+    "animated": 0,
     "animatedLessThanStatic": true
    }
   },
