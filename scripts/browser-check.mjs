@@ -205,6 +205,37 @@ try {
     check(await page.getAttribute('#fSettingsTheta', 'aria-invalid') === 'true', 'out of range theta not flagged')
     await page.fill('#fSettingsTheta', '33')
 
+    // Count / Interval / Variance / Length are validated, shown inline, and corrections clear the error.
+    {
+      await page.evaluate(() => { const e = document.getElementById('fSettingsForest'); e.checked = true; e.dispatchEvent(new Event('change')) })
+      await page.fill('#fSettingsCount', '5'); await page.click('#GenerateButton'); await page.waitForTimeout(300)
+      const ok = await px()
+      for (const bad of ['', '30', '2.5']) {
+        await page.fill('#fSettingsCount', bad)
+        await page.click('#GenerateButton'); await page.waitForTimeout(200)
+        check(await page.getAttribute('#fSettingsCount', 'aria-invalid') === 'true', `Count "${bad}" not flagged`)
+        check(await page.locator('#fError').isVisible(), `Count "${bad}": no error banner`)
+        check(await px() === ok, `canvas changed after invalid Count "${bad}"`)
+      }
+      await page.fill('#fSettingsCount', '3')
+      check(await page.getAttribute('#fSettingsCount', 'aria-invalid') === null, 'corrected Count still flagged')
+      await page.evaluate(() => { const e = document.getElementById('fSettingsForest'); e.checked = false; e.dispatchEvent(new Event('change')) })
+      await page.evaluate(() => { const e = document.getElementById('fSettingsAnimate'); e.checked = true; e.dispatchEvent(new Event('change')) })
+      await page.fill('#fSettingsInterval', '5'); await page.click('#GenerateButton')
+      check(await page.getAttribute('#fSettingsInterval', 'aria-invalid') === 'true', 'Interval 5 not flagged')
+      await page.fill('#fSettingsInterval', '10')
+      await page.evaluate(() => { const e = document.getElementById('fSettingsAnimate'); e.checked = false; e.dispatchEvent(new Event('change')) })
+      await page.fill('#fSettingsVariance', '300'); await page.click('#GenerateButton')
+      check(await page.getAttribute('#fSettingsVariance', 'aria-invalid') === 'true', 'Variance 300 not flagged')
+      await page.fill('#fSettingsVariance', '5')
+      await page.evaluate(() => { const e = document.getElementById('fSettingsFit'); e.checked = false; e.dispatchEvent(new Event('change')) })
+      await page.fill('#fSettingsLength', ''); await page.click('#GenerateButton')
+      check(await page.getAttribute('#fSettingsLength', 'aria-invalid') === 'true', 'empty Starting Length not flagged')
+      await page.fill('#fSettingsLength', '100')
+      check(await page.getAttribute('#fSettingsLength', 'aria-invalid') === null, 'corrected Starting Length still flagged')
+      await page.evaluate(() => { const e = document.getElementById('fSettingsFit'); e.checked = true; e.dispatchEvent(new Event('change')) })
+    }
+
     // Switching presets loads the template; Reset to preset restores the original template.
     await page.fill('#fSettingsAxiom', 'FX+')
     await pick('Koch Island')

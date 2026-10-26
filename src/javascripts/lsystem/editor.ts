@@ -162,3 +162,28 @@ export function buildRuleSet(s: EditorState, name = "-"): BuildResult
   }
   return { ok: false, errors };
 }
+
+// The rendering/appearance inputs, as typed. Each is only checked when the option that uses it is on.
+export interface RenderFields
+{
+  length: string; scale: string; count: string; interval: string; variance: string;
+  fit: boolean; forest: boolean; animate: boolean;
+}
+
+export function validateRenderFields(f: RenderFields): FieldErrors
+{
+  const e: FieldErrors = new Map();
+  if (!f.fit)
+  {
+    const length = num(f.length), scale = num(f.scale);
+    if (!(Number.isFinite(length) && length > 0)) e.set("fSettingsLength", "Starting length must be a positive number.");
+    if (!(Number.isFinite(scale) && scale > 0)) e.set("fSettingsCanvas", "Scale must be a positive number.");
+  }
+  const count = num(f.count);
+  if (f.forest && !(Number.isInteger(count) && count >= 1 && count <= 25)) e.set("fSettingsCount", "Count must be a whole number from 1 to 25.");
+  const interval = num(f.interval);
+  if (f.animate && !(Number.isFinite(interval) && interval >= 10 && interval <= 1000)) e.set("fSettingsInterval", "Animation interval must be a number from 10 to 1000.");
+  const variance = num(f.variance);
+  if (!(Number.isFinite(variance) && variance >= 0 && variance <= 255)) e.set("fSettingsVariance", "Colour variance must be a number from 0 to 255.");
+  return e;
+}

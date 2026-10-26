@@ -4,7 +4,7 @@ import { presets } from "../src/javascripts/lsystem/presets";
 import { expandGrammar } from "../src/javascripts/lsystem/grammar";
 import {
   addRule, addSuccessor, buildRuleSet, fieldIds, removeRule, removeSuccessor, stateFromPreset, statesEqual,
-  validateState, type EditorState,
+  validateState, validateRenderFields, type EditorState,
 } from "../src/javascripts/lsystem/editor";
 import { seeded } from "./helpers";
 
@@ -106,5 +106,24 @@ describe("validation", () => {
       expect(b.ruleSet.ignore).toEqual(["+", " -"]);
       expect(b.ruleSet.rules[0].successors.map(x => [x.successor, x.weight])).toEqual([["FF", 0.3], ["F", 0.7]]);
     }
+  });
+});
+
+describe("validateRenderFields", () => {
+  const ok = { length: "250", scale: "1", count: "5", interval: "10", variance: "5", fit: true, forest: false, animate: true };
+  it("accepts defaults", () => expect(validateRenderFields(ok).size).toBe(0));
+  it("checks Count only with Forest, as a whole number 1-25", () => {
+    for (const c of ["", "abc", "0", "26", "2.5"]) expect(validateRenderFields({ ...ok, forest: true, count: c }).has("fSettingsCount"), c).toBe(true);
+    expect(validateRenderFields({ ...ok, count: "" }).size).toBe(0);
+  });
+  it("checks Interval only with Animate, and Variance always", () => {
+    expect(validateRenderFields({ ...ok, interval: "" }).has("fSettingsInterval")).toBe(true);
+    expect(validateRenderFields({ ...ok, interval: "" , animate: false}).size).toBe(0);
+    expect(validateRenderFields({ ...ok, variance: "256" }).has("fSettingsVariance")).toBe(true);
+  });
+  it("checks length and scale only with auto fit off", () => {
+    expect(validateRenderFields({ ...ok, length: "" }).size).toBe(0);
+    const e = validateRenderFields({ ...ok, fit: false, length: "0", scale: "x" });
+    expect(e.has("fSettingsLength") && e.has("fSettingsCanvas")).toBe(true);
   });
 });

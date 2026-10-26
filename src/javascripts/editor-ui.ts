@@ -66,13 +66,10 @@ export class RuleEditor
       if (t && container.contains(t)) this.act(t);
     });
     const onEdit = () => { this.revalidate(); this.updateStatus(); };
-    container.addEventListener("input", onEdit);
-    container.addEventListener("change", onEdit);
-    for (const id of Object.values(staticFields))
-    {
-      document.getElementById(id)?.addEventListener("input", onEdit);
-      document.getElementById(id)?.addEventListener("change", onEdit);
-    }
+    // One delegated listener on the whole panel, so rendering and appearance inputs revalidate too.
+    const panel = container.closest("#fSettings") ?? container;
+    panel.addEventListener("input", onEdit);
+    panel.addEventListener("change", onEdit);
   }
 
   get presetIndex(): number { return this.index; }

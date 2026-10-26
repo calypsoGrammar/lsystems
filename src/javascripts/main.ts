@@ -1,7 +1,7 @@
 "use strict";
 
 import { RuleSet, Colour, Vector, Line } from "./lsystem/model";
-import { buildRuleSet } from "./lsystem/editor";
+import { buildRuleSet, validateRenderFields } from "./lsystem/editor";
 import { RuleEditor } from "./editor-ui";
 import { presets } from "./lsystem/presets";
 import { applyTransform, fitTransform, mergeBounds, type ViewTransform } from "./lsystem/fit";
@@ -461,12 +461,12 @@ function GetSystem(validateOnly = false)
   let drawLength = parseFloat(fSettingsLength.value);
   const scale = parseFloat(fSettingsCanvas.value);
 
-  // Auto fit ignores length and scale, so only the manual path needs them valid.
-  if(!fSettingsFit.checked)
-  {
-    if(!(drawLength > 0 && Number.isFinite(drawLength))) errors.set("fSettingsLength", "Starting length must be a positive number.");
-    if(!(scale > 0 && Number.isFinite(scale))) errors.set("fSettingsCanvas", "Scale must be a positive number.");
-  }
+  // Auto fit ignores length and scale, so only the manual path needs them valid (likewise Count, Interval).
+  for(const [id, message] of validateRenderFields({
+    length: fSettingsLength.value, scale: fSettingsCanvas.value, count: fSettingsCount.value,
+    interval: fSettingsInterval.value, variance: fSettingsVariance.value,
+    fit: fSettingsFit.checked, forest: fSettingsForest.checked, animate: fSettingsAnimate.checked,
+  })) errors.set(id, message);
 
   editor.revalidator = () => { GetSystem(true); };
   if(!built.ok || errors.size > 0)
