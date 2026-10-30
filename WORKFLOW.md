@@ -4,9 +4,9 @@
 # Archon never auto-merges a change to it. Every key is described in
 # archon-v3's docs/workflow-reference.md.
 tracker:
-  kind: linear
+  kind: chronology
   provider:
-    # Linear project "L-Systems".
+    # Work Registry project "L-Systems".
     project_id: "cc14b7dd-0ed3-4c4c-b440-92f9ca4a208f"
 hooks:
   # Each attempt starts from a fresh checkout; install dependencies so the
@@ -82,7 +82,7 @@ archon:
     default: sol
     fallback: opus
 ---
-You are working on L-Systems, Linear issue {{ issue.identifier }}: {{ issue.title }}.
+You are working on L-Systems, issue {{ issue.identifier }}: {{ issue.title }}.
 {% if attempt %}
 This is attempt {{ attempt }}. Earlier attempts were discarded, and this workspace is a fresh checkout.
 {% endif %}
