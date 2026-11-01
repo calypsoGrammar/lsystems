@@ -6,7 +6,7 @@ Status: **live verification pending.** The deployment workflow is prepared for r
 
 GitHub Pages is configured for GitHub Actions publishing (`build_type: workflow`). The API currently reports `https://calypsogrammar.github.io/lsystems/` and no custom domain, although the historical source field still names `deploy` and the last historical Pages run used that branch. The new workflow publishes an artifact directly and does not write to `deploy`.
 
-The intended custom host from CAL-1277 is `https://lsystems.calypsogrammar.com/`. This workflow does not change DNS, configure a custom domain or add a `CNAME`. Confirm and configure that host separately before treating it as the production URL. Cloudways migration remains out of scope.
+Owner decision (CAL-1651, superseding the custom host intended in CAL-1277): the site is served from GitHub Pages at `https://calypsogrammar.github.io/lsystems/` and the custom domain `lsystems.calypsogrammar.com` is scrapped. Do not add a `CNAME` file or configure a custom domain or DNS. Cloudways migration remains out of scope.
 
 ## Build facts
 
@@ -25,9 +25,9 @@ No manual trigger is normally needed. To retry, use Actions → CI → Run workf
 
 If deployment fails, check Settings → Pages → Build and deployment → Source is **GitHub Actions**, and inspect the `github-pages` environment rules. Branch protection and any required approvals remain in force. CI checks run on pull requests without Pages write or OIDC permissions; those permissions belong only to the deployment job.
 
-HTTPS: Pages issues the certificate once DNS points at GitHub; keep "Enforce HTTPS" enabled and check `curl -sI http://lsystems.calypsogrammar.com/` redirects to `https://`.
+HTTPS: keep "Enforce HTTPS" enabled and check `curl -sI http://calypsogrammar.github.io/lsystems/` redirects to `https://`.
 
-Cache invalidation: asset file names are content-hashed, so a new build never reuses an asset URL; only `index.html` (and the unhashed SVGs) can be stale, for up to about 10 minutes on Pages. Verify with a cache-busting request (`curl -sI "https://lsystems.calypsogrammar.com/?x=$(date +%s)"`) and a hard reload. If a CDN or Cloudflare proxy is found in front, purge it after publishing.
+Cache invalidation: asset file names are content-hashed, so a new build never reuses an asset URL; only `index.html` (and the unhashed SVGs) can be stale, for up to about 10 minutes on Pages. Verify with a cache-busting request (`curl -sI "https://calypsogrammar.github.io/lsystems/?x=$(date +%s)"`) and a hard reload. If a CDN or Cloudflare proxy is found in front, purge it after publishing.
 
 ## Rollback
 
@@ -36,19 +36,18 @@ Revert the faulty source change in a pull request against `main` (for a merge co
 ## Live inspection commands (to complete the open items)
 
 ```
-dig +short lsystems.calypsogrammar.com CNAME; dig +short lsystems.calypsogrammar.com A
-curl -sI https://lsystems.calypsogrammar.com/         # Server, via, x-github-request-id, cache-control, etag
-curl -s https://lsystems.calypsogrammar.com/ | grep -o 'assets/[^"]*'   # compare with the local dist/ hashes
-curl -sI https://lsystems.calypsogrammar.com/assets/<js file from above> # 200, content-type text/javascript
+curl -sI https://calypsogrammar.github.io/lsystems/         # Server, via, x-github-request-id, cache-control, etag
+curl -s https://calypsogrammar.github.io/lsystems/ | grep -o 'assets/[^"]*'   # compare with the local dist/ hashes
+curl -sI https://calypsogrammar.github.io/lsystems/assets/<js file from above> # 200, content-type text/javascript
 gh api repos/calypsoGrammar/lsystems/pages              # build_type, html_url, cname, https_enforced
 ```
-A `Server: GitHub.com` header with `x-github-request-id` confirms Pages; Varnish/nginx/Cloudways headers or an A record to a Cloudways server mean the premise is wrong: stop and ask the owner before changing anything.
+A `Server: GitHub.com` header with `x-github-request-id` confirms Pages; Varnish/nginx/Cloudways headers mean the premise is wrong: stop and ask the owner before changing anything.
 
 ## Live smoke checklist (not yet run)
 
 Run in a desktop and a phone-sized (or real mobile) browser with DevTools open; no failed requests, no console errors.
 
-- [ ] Page loads over HTTPS at the canonical host; CSS/JS/icons/SVG load from the published URL (no 404, no root-relative failures).
+- [ ] Page loads over HTTPS at the Pages URL; CSS/JS/icons/SVG load from the published URL (no 404, no root-relative failures).
 - [ ] Preset menu lists 29 presets; each draws a non-blank, fitted, centred picture (the local browser check does all 29 at 375x667 and 1280x800).
 - [ ] Stochastic (Fractal Plant 8) varies between Generate clicks; context-sensitive (Fractal Plant 9) and bracketed plants draw.
 - [ ] Custom rule editing: change an axiom, a rule and the angle, Generate, picture updates; Add/Remove rule and successor work; Reset to preset restores.

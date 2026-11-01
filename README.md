@@ -22,9 +22,9 @@ modern-normalize is imported into the `base` cascade layer so it cannot override
 
 ## Release and deployment (V1)
 
-Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEASE.md). GitHub Actions publishes the freshly built `dist/` artifact to GitHub Pages after both CI matrix jobs pass on `main`. Pull requests only run checks. Merging this workflow enables automatic publication; Actions → CI → Run workflow on `main` retries the full check-and-deploy sequence. The historical `deploy` branch is no longer used. No DNS change is part of this workflow.
+Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEASE.md). GitHub Actions publishes the freshly built `dist/` artifact to GitHub Pages after both CI matrix jobs pass on `main`. Pull requests only run checks. Merging this workflow enables automatic publication; Actions → CI → Run workflow on `main` retries the full check-and-deploy sequence. The historical `deploy` branch is no longer used. The site is served at the GitHub Pages URL; the custom domain was scrapped (CAL-1651), so there is no `CNAME` and no DNS change.
 
-**Live verification pending.** GitHub currently reports `https://calypsogrammar.github.io/lsystems/` as the Pages URL, with no custom domain configured. `https://lsystems.calypsogrammar.com/` remains the intended custom host and requires separate hosting/DNS confirmation. After the first successful deployment, run the live smoke checklist and record the result below; passing CI alone does not establish that V1 is deployed and verified.
+**Live verification pending.** GitHub currently reports `https://calypsogrammar.github.io/lsystems/` as the Pages URL, with no custom domain; none is planned. After the first successful deployment, run the live smoke checklist and record the result below; passing CI alone does not establish that V1 is deployed and verified.
 
 ### Release record
 
@@ -39,5 +39,5 @@ Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEAS
 
 - Documented, unfixed behaviours are listed in `docs/AUDIT.md` and pinned by `tests/known-defects.test.ts` (e.g. Dragon Curve and Fractal Plant 7 use empty contexts so they stall; fractional thetas are truncated; per-preset `factor` is ignored; `Cantor Set` is defined but unregistered).
 - `dist/` is partly tracked in git (`index.html`, SVGs) but `dist/assets/` is not; always rebuild before publishing.
-- Pages is configured for GitHub Actions publishing; custom-domain DNS, headers and live caching remain unverified.
+- Pages is configured for GitHub Actions publishing; headers and live caching remain unverified.
 - 3D and AI asset generation stay deferred to V2 research; V1 adds no backend, accounts, or generation features.
