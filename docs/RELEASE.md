@@ -13,7 +13,7 @@ Status: **live verification pending.** The deployment workflow is prepared for r
 3. Set the custom domain `lsystems.calypsogrammar.com` in Pages settings (not via a `CNAME` in code).
 4. Verify with the "Live inspection commands" section: `gh api repos/calypsoGrammar/lsystems/pages` must show `build_type: legacy`, `source.branch: deploy`, `source.path: /`, `cname: lsystems.calypsogrammar.com`; DNS and headers must match; the live `assets/` hashes must equal those on the `deploy` branch.
 
-**After the switch**, merging or reverting on `main` does **not** change the live site, and the workflow's `deploy` job does not update the `deploy` branch. What that job does once the source is a branch is unverified: check the first run after the switch. No decision yet says how `deploy` receives new releases or rollbacks; ask the owner before releasing.
+**After the switch**, the workflow's `deploy` job still does not update the `deploy` branch. Whether that job can still publish its artifact over the branch source is **unverified**, so do not assume merges to `main` stop reaching the live site. Check the first CI run on `main` after the switch: note whether the `deploy` job succeeded, then compare the live `assets/` hashes with those on the `deploy` branch. If the job succeeded and the live site now differs from the `deploy` branch, or the hashes differ for any reason, **stop and ask the owner**. No decision yet says how `deploy` receives new releases or rollbacks; ask the owner before releasing.
 
 **Before the switch:** GitHub Pages is configured for GitHub Actions publishing (`build_type: workflow`). The API currently reports `https://calypsogrammar.github.io/lsystems/` and no custom domain, although the source field still names `deploy` and the last Pages run used that branch. The workflow publishes an artifact directly and does not write to `deploy`.
 
@@ -27,7 +27,7 @@ The intended custom host from CAL-1277 is `https://lsystems.calypsogrammar.com/`
 
 ## Publish procedure (before the switch only)
 
-This describes the Actions-artifact publishing. After the switch it does not change the live site.
+This describes the Actions-artifact publishing. After the switch its effect on the live site is unverified (see the switch steps).
 
 1. Review and merge the release PR into `main`. Merging the workflow change enables automatic publication on this and subsequent pushes to `main`.
 2. The `CI` workflow runs the existing typecheck, preset baseline, build, unit tests, browser check and security audit on Node 22 and 26. The Node 22 job uploads a fresh `dist/` Pages artifact; the deployment job waits for **both** matrix jobs to pass. PR runs and manual runs on other branches never deploy.
@@ -44,7 +44,7 @@ Cache invalidation: asset file names are content-hashed, so a new build never re
 
 ## Rollback (before the switch only)
 
-Revert the faulty source change in a pull request against `main` (for a merge commit, use the appropriate mainline parent), review and merge it. The normal CI and Pages deployment sequence publishes the corrected build. Repeat the live smoke checklist and record the rollback source SHA and deployment run in `README.md`. **After the switch** this does not change the live site, because Pages serves `deploy` and the workflow does not write to it; the rollback method for `deploy` is undecided, so ask the owner. Reverting a `deploy` commit has no effect while the source is GitHub Actions.
+Revert the faulty source change in a pull request against `main` (for a merge commit, use the appropriate mainline parent), review and merge it. The normal CI and Pages deployment sequence publishes the corrected build. Repeat the live smoke checklist and record the rollback source SHA and deployment run in `README.md`. **After the switch** the rollback method for `deploy` is undecided, so ask the owner; the workflow does not write to `deploy`, and whether a `main` revert reaches the live site is unverified. Reverting a `deploy` commit has no effect while the source is GitHub Actions.
 
 ## Live inspection commands (to complete the open items)
 
