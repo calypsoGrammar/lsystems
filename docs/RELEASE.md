@@ -4,6 +4,8 @@ Status: **live verification pending.** The deployment workflow is prepared for r
 
 ## Deployment configuration
 
+**Owner decision (CAL-1517 / CAL-1645):** GitHub Pages serving from the `deploy` branch is the intended, authoritative source for `https://lsystems.calypsogrammar.com/`. The repository does not yet implement this: the workflow below is unchanged and publishes an Actions artifact, and nothing here changes the `deploy` branch mechanics or adds a `CNAME`. After merge, a person must: (1) set Settings → Pages → Source to the `deploy` branch, `/ (root)`; (2) set the custom domain in Pages settings (not via a `CNAME` in code); (3) verify DNS and headers with the commands in the verification section. The statements below that the `deploy` branch is unused describe the current workflow, not the intended source.
+
 GitHub Pages is configured for GitHub Actions publishing (`build_type: workflow`). The API currently reports `https://calypsogrammar.github.io/lsystems/` and no custom domain, although the historical source field still names `deploy` and the last historical Pages run used that branch. The new workflow publishes an artifact directly and does not write to `deploy`.
 
 The intended custom host from CAL-1277 is `https://lsystems.calypsogrammar.com/`. This workflow does not change DNS, configure a custom domain or add a `CNAME`. Confirm and configure that host separately before treating it as the production URL. Cloudways migration remains out of scope.

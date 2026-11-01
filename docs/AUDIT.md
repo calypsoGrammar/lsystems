@@ -21,6 +21,7 @@ Diagnostic only. No presets, hosting, DNS or production files were changed.
 
 ## Deployment provenance (open)
 
+- **Owner decision (CAL-1517, recorded in CAL-1645): GitHub Pages serving the site from the `deploy` branch is the authoritative hosting and release source for `lsystems.calypsogrammar.com`.** Cloudways is not authoritative. The CI workflow is unchanged and still publishes an Actions artifact; it does not write to `deploy`, and no `CNAME` is added by code. A person must set Settings → Pages → Source to `deploy` / root, set the custom domain in Pages settings, and verify DNS and headers (see `docs/RELEASE.md`). The notes below predate that decision and remain the record of what the audit could not inspect.
 - The repository has no CI config, no `CNAME`, no GitHub Pages workflow and no Cloudways config. The local checkout has no remote `origin` and no `deploy` branch (only `archon/main`), so the `deploy` branch named in the ticket could not be inspected here. Commit messages "deploy" (`6459df9`, `23466e5`) suggest dist was committed to the main history.
 - `https://lsystems.calypsogrammar.com/` could not be fetched: the sandbox network allowlist blocked the host (HTTP 403 from the proxy) and DNS is unavailable. **Nothing is claimed about what is live**, nor whether Cloudways or GitHub Pages is authoritative.
 - Operator-only verification handoff (still open):
