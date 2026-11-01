@@ -303,12 +303,24 @@ try {
     }
 
     // Switching presets loads the template; Reset to preset restores the original template.
+    // Selecting another preset with unsaved edits asks first: declining keeps the edits, accepting discards them.
+    const dialogs = []
+    let answer = false
+    page.on('dialog', d => { dialogs.push(d.message()); answer ? d.accept() : d.dismiss() })
     await page.fill('#fSettingsAxiom', 'FX+')
     await pick('Koch Island')
+    check(dialogs.length === 1 && /Discard unsaved edits/.test(dialogs[0]), 'no confirmation asked before discarding edits')
+    check(await val('fSettingsAxiom') === 'FX+', 'declining the confirmation lost the edits')
+    check(await page.evaluate(() => { const e = document.getElementById('fSettingsPresets'); return e.options[e.selectedIndex].text }) === 'Dragon Curve', 'declining did not restore the preset dropdown')
+    answer = true
+    await pick('Koch Island')
+    check(dialogs.length === 2, 'confirmation not asked again')
     check(/discarded/.test(await page.textContent('#fSettingsStatus')), 'discarding edits on preset switch is not announced')
     check(await val('fSettingsAxiom') === 'F-F-F-F', 'Koch Island axiom not loaded')
     check(/original/i.test(await page.textContent('#fSettingsStatus')), 'status should say original preset')
+    const asked = dialogs.length
     await pick('Dragon Curve')
+    check(dialogs.length === asked, 'confirmation asked although there were no unsaved edits')
     check(await val('fSettingsAxiom') === 'FX' && await val('fSettingsTheta') === '90', 'returning to a preset did not load its template')
     await page.fill('#fSettingsAxiom', 'FXX'); await page.fill('#fSettingsTheta', '12'); await page.click('#fSettingsReplacementAdd')
     await page.click('#fSettingsReset'); await page.waitForTimeout(200)

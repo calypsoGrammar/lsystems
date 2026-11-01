@@ -57,7 +57,8 @@ export class RuleEditor
   private shown: FieldErrors = new Map();
 
   constructor(private readonly presets: RuleSet[], private readonly container: HTMLElement,
-    private readonly status: HTMLElement | null, private readonly onChange: () => void = () => {})
+    private readonly status: HTMLElement | null, private readonly onChange: () => void = () => {},
+    private readonly confirmDiscard: (message: string) => boolean = m => window.confirm(m))
   {
     this.template = stateFromPreset(presets[0]);
     container.addEventListener("click", ev =>
@@ -98,15 +99,17 @@ export class RuleEditor
 
   isModified(): boolean { return !statesEqual(this.readState(), this.template); }
 
-  // Load a preset's original template. Unsaved edits to the previous preset are discarded, and the status line says so.
-  selectPreset(index: number): void
+  // Load a preset's original template. If the form has unsaved edits, ask first; returns false when the user keeps them.
+  selectPreset(index: number): boolean
   {
-    const discarded = this.index >= 0 && this.index !== index && this.isModified();
     const previous = this.index >= 0 ? this.presets[this.index].name : "";
+    const discarding = this.index >= 0 && this.index !== index && this.isModified();
+    if (discarding && !this.confirmDiscard(`Discard unsaved edits to ${previous} and load ${this.presets[index].name}?`)) return false;
     this.index = index;
     this.template = stateFromPreset(this.presets[index]);
     this.apply(this.template);
-    this.notice = discarded ? `Loaded the original ${this.presets[index].name}; unsaved edits to ${previous} were discarded.` : "";
+    this.notice = discarding ? `Loaded the original ${this.presets[index].name}; unsaved edits to ${previous} were discarded.` : "";
+    return true;
   }
 
   // Discard unsaved edits to the current preset and reload its original template.
@@ -231,7 +234,7 @@ export class RuleEditor
     if (this.isModified()) this.notice = "";
     if (!this.status) return;
     this.status.textContent = this.isModified()
-      ? "Edited: unsaved changes. Reset to preset restores the original; loading another preset discards them."
+      ? "Edited: unsaved changes. Reset to preset restores the original; loading another preset asks before discarding them."
       : this.notice || "Original preset.";
   }
 

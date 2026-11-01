@@ -72,7 +72,12 @@ fSettingsFitNow.onclick = function() { fSettingsFit.checked = true; GetSystem();
 fSettingsResetView.onclick = function() { ResetView(); GetSystem(); };
 fSettingsFit.onchange = function() { GetSystem(); };
 fSettingsPresets.onchange = function() { 
-  UpdateSelect(parseInt(fSettingsPresets.value));
+  // Declining the discard prompt keeps the edits and puts the dropdown back on the current preset.
+  if(!UpdateSelect(parseInt(fSettingsPresets.value)))
+  {
+    fSettingsPresets.value = pickIndex.toString();
+    return;
+  }
   GetSystem();
 };
 
@@ -182,12 +187,13 @@ function FillSelect()
   }
 }
 
-function UpdateSelect(index:number)
+function UpdateSelect(index:number): boolean
 {
+  if(!editor.selectPreset(index)) return false;
   pickIndex = index;
-  editor.selectPreset(index);
   editor.updateStatusNow();
   ResetView();
+  return true;
 }
 
 function ResetView()
