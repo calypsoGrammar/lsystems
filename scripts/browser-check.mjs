@@ -65,17 +65,19 @@ try {
   // Auto fit (CAL-1273), driven through the real DOM at mobile (DPR 2) and desktop (DPR 1) sizes.
   const BBOX = () => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1; for (let i = 3; i < d.length; i += 4) if (d[i]) { const p = (i - 3) / 4, x = p % c.width, y = Math.floor(p / c.width); if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y } return { x0, x1, y0, y1, w: c.width, h: c.height, cssW: parseFloat(c.style.width), cssH: parseFloat(c.style.height) } }
   const SET = ([id, v]) => { const e = document.getElementById(id); if (e.type === 'checkbox') e.checked = v; else e.value = v; e.dispatchEvent(new Event('change')) }
+  const selected = pg => pg.evaluate(() => { const e = document.getElementById('fSettingsPresets'); return e.options[e.selectedIndex].text })
   for (const [label, vw, vh, dpr] of [['mobile', 375, 667, 2], ['desktop', 1280, 800, 1]]) {
     const ctx2 = await browser.newContext({ viewport: { width: vw, height: vh }, deviceScaleFactor: dpr })
     const mp = await ctx2.newPage()
     const mErrors = []
     mp.on('pageerror', e => mErrors.push(e.message))
+    mp.on('dialog', d => d.accept()) // these scenarios edit the form, then switch preset on purpose
     await mp.goto(URL_)
     await mp.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
     await mp.click('#HideButton'); await mp.waitForSelector('#fSettings', { state: 'visible' })
     const set = (id, v) => mp.evaluate(SET, [id, v])
     const gen = async () => { await mp.click('#GenerateButton'); await mp.waitForTimeout(250); return mp.evaluate(BBOX) }
-    const pick = async name => { await mp.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name); await mp.waitForTimeout(250); return mp.evaluate(BBOX) }
+    const pick = async name => { await mp.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name); await mp.waitForTimeout(250); check(await selected(mp) === name, `${label}: switch to ${name} did not take effect`); return mp.evaluate(BBOX) }
     const inside = (tag, r, scale) => {
       const pad = Math.max(8, Math.min(r.cssW, r.cssH) * 0.05) * scale
       check(r.x1 >= 0, `${label} ${tag}: blank canvas`)
@@ -143,11 +145,12 @@ try {
     const p3 = await ctx3.newPage()
     const e3 = []
     p3.on('pageerror', e => e3.push(e.message))
+    p3.on('dialog', d => d.accept())
     await p3.goto(URL_)
     await p3.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
     await p3.click('#HideButton'); await p3.waitForSelector('#fSettings', { state: 'visible' })
     const set = (id, v) => p3.evaluate(SET, [id, v])
-    const pick = name => p3.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name)
+    const pick = async name => { await p3.evaluate(n => { const e = document.getElementById('fSettingsPresets'); e.value = [...e.options].find(o => o.text === n).value; e.dispatchEvent(new Event('change')) }, name); check(await selected(p3) === name, `switch to ${name} did not take effect`) }
     const HASH = () => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let h = 0, n = 0; for (let i = 0; i < d.length; i += 4) if (d[i + 3]) { n++; h = (h * 31 + d[i] * 7 + d[i + 1] * 13 + d[i + 2] * 17 + d[i + 3] + i) | 0 } return { h, n } }
     const text = () => p3.evaluate(() => document.getElementById('oView').textContent)
     const hash = () => p3.evaluate(HASH)
@@ -303,12 +306,24 @@ try {
     }
 
     // Switching presets loads the template; Reset to preset restores the original template.
+    // Selecting another preset with unsaved edits asks first: declining keeps the edits, accepting discards them.
+    const dialogs = []
+    let answer = false
+    page.on('dialog', d => { dialogs.push(d.message()); answer ? d.accept() : d.dismiss() })
     await page.fill('#fSettingsAxiom', 'FX+')
     await pick('Koch Island')
+    check(dialogs.length === 1 && /Discard unsaved edits/.test(dialogs[0]), 'no confirmation asked before discarding edits')
+    check(await val('fSettingsAxiom') === 'FX+', 'declining the confirmation lost the edits')
+    check(await page.evaluate(() => { const e = document.getElementById('fSettingsPresets'); return e.options[e.selectedIndex].text }) === 'Dragon Curve', 'declining did not restore the preset dropdown')
+    answer = true
+    await pick('Koch Island')
+    check(dialogs.length === 2, 'confirmation not asked again')
     check(/discarded/.test(await page.textContent('#fSettingsStatus')), 'discarding edits on preset switch is not announced')
     check(await val('fSettingsAxiom') === 'F-F-F-F', 'Koch Island axiom not loaded')
     check(/original/i.test(await page.textContent('#fSettingsStatus')), 'status should say original preset')
+    const asked = dialogs.length
     await pick('Dragon Curve')
+    check(dialogs.length === asked, 'confirmation asked although there were no unsaved edits')
     check(await val('fSettingsAxiom') === 'FX' && await val('fSettingsTheta') === '90', 'returning to a preset did not load its template')
     await page.fill('#fSettingsAxiom', 'FXX'); await page.fill('#fSettingsTheta', '12'); await page.click('#fSettingsReplacementAdd')
     await page.click('#fSettingsReset'); await page.waitForTimeout(200)
