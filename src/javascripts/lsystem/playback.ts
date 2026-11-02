@@ -14,6 +14,8 @@ export const browserScheduler: Scheduler = {
   now: () => performance.now(),
 };
 
+export interface Position { tree: number; segment: number }
+
 export interface PlaybackOptions
 {
   counts: number[];                              // segments per tree
@@ -21,6 +23,7 @@ export interface PlaybackOptions
   intervalMs: number;                            // time per segment; 0 or less draws as fast as the budget allows
   frameBudgetMs?: number;                        // max time spent drawing in one frame
   maxPerFrame?: number;                          // cap on segments per frame (a cheap bound besides the clock)
+  from?: Position;                               // resume part-way through instead of from the first segment
   onDone?: () => void;
 }
 
@@ -40,13 +43,14 @@ export class Playback
   get running(): boolean { return this.handle !== null; }
   get pendingFrames(): number { return this.handle === null ? 0 : 1; }
   get isPaused(): boolean { return this.opts !== null && this.paused; }
+  get position(): Position { return { tree: this.tree, segment: this.segment }; }
   get finished(): boolean { return this.opts === null || this.atEnd(); }
 
   start(opts: PlaybackOptions): void
   {
     this.cancel();
     this.opts = opts;
-    this.tree = 0; this.segment = 0; this.credit = 0; this.paused = false;
+    this.tree = opts.from?.tree ?? 0; this.segment = opts.from?.segment ?? 0; this.credit = 0; this.paused = false;
     this.skipEmpty();
     if (this.atEnd()) { this.complete(); return; }
     this.schedule();

@@ -341,8 +341,8 @@ try {
     ap.on('pageerror', e => aErrors.push(e.message))
     await ap.goto(URL_)
     await ap.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
-    const names = await ap.evaluate(() => [...document.querySelectorAll('#toolbar button:not([hidden])')].map(b => ({ n: b.getAttribute('aria-label') || b.textContent.trim(), h: b.getBoundingClientRect().height, w: b.getBoundingClientRect().width })))
-    check(names.length === 5 && names.every(b => b.n && b.h >= 44 && b.w >= 44), 'toolbar buttons need names and 44px targets: ' + JSON.stringify(names))
+    const names = await ap.evaluate(() => [...document.querySelectorAll('#toolbar button')].map(b => ({ n: b.getAttribute('aria-label') || b.textContent.trim(), h: b.getBoundingClientRect().height, w: b.getBoundingClientRect().width })))
+    check(names.length === 6 && names.every(b => b.n && b.h >= 44 && b.w >= 44), 'toolbar buttons need names and 44px targets: ' + JSON.stringify(names))
     check(await ap.isChecked('#fSettingsAnimate') === false, 'reduced motion should start with Animate off')
     await ap.click('#HideButton')
     check(await ap.getAttribute('#HideButton', 'aria-pressed') === 'true', 'selected toolbar button not exposed via aria-pressed')
@@ -357,6 +357,71 @@ try {
     check((await ap.locator('#oView [role=group]').count()) >= 2, 'output groups missing')
     check(aErrors.length === 0, 'accessibility page errors: ' + aErrors.join('; '))
     await actx.close()
+  }
+
+  // Pause/Resume (CAL-1549): reserved slot, visible only for animated runs, holds the picture and its place.
+  {
+    const cctx = await browser.newContext({ viewport: { width: 1000, height: 700 } })
+    const cp = await cctx.newPage()
+    const cErrors = []
+    cp.on('pageerror', e => cErrors.push(e.message))
+    await cp.goto(URL_)
+    await cp.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
+    const set = (id, v) => cp.evaluate(([id, v]) => { const e = document.getElementById(id); if (typeof v === 'boolean') e.checked = v; else e.value = v; e.dispatchEvent(new Event('change')) }, [id, v])
+    const cpx = () => cp.evaluate(() => { const c = document.getElementById('fCanvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i]) n++; return n })
+    const pbtn = () => cp.evaluate(() => { const b = document.getElementById('PauseButton'); const r = b.getBoundingClientRect(); return { t: b.textContent, shown: !b.classList.contains('invisible') && !b.disabled, pressed: b.getAttribute('aria-pressed'), w: r.width, h: r.height, status: document.getElementById('cStatus')?.textContent ?? '' } })
+    const left = () => cp.evaluate(() => document.getElementById('GenerateButton').getBoundingClientRect().left)
+    await set('fSettingsAnimate', false); await set('fSettingsIterations', '3')
+    await cp.waitForTimeout(300)
+    // Instant draws and resizes never show the control.
+    await cp.evaluate(() => { window.__pauseShown = false; new MutationObserver(() => { const b = document.getElementById('PauseButton'); if (!b.classList.contains('invisible')) window.__pauseShown = true }).observe(document.getElementById('PauseButton'), { attributes: true }) })
+    await cp.click('#GenerateButton'); await cp.waitForTimeout(300)
+    await cp.setViewportSize({ width: 800, height: 700 }); await cp.waitForTimeout(400)
+    await cp.setViewportSize({ width: 1000, height: 700 }); await cp.waitForTimeout(400)
+    check(!(await cp.evaluate(() => window.__pauseShown)), 'Pause button appeared during a non-animated draw or resize')
+    check(!(await cp.isVisible('#PauseButton')), 'Pause button visible while Animate is off')
+
+    // Animated: slow it down so there is time to pause.
+    await set('fSettingsAnimate', true); await set('fSettingsInterval', '100')
+    const x0 = await left()
+    await cp.click('#GenerateButton'); await cp.waitForTimeout(400)
+    let b = await pbtn()
+    check(b.shown && b.t === 'Pause' && b.pressed === 'false' && b.w >= 44 && b.h >= 44, 'Pause button not shown/named/44px during animation: ' + JSON.stringify(b))
+    check(await left() === x0, 'toolbar buttons moved when the Pause button appeared')
+    await cp.click('#PauseButton')
+    b = await pbtn()
+    check(b.t === 'Resume' && b.pressed === 'true' && /paused/i.test(b.status), 'after pausing: ' + JSON.stringify(b))
+    const held = await cpx(); await cp.waitForTimeout(600)
+    check(held > 0 && await cpx() === held, 'canvas kept drawing while paused')
+    // Resize while paused keeps the pause and the drawn part.
+    await cp.setViewportSize({ width: 760, height: 700 }); await cp.waitForTimeout(500)
+    b = await pbtn()
+    const afterResize = await cpx()
+    check(b.shown && b.t === 'Resume', 'resize while paused lost the pause: ' + JSON.stringify(b))
+    check(afterResize > 0 && afterResize < held * 3, 'resize while paused redrew an implausible amount: ' + held + ' -> ' + afterResize)
+    await cp.waitForTimeout(500)
+    check(await cpx() === afterResize, 'canvas kept drawing after a resize while paused')
+    await cp.click('#PauseButton')
+    b = await pbtn()
+    check(b.t === 'Pause' && b.pressed === 'false', 'after resuming: ' + JSON.stringify(b))
+    await cp.waitForTimeout(700)
+    check(await cpx() > afterResize, 'canvas did not grow after Resume')
+    // Regenerating while paused restarts an unpaused run.
+    await cp.click('#PauseButton'); await cp.click('#GenerateButton')
+    b = await pbtn()
+    check(b.shown && b.t === 'Pause' && b.pressed === 'false', 'Generate while paused did not return to Pause: ' + JSON.stringify(b))
+    const g1 = await cpx(); await cp.waitForTimeout(600)
+    check(await cpx() > g1, 'drawing did not run after Generate while paused')
+    // Finished animation hides the control.
+    await set('fSettingsInterval', '10'); await set('fSettingsIterations', '2')
+    await cp.click('#GenerateButton')
+    await cp.waitForFunction(() => document.getElementById('GenerateButton').getAttribute('aria-busy') === 'false', null, { timeout: 30000 })
+    b = await pbtn()
+    check(!b.shown && /complete/i.test(b.status), 'Pause button still available after the animation finished: ' + JSON.stringify(b))
+    await cp.setViewportSize({ width: 1000, height: 700 }); await cp.waitForTimeout(300)
+    check(await left() === x0, 'toolbar buttons moved after the animation finished')
+    check(cErrors.length === 0, 'pause/resume page errors: ' + cErrors.join('; '))
+    await cctx.close()
   }
 
   // Page load animates (startup sizing must not cancel it), and a rejected draw never leaves the busy state stuck.

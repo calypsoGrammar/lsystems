@@ -7,7 +7,7 @@ import { presets } from "./lsystem/presets";
 import { applyTransform, fitTransform, type ViewTransform } from "./lsystem/fit";
 import { expandGrammar, GrammarError, ExpansionLimitError, MAX_TOTAL_SYMBOLS } from "./lsystem/grammar";
 import { buildScene, nextSection, MAX_DISPLAY_CHARS, SegmentLimitError, type Scene, type TreeScene } from "./lsystem/scene";
-import { Playback } from "./lsystem/playback";
+import { Playback, Position } from "./lsystem/playback";
 
 function CalculateVh()
 {
@@ -127,6 +127,7 @@ let theta = 0; // the default angle to be rotated by
 let pickIndex = 0; // which l system to display
 
 const playback = new Playback();
+let animatedRun = false; // the current run is animated, so it can be paused (instant redraws never show the control)
 let scene: Scene | null = null;
 let interval = 10;
 let animate = true;
@@ -222,7 +223,7 @@ function ReSize()
   SizeContainers();
   // Debounced re-fit of the existing scene; never regenerates, so stochastic grammars and forest placement stay put.
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => Render(false), 120);
+  resizeTimer = setTimeout(() => Render(false, playback.isPaused ? playback.position : undefined), 120);
 }
 let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -333,7 +334,9 @@ function GenerationView(generation: string, label: string): HTMLElement
 
 // Fits the current scene to the current canvas and plays it. Never regenerates: the scene (grammar expansion,
 // stochastic choices, forest placement, colours, leaf jitter) is fixed, so this is also what resize uses.
-function Render(animated: boolean)
+// A paused animation keeps its place across a refit: the segments before `resumeAt` are redrawn at once and the
+// playback stays paused there, so the user can still resume.
+function Render(animated: boolean, resumeAt?: Position)
 {
   StopPlayback();
   SizeCanvas();
@@ -343,12 +346,23 @@ function Render(animated: boolean)
   view = fit;
 
   const current = scene;
+  if(resumeAt)
+  {
+    for(let t = 0; t <= resumeAt.tree && t < current.trees.length; t++)
+    {
+      const end = t < resumeAt.tree ? current.trees[t].lines.length : resumeAt.segment;
+      for(let i = 0; i < end; i++) DrawSegment(current.trees[t], i);
+    }
+  }
+  animatedRun = animated || !!resumeAt;
   playback.start({
-    onDone: () => { SetBusy(false); UpdatePauseButton(); },
+    from: resumeAt,
+    onDone: () => { animatedRun = false; SetBusy(false); UpdatePauseButton(); },
     counts: current.trees.map(t => t.lines.length),
-    intervalMs: animated ? interval : 0,
+    intervalMs: animatedRun ? interval : 0,
     draw: (tree, segment) => DrawSegment(current.trees[tree], segment),
   });
+  if(resumeAt) playback.pause();
   if(playback.running) SetBusy(true);
   UpdatePauseButton();
 }
@@ -357,15 +371,18 @@ function Render(animated: boolean)
 function StopPlayback()
 {
   playback.cancel();
+  animatedRun = false;
   SetBusy(false);
   UpdatePauseButton();
 }
 
-// The pause control only shows while an animation is in progress, and toggles between Pause and Resume.
+// The pause control is only usable while an animated run is in progress; its slot stays reserved so the toolbar never shifts, and toggles between Pause and Resume.
 function UpdatePauseButton()
 {
   const paused = playback.isPaused;
-  PauseButton.hidden = !(playback.running || paused);
+  const available = animatedRun && (playback.running || paused);
+  PauseButton.classList.toggle("invisible", !available);
+  (<HTMLButtonElement>PauseButton).disabled = !available;
   PauseButton.textContent = paused ? "Resume" : "Pause";
   PauseButton.setAttribute("aria-pressed", String(paused));
   PauseButton.title = paused ? "Resume the drawing animation" : "Pause the drawing animation";
