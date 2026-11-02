@@ -341,7 +341,7 @@ try {
     ap.on('pageerror', e => aErrors.push(e.message))
     await ap.goto(URL_)
     await ap.waitForFunction(() => document.querySelectorAll('#fSettingsPresets option').length > 0)
-    const names = await ap.evaluate(() => [...document.querySelectorAll('#toolbar button')].map(b => ({ n: b.getAttribute('aria-label') || b.textContent.trim(), h: b.getBoundingClientRect().height, w: b.getBoundingClientRect().width })))
+    const names = await ap.evaluate(() => [...document.querySelectorAll('#toolbar button:not([hidden])')].map(b => ({ n: b.getAttribute('aria-label') || b.textContent.trim(), h: b.getBoundingClientRect().height, w: b.getBoundingClientRect().width })))
     check(names.length === 5 && names.every(b => b.n && b.h >= 44 && b.w >= 44), 'toolbar buttons need names and 44px targets: ' + JSON.stringify(names))
     check(await ap.isChecked('#fSettingsAnimate') === false, 'reduced motion should start with Animate off')
     await ap.click('#HideButton')
