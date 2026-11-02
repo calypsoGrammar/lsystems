@@ -143,6 +143,16 @@ describe("playback", () =>
     expect(seen).toEqual([0, 1, 2, 3]);
   });
 
+  it("reports its paused state for the UI control", () =>
+  {
+    const f = fakeScheduler(); const p = new Playback(f.s);
+    expect(p.isPaused).toBe(false);
+    p.start({ counts: [4], intervalMs: 10, draw: () => {} });
+    p.pause(); expect(p.isPaused).toBe(true); expect(p.running).toBe(false);
+    p.resume(); expect(p.isPaused).toBe(false); expect(p.running).toBe(true);
+    p.pause(); p.cancel(); expect(p.isPaused).toBe(false);
+  });
+
   it("draws instantly-scheduled scenes in bounded slices", () =>
   {
     const f = fakeScheduler(); let n = 0;

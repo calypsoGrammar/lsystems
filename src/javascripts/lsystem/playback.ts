@@ -39,6 +39,7 @@ export class Playback
 
   get running(): boolean { return this.handle !== null; }
   get pendingFrames(): number { return this.handle === null ? 0 : 1; }
+  get isPaused(): boolean { return this.opts !== null && this.paused; }
   get finished(): boolean { return this.opts === null || this.atEnd(); }
 
   start(opts: PlaybackOptions): void

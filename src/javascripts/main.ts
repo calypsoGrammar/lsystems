@@ -21,6 +21,7 @@ window.addEventListener('orientationchange', CalculateVh);
 
 const toolbar: HTMLElement = <HTMLElement>document.getElementById("toolbar");
 const cStatus: HTMLElement = <HTMLElement>document.getElementById("cStatus");
+const PauseButton: HTMLElement = <HTMLElement>document.getElementById("PauseButton");
 const FitButton: HTMLElement = <HTMLElement>document.getElementById("FitButton");
 const fSettingsMotionNote: HTMLElement = <HTMLElement>document.getElementById("fSettingsMotionNote");
 const GenerateButton: HTMLElement = <HTMLElement>document.getElementById("GenerateButton");
@@ -65,6 +66,11 @@ HideButton.onclick = function() { SwitchView(views, 2, viewsB, 2); };
 // Escape returns from the strings or settings panel to the drawing.
 document.addEventListener("keydown", ev => { if(ev.key === "Escape" && fContainer.style.display === "none") { SwitchView(views, 0, viewsB, 0); (<HTMLElement>viewsB.find(b => b.contains(document.activeElement)) ?? LSystemsButton).focus(); } });
 
+PauseButton.onclick = function()
+{
+  if(playback.isPaused) playback.resume(); else playback.pause();
+  UpdatePauseButton();
+};
 FitButton.onclick = function() { fSettingsFit.checked = true; GetSystem(); };
 fSettingsReplacementAdd.onclick = function() { editor.addRule(); };
 fSettingsReset.onclick = function() { editor.resetToPreset(); GetSystem(); };
@@ -338,12 +344,13 @@ function Render(animated: boolean)
 
   const current = scene;
   playback.start({
-    onDone: () => SetBusy(false),
+    onDone: () => { SetBusy(false); UpdatePauseButton(); },
     counts: current.trees.map(t => t.lines.length),
     intervalMs: animated ? interval : 0,
     draw: (tree, segment) => DrawSegment(current.trees[tree], segment),
   });
   if(playback.running) SetBusy(true);
+  UpdatePauseButton();
 }
 
 // Cancelling never calls onDone, so every cancel without a restart must clear the busy state itself.
@@ -351,6 +358,19 @@ function StopPlayback()
 {
   playback.cancel();
   SetBusy(false);
+  UpdatePauseButton();
+}
+
+// The pause control only shows while an animation is in progress, and toggles between Pause and Resume.
+function UpdatePauseButton()
+{
+  const paused = playback.isPaused;
+  PauseButton.hidden = !(playback.running || paused);
+  PauseButton.textContent = paused ? "Resume" : "Pause";
+  PauseButton.setAttribute("aria-pressed", String(paused));
+  PauseButton.title = paused ? "Resume the drawing animation" : "Pause the drawing animation";
+  if(paused) cStatus.textContent = "Drawing paused.";
+  else if(playback.running) cStatus.textContent = "Drawing…";
 }
 
 // Visible and announced loading state while an animation is drawing.
