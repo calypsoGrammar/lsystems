@@ -16,7 +16,7 @@ Diagnostic only. No presets, hosting, DNS or production files were changed.
 
 - `vite.config.js` sets `base: ''`, so `dist/index.html` uses relative URLs (`./assets/...`, `./undo.svg`), which work from any sub-path or a custom domain root. The source `index.html` uses root-absolute `/undo.svg` etc.; Vite rewrites these to `./` at build time.
 - `dist/` is listed in `.gitignore` yet **is tracked** (force-added in the 2023 "deploy" commits). Any rebuild changes tracked files.
-- Externally fetched resources (both in the built HTML): `https://code.jquery.com/jquery-3.6.4.min.js` (jQuery is never used by `main.ts`) and `https://cdn.jsdelivr.net/npm/modern-normalize@v1.1.0/modern-normalize.min.css`. No SRI on either. No other network use found in the JS or CSS.
+- Externally fetched resources at audit time (resolved in CAL-1516: jQuery removed, modern-normalize bundled from npm, built HTML has no external requests; guarded by `tests/no-external-resources.test.ts`) (both in the built HTML): `https://code.jquery.com/jquery-3.6.4.min.js` (jQuery is never used by `main.ts`) and `https://cdn.jsdelivr.net/npm/modern-normalize@v1.1.0/modern-normalize.min.css`. No SRI on either. No other network use found in the JS or CSS.
 - `tailwind.config.js` scans only `./index.html`, so classes that exist only in `main.ts` strings (e.g. `primaryButton`, `fBorder`) are not generated; the button styling built in `FillReplacement` is therefore partly unstyled.
 
 ## Deployment provenance (open)
