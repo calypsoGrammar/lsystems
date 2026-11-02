@@ -143,6 +143,30 @@ describe("playback", () =>
     expect(seen).toEqual([0, 1, 2, 3]);
   });
 
+  it("reports its paused state for the UI control", () =>
+  {
+    const f = fakeScheduler(); const p = new Playback(f.s);
+    expect(p.isPaused).toBe(false);
+    p.start({ counts: [4], intervalMs: 10, draw: () => {} });
+    p.pause(); expect(p.isPaused).toBe(true); expect(p.running).toBe(false);
+    p.resume(); expect(p.isPaused).toBe(false); expect(p.running).toBe(true);
+    p.pause(); p.cancel(); expect(p.isPaused).toBe(false);
+  });
+
+  it("starts from a given position and reports where it paused", () =>
+  {
+    const f = fakeScheduler(), seen: string[] = []; const p = new Playback(f.s);
+    p.start({ counts: [3, 3], intervalMs: 10, from: { tree: 0, segment: 2 }, draw: (t, i) => seen.push(`${t}:${i}`) });
+    f.tick(20); p.pause();
+    expect(seen).toEqual(["0:2", "1:0"]);
+    expect(p.position).toEqual({ tree: 1, segment: 1 });
+    p.start({ counts: [3, 3], intervalMs: 10, from: p.position, draw: (t, i) => seen.push(`${t}:${i}`) });
+    p.pause(); f.tick(100);
+    expect(p.isPaused).toBe(true); expect(seen.length).toBe(2);
+    p.resume(); f.tick(10); f.tick(10); f.tick(10); f.tick(10);
+    expect(seen.slice(2)).toEqual(["1:1", "1:2"]);
+  });
+
   it("draws instantly-scheduled scenes in bounded slices", () =>
   {
     const f = fakeScheduler(); let n = 0;
