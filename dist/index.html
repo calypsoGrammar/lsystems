@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./assets/favicon-B0opx7u9.ico">
     <title>L-Systems</title>
-    <script type="module" crossorigin src="./assets/index-rJ4SL84q.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-t9770mHE.css">
+    <script type="module" crossorigin src="./assets/index-CmGqVtTC.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BodvD0_i.css">
   </head>
   <body class='min-h-screen max-h-screen w-full'>
     <a href="#fCanvas" class="skip-link">Skip to drawing</a>
@@ -14,12 +14,12 @@
     <div id="toolbar" role="toolbar" aria-label="L-Systems toolbar" class="flex flex-row justify-center items-center border-b border-black w-full" style="height:var(--header)">
 
       <div class="flex w-full max-w-7xl h-full flex-row justify-center items-center mx-auto">
-        <button id="GenerateButton" type="button" aria-label="Generate" title="Generate: draw the current grammar again" class="tool-btn flex justify-center items-center mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" id="playPauseButton" src="./undo.svg" alt="" aria-hidden="true"></button>
-        <button id="LSystemsButton" type="button" aria-label="Drawing" aria-controls="fContainer" aria-pressed="true" data-state="selected" title="Show the drawing" class="tool-btn flex justify-center items-center mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./grid.svg" alt="" aria-hidden="true"></button>
-        <button id="OutputButton" type="button" aria-label="Generated strings" aria-controls="oView" aria-pressed="false" title="Inspect the generated strings" class="tool-btn flex justify-center items-center mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./list.svg" alt="" aria-hidden="true"></button>
-        <button id="HideButton" type="button" aria-label="Settings" aria-controls="fSettings" aria-pressed="false" title="Show the grammar, appearance and rendering settings" class="tool-btn flex justify-center items-center mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./options.svg" alt="" aria-hidden="true"></button>
-        <button id="PauseButton" type="button" aria-pressed="false" title="Pause the drawing animation" class="tool-btn tool-text pause-btn flex justify-center items-center mx-1 sm:mx-4 px-2 border border-black rounded-lg text-sm active:scale-95 invisible" disabled>Pause</button>
-        <button id="FitButton" type="button" title="Fit to View: scale and centre the drawing in the canvas" class="tool-btn tool-text flex justify-center items-center mx-1 sm:mx-4 px-2 border border-black rounded-lg text-sm active:scale-95">Fit<span class="sr-only"> to view</span></button>
+        <button id="GenerateButton" type="button" aria-label="Generate" title="Generate: draw the current grammar again" class="tool-btn flex justify-center items-center mx-0.5 min-[360px]:mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" id="playPauseButton" src="./undo.svg" alt="" aria-hidden="true"></button>
+        <button id="LSystemsButton" type="button" aria-label="Drawing" aria-controls="fContainer" aria-pressed="true" data-state="selected" title="Show the drawing" class="tool-btn flex justify-center items-center mx-0.5 min-[360px]:mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./grid.svg" alt="" aria-hidden="true"></button>
+        <button id="OutputButton" type="button" aria-label="Generated strings" aria-controls="oView" aria-pressed="false" title="Inspect the generated strings" class="tool-btn flex justify-center items-center mx-0.5 min-[360px]:mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./list.svg" alt="" aria-hidden="true"></button>
+        <button id="HideButton" type="button" aria-label="Settings" aria-controls="fSettings" aria-pressed="false" title="Show the grammar, appearance and rendering settings" class="tool-btn flex justify-center items-center mx-0.5 min-[360px]:mx-1 sm:mx-4 active:scale-95"><img class="w-3/4 h-3/4" src="./options.svg" alt="" aria-hidden="true"></button>
+        <button id="PauseButton" type="button" aria-pressed="false" title="Pause the drawing animation" class="tool-btn tool-text pause-btn flex justify-center items-center mx-0.5 min-[360px]:mx-1 sm:mx-4 px-2 border border-black rounded-lg text-sm active:scale-95 invisible" disabled>Pause</button>
+        <button id="FitButton" type="button" title="Fit to View: scale and centre the drawing in the canvas" class="tool-btn tool-text flex justify-center items-center mx-0.5 min-[360px]:mx-1 sm:mx-4 px-2 border border-black rounded-lg text-sm active:scale-95">Fit<span class="sr-only"> to view</span></button>
       </div>
 
     </div>
