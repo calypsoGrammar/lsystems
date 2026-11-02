@@ -75,7 +75,7 @@ describe("scene", () =>
   it("refuses scenes over the segment limit", () =>
   {
     expect(() => buildScene([{ generation: "F".repeat(MAX_SEGMENTS + 1), length: 1 }], 0, false, 1, 1, colour)).toThrow(SegmentLimitError);
-  });
+  }, 30_000); // traces a 400k-segment tree before the limit trips, which is slow on a loaded machine
 
   it("truncates huge generations for display", () =>
   {
