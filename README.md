@@ -38,6 +38,6 @@ Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEAS
 ### Known limitations
 
 - Documented, unfixed behaviours are listed in `docs/AUDIT.md` and pinned by `tests/known-defects.test.ts` (e.g. Dragon Curve and Fractal Plant 7 use empty contexts so they stall; fractional thetas are truncated; per-preset `factor` is ignored; `Cantor Set` is defined but unregistered).
-- `dist/` is partly tracked in git (`index.html`, SVGs) but `dist/assets/` is not; always rebuild before publishing.
+- `dist/` is gitignored and not tracked; CI builds it fresh for publishing.
 - Pages is configured for GitHub Actions publishing; headers and live caching remain unverified.
 - 3D and AI asset generation stay deferred to V2 research; V1 adds no backend, accounts, or generation features.

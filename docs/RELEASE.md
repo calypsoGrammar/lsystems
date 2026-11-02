@@ -12,7 +12,7 @@ Owner decision (CAL-1651, superseding the custom host intended in CAL-1277): the
 
 - `npm run build` (`tsc && vite build`) writes `dist/`. `vite.config.js` sets `base: ''`, so `dist/index.html` uses relative URLs (`./assets/index-<hash>.js`, `./assets/index-<hash>.css`, `./undo.svg`, ...). It works at a domain root and under a sub-path; there are no root-relative (`/assets/...`) URLs in the built HTML. Do not set an absolute `base` without checking this.
 - The app makes no network requests besides its own files (`npm run test:browser` aborts and fails on any off-origin request).
-- `.gitignore` lists `dist`, but `dist/index.html` and four SVGs are tracked on `main` (force-added earlier), while `dist/assets/` is **not** tracked. Do not publish from a plain checkout of `main`'s `dist/`: `index.html` would point at assets that are not in git. Always rebuild.
+- `dist/` is gitignored and no longer tracked (CAL-1554); it only exists after a build, and CI publishes a freshly built artifact.
 
 ## Publish procedure
 
