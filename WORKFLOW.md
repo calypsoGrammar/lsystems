@@ -81,6 +81,11 @@ archon:
     # docs/operations.md, Models); a Model label on an issue picks another.
     default: opus
     fallback: sol
+  # Chain test, November 2026 (re-planning only): the same five "Commands" tickets run in
+  # Game of Life, Boids, L-Systems and Maze Maker with each combination of these.
+  chain:
+    context: false
+    replan: true
 ---
 You are working on L-Systems, issue {{ issue.identifier }}: {{ issue.title }}.
 {% if attempt %}
