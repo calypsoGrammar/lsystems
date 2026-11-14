@@ -12,18 +12,18 @@ Owner decision (CAL-1651, superseding the custom host intended in CAL-1277): the
 
 - `npm run build` (`tsc && vite build`) writes `dist/`. `vite.config.js` sets `base: ''`, so `dist/index.html` uses relative URLs (`./assets/index-<hash>.js`, `./assets/index-<hash>.css`, `./undo.svg`, ...). It works at a domain root and under a sub-path; there are no root-relative (`/assets/...`) URLs in the built HTML. Do not set an absolute `base` without checking this.
 - The app makes no network requests besides its own files (`npm run test:browser` aborts and fails on any off-origin request).
-- `dist/` is gitignored and no longer tracked (CAL-1554); it only exists after a build, and CI publishes a freshly built artifact.
+- `dist/` is gitignored and no longer tracked (CAL-1554); it only exists after a build, and the deploy publishes a freshly built one.
 
 ## Publish procedure
 
-1. Review and merge the release PR into `main`. Merging the workflow change enables automatic publication on this and subsequent pushes to `main`.
-2. The `CI` workflow runs the existing typecheck, preset baseline, build, unit tests, browser check and security audit on Node 22 and 26. The Node 22 job uploads a fresh `dist/` Pages artifact; the deployment job waits for **both** matrix jobs to pass. PR runs and manual runs on other branches never deploy.
-3. The `deploy` job publishes that artifact using `actions/deploy-pages` with job-scoped Pages and OIDC permissions. The `github-pages` environment records the deployment URL and any configured environment approval rules still apply. Newer runs on the same ref cancel superseded checks/deployments so older runs do not publish after newer ones.
-4. Open Actions → CI → the run → `github-pages` to find the published URL. Run the smoke checklist below against that URL and record the source SHA, run URL, date, operator and result in `README.md`.
+1. Merge the change into `main`. Merging does not publish.
+2. The `CI` workflow runs the typecheck, preset baseline, build, unit tests, browser check and security audit on Node 22 and 26 (jobs `build (22)` and `build (26)`). CI never publishes.
+3. Actions → **deploy** → Run workflow, with **Dry run** unticked and `ref` empty (main) or the commit to publish. `.github/workflows/deploy.yml` calls the shared `github-pages.yml` in `calypsoGrammar/deploy-workflows`. It refuses a commit that is not on `main` or on which either CI job did not pass, then runs `npm ci` and `npm run build` on Node 22 and publishes `dist/` with `actions/deploy-pages`. A dry run (the default) builds and checks without publishing. Every real run records a GitHub deployment with task `release`, and one publish runs at a time.
+4. The run's `github-pages` environment shows the published URL. Run the smoke checklist below against it and record the source SHA, run URL, date, operator and result in `README.md`.
 
-No manual trigger is normally needed. To retry, use Actions → CI → Run workflow and select `main`; this reruns all checks before publishing. Re-running the historical `pages-build-deployment` run only republishes its old source and is not the release procedure. Do not copy files or push to the historical `deploy` branch.
+Re-running the historical `pages-build-deployment` run only republishes its old source and is not the release procedure. Do not copy files or push to the historical `deploy` branch.
 
-If deployment fails, check Settings → Pages → Build and deployment → Source is **GitHub Actions**, and inspect the `github-pages` environment rules. Branch protection and any required approvals remain in force. CI checks run on pull requests without Pages write or OIDC permissions; those permissions belong only to the deployment job.
+If deployment fails, check Settings → Pages → Build and deployment → Source is **GitHub Actions**, and inspect the `github-pages` environment rules. Branch protection and any required approvals remain in force. CI has no Pages write or OIDC permissions; those belong only to the deploy workflow.
 
 HTTPS: keep "Enforce HTTPS" enabled and check `curl -sI http://calypsogrammar.github.io/lsystems/` redirects to `https://`.
 
@@ -31,7 +31,7 @@ Cache invalidation: asset file names are content-hashed, so a new build never re
 
 ## Rollback
 
-Revert the faulty source change in a pull request against `main` (for a merge commit, use the appropriate mainline parent), review and merge it. The normal CI and Pages deployment sequence publishes the corrected build. Repeat the live smoke checklist and record the rollback source SHA and deployment run in `README.md`. Reverting a historical `deploy` branch commit has no effect on the new workflow.
+Run Actions → deploy with **Dry run** unticked and the last good commit or tag as `ref`, or tick **rollback** with `ref` empty to publish the `stable` tag. A rollback holds later deploys until main is fixed and the hold is cleared (Actions → stable → Run workflow → `clear-hold`). `stable.yml` moves the `stable` tag to a release once it has been live for 48 hours. Repeat the live smoke checklist and record the rollback source SHA and deployment run in `README.md`. Reverting a historical `deploy` branch commit has no effect on the new workflow.
 
 ## Live inspection commands (to complete the open items)
 

@@ -22,7 +22,7 @@ modern-normalize is imported into the `base` cascade layer so it cannot override
 
 ## Release and deployment (V1)
 
-Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEASE.md). GitHub Actions publishes the freshly built `dist/` artifact to GitHub Pages after both CI matrix jobs pass on `main`. Pull requests only run checks. Merging this workflow enables automatic publication; Actions → CI → Run workflow on `main` retries the full check-and-deploy sequence. The historical `deploy` branch is no longer used. The site is served at the GitHub Pages URL; the custom domain was scrapped (CAL-1651), so there is no `CNAME` and no DNS change.
+Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEASE.md). Publishing is by hand: Actions → deploy → Run workflow, with Dry run unticked. It uses the shared Pages deploy in `calypsoGrammar/deploy-workflows`, which builds a fresh `dist/` from a commit on `main` whose CI jobs `build (22)` and `build (26)` both passed. Merging to `main` does not publish. The historical `deploy` branch is no longer used. The site is served at the GitHub Pages URL; the custom domain was scrapped (CAL-1651), so there is no `CNAME` and no DNS change.
 
 **Live verification pending.** GitHub currently reports `https://calypsogrammar.github.io/lsystems/` as the Pages URL, with no custom domain; none is planned. After the first successful deployment, run the live smoke checklist and record the result below; passing CI alone does not establish that V1 is deployed and verified.
 
