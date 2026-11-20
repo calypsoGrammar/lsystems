@@ -18,6 +18,7 @@ agent:
   max_concurrent_agents: 1
 archon:
   verify:
+    status: build
     setup:
       - npm ci --no-audit --no-fund
     commands:
@@ -26,6 +27,7 @@ archon:
       - npm run test:browser
       - npm run audit:baseline:check
       - npm run audit
+      - spiderweb refresh . --log-level warn > /dev/null && spiderweb verify . --stage merge
   preview:
     # How to run the app: screenshots of the reviewed commit for Archon's
     # evidence (archon-v3 docs/workflow-reference.md, Preview evidence), and a

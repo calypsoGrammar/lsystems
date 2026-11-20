@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "violations": [
+    {
+      "rule": "no-any",
+      "path": "src/javascripts/main.ts",
+      "subject": "src/javascripts/main.ts#SwitchView::buttons",
+      "detail": "types a value as any: :any"
+    },
+    {
+      "rule": "no-any",
+      "path": "src/javascripts/main.ts",
+      "subject": "src/javascripts/main.ts#SwitchView::buttons",
+      "detail": "types a value as any: :any"
+    },
+    {
+      "rule": "no-any",
+      "path": "tests/parity.test.ts",
+      "subject": "tests/parity.test.ts",
+      "detail": "types a value as any: : any"
+    },
+    {
+      "rule": "no-any",
+      "path": "tests/parity.test.ts",
+      "subject": "tests/parity.test.ts",
+      "detail": "types a value as any: : any"
+    },
+    {
+      "rule": "no-commented-out-code",
+      "path": "src/javascripts/main.ts",
+      "subject": "src/javascripts/main.ts#Main",
+      "detail": "commented-out code: Initiate(lSystems[pickIndex], 2, 1000);"
+    },
+    {
+      "rule": "no-swallowed-errors",
+      "path": "scripts/browser-baseline.mjs",
+      "subject": "scripts/browser-baseline.mjs",
+      "detail": "catches a rejected promise and does nothing: .catch(() => {})"
+    },
+    {
+      "rule": "no-swallowed-errors",
+      "path": "scripts/browser-baseline.mjs",
+      "subject": "scripts/browser-baseline.mjs",
+      "detail": "catches an error and does nothing: catch {}"
+    },
+    {
+      "rule": "no-swallowed-errors",
+      "path": "scripts/browser-check.mjs",
+      "subject": "scripts/browser-check.mjs",
+      "detail": "catches an error and does nothing: catch {}"
+    }
+  ]
+}
