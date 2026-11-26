@@ -1,5 +1,7 @@
 # L-Systems V1 release, deployment and rollback runbook (CAL-1277, LSYS-V1-09)
 
+> **Moved to Cloudflare Pages (26 November 2026).** The site is now at <https://lsystems.calypsogrammar.com/>, published by `.github/workflows/deploy.yml` through the shared `cloudflare-pages.yml` in `calypsoGrammar/deploy-workflows` (the same manual, green-commits-only, rollback-by-`ref` contract). It builds with `--base=/` because the site is served at the root of its subdomain. The GitHub Pages settings, URLs and checks below are kept as history.
+
 Status: **live verification pending.** The deployment workflow is prepared for review; no production deployment or live smoke test has been performed as part of this change.
 
 ## Deployment configuration
