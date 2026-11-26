@@ -22,9 +22,9 @@ modern-normalize is imported into the `base` cascade layer so it cannot override
 
 ## Release and deployment (V1)
 
-Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEASE.md). Publishing is by hand: Actions → deploy → Run workflow, with Dry run unticked. It uses the shared Pages deploy in `calypsoGrammar/deploy-workflows`, which builds a fresh `dist/` from a commit on `main` whose CI jobs `build (22)` and `build (26)` both passed. Merging to `main` does not publish. The historical `deploy` branch is no longer used. The site is served at the GitHub Pages URL; the custom domain was scrapped (CAL-1651), so there is no `CNAME` and no DNS change.
+Full runbook, rollback and live smoke checklist: [`docs/RELEASE.md`](docs/RELEASE.md). Publishing is by hand: Actions → deploy → Run workflow, with Dry run unticked. It uses the shared Cloudflare Pages deploy in `calypsoGrammar/deploy-workflows`, which builds a fresh `dist/` (with `--base=/`) from a commit on `main` whose CI jobs `build (22)` and `build (26)` both passed. Merging to `main` does not publish. The historical `deploy` branch is no longer used. The site is served at <https://lsystems.calypsogrammar.com/> on Cloudflare Pages (moved 26 November 2026; this supersedes CAL-1651's GitHub Pages URL).
 
-**Live verification pending.** GitHub currently reports `https://calypsogrammar.github.io/lsystems/` as the Pages URL, with no custom domain; none is planned. After the first successful deployment, run the live smoke checklist and record the result below; passing CI alone does not establish that V1 is deployed and verified.
+**Live verification pending.** After the first deployment to <https://lsystems.calypsogrammar.com/>, run the live smoke checklist and record the result below; passing CI alone does not establish that V1 is deployed and verified.
 
 ### Release record
 
